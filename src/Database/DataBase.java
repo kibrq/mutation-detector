@@ -1,13 +1,18 @@
-
+package Database;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class DataBase {
-    public Map<String, ArrayList<String>> database = new HashMap<>();
+    private Map<String, ArrayList<String>> database = new HashMap<>();
+
+    public Map<String, ArrayList<String>> getDatabase() {
+        return database;
+    }
+
     private ArrayList<String> list = new ArrayList<>();
-    public String[] titles = {"Ala", "Cys", "Asp", "Glu", "Phe", "Gly", "His", "Ile", "Lys", "Leu", "Leu",
+    private String[] titles = {"Ala", "Cys", "Asp", "Glu", "Phe", "Gly", "His", "Ile", "Lys", "Leu", "Leu",
             "Met", "Asn", "Pro", "Gln", "Arg", "Ser", "Thr", "Val", "Trp", "Tyr"};
     private String[][] codons = new String[20][];
 
