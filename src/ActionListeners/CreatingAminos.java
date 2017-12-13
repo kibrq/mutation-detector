@@ -2,6 +2,7 @@ package ActionListeners;
 
 import GUI.GUI;
 
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,7 +24,8 @@ public class CreatingAminos implements ActionListener {
             GUI.panelBottom.add(buttons[i]);
         }
         GUI.tf.setText("");
-        new GUI("GUI");
+        new GUI("main");
+
 
     }
 }

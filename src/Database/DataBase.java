@@ -12,7 +12,7 @@ public class DataBase {
     }
 
     private ArrayList<String> list = new ArrayList<>();
-    private String[] titles = {"Ala", "Cys", "Asp", "Glu", "Phe", "Gly", "His", "Ile", "Lys", "Leu", "Leu",
+    private String[] titles = {"Ala", "Cys", "Asp", "Glu", "Phe", "Gly", "His", "Ile", "Lys", "Leu",
             "Met", "Asn", "Pro", "Gln", "Arg", "Ser", "Thr", "Val", "Trp", "Tyr"};
     private String[][] codons = new String[20][];
 

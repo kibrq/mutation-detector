@@ -16,6 +16,9 @@ public class CreatingCodons implements ActionListener {
         JPopupMenu pop=new JPopupMenu();
         DataBase db=new DataBase();
         ArrayList<String> list=db.getDatabase().get(key);
+        if(list==null){
+            return;
+        }
         JPanel panel = new JPanel(new GridLayout(list.size(),1 , 0 ,10));
         for (int i = 0; i <list.size(); i++) {
             JLabel label=new JLabel(list.get(i));

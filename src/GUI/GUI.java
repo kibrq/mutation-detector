@@ -31,7 +31,9 @@ public class GUI extends JFrame {
     }
 
     private void creatingComboBox(){
-
+        menu.add(new JButton("function1"));
+        menu.add(new JButton("function2"));
+        menu.add(new JButton("function3"));
     }
 
     private void addPanelLeft() {
