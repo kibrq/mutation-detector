@@ -1,21 +1,24 @@
 package GUI;
 
+import ActionListeners.CreateMenu;
 import ActionListeners.CreatingAminos;
+
 
 import javax.swing.*;
 import java.awt.*;
 
-public class GUI extends JFrame {
 
+public class GUI extends JFrame {
     private JButton but = new JButton("submit");
     public static JTextField tf = new JTextField(50);
-    private JSplitPane splitPane=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+    private JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
     private JPanel panelRight = new JPanel();
     private JPanel panelLeft = new JPanel();
     private JPanel panelTop = new JPanel();
     private JPanel panelMiddle = new JPanel();
     public static JPanel panelBottom = new JPanel();
-    private JComboBox<JButton> menu = new JComboBox<>();
+    private String[] list = {"F1", "F2", "F3"};
+    private JList menu = new JList(list);
 
     public GUI(String title) {
         super(title);
@@ -30,13 +33,13 @@ public class GUI extends JFrame {
         this.setVisible(true);
     }
 
-    private void creatingComboBox(){
-        menu.add(new JButton("function1"));
-        menu.add(new JButton("function2"));
-        menu.add(new JButton("function3"));
+    private void creatingComboBox() {
+        menu.addListSelectionListener(new CreateMenu());
     }
 
     private void addPanelLeft() {
+        creatingComboBox();
+        panelLeft.setBackground(Color.GRAY);
         panelLeft.add(menu);
         this.getContentPane().add(panelLeft);
         splitPane.add(panelLeft);
@@ -51,14 +54,17 @@ public class GUI extends JFrame {
     }
 
     private void addingCompsRight() {
+        panelTop.setBackground(Color.BLACK);
+        panelMiddle.setBackground(Color.BLACK);
+        panelBottom.setBackground(Color.DARK_GRAY);
         panelTop.setLayout(new FlowLayout());
         panelTop.add(tf);
         panelMiddle.setLayout(new FlowLayout());
         panelBottom.setLayout(new FlowLayout());
+        but.setPreferredSize(new Dimension(100, 20));
         but.addActionListener(new CreatingAminos());
         panelMiddle.add(but);
     }
-
 
     public static void main(String[] args) {
         new GUI("GUI");

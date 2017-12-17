@@ -12,19 +12,22 @@ import java.util.ArrayList;
 public class CreatingCodons implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
-        String key=e.getActionCommand();
-        JPopupMenu pop=new JPopupMenu();
-        DataBase db=new DataBase();
-        ArrayList<String> list=db.getDatabase().get(key);
-        if(list==null){
+        JButton tmp = (JButton) e.getSource();
+        String key = tmp.getName();
+        int x = tmp.getX();
+        int y = tmp.getY();
+        JPopupMenu pop = new JPopupMenu();
+        DataBase db = new DataBase();
+        ArrayList<String> list = db.getDatabase().get(key);
+        if (list == null) {
             return;
         }
-        JPanel panel = new JPanel(new GridLayout(list.size(),1 , 0 ,10));
-        for (int i = 0; i <list.size(); i++) {
-            JLabel label=new JLabel(list.get(i));
+        JPanel panel = new JPanel(new GridLayout(list.size(), 1, 0, 10));
+        for (int i = 0; i < list.size(); i++) {
+            JLabel label = new JLabel(list.get(i));
             panel.add(label);
         }
         pop.add(panel);
-        pop.show(GUI.panelBottom, 0, 0);
+        pop.show(GUI.panelBottom, x+tmp.getWidth()/4, y + tmp.getHeight());
     }
 }
