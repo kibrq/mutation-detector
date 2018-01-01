@@ -15,7 +15,7 @@ public class CreateMenu implements ListSelectionListener {
         JList tmp = (JList) e.getSource();
         String value = (String) tmp.getSelectedValue();
         switch (value){
-           
+
         }
     }
 }

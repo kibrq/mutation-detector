@@ -1,26 +1,29 @@
 package Database;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import Model.Amino;
+
+import java.util.*;
 
 public class DataBase {
-    private Map<String, ArrayList<String>> database = new HashMap<>();
-
-    public Map<String, ArrayList<String>> getDatabase() {
-        return database;
-    }
+    private ArrayList<Amino> database = new ArrayList<>();
 
     private ArrayList<String> list = new ArrayList<>();
-    private String[] titles = {"Ala", "Cys", "Asp", "Glu", "Phe", "Gly", "His", "Ile", "Lys", "Leu",
-            "Met", "Asn", "Pro", "Gln", "Arg", "Ser", "Thr", "Val", "Trp", "Tyr"};
+    private String[] titles = {"A", "C", "D", "E", "F", "G", "H", "I", "K", "L",
+            "M", "N", "P", "Q", "R", "S", "T", "V", "W", "Y"};
+    private double[] masses={71.03, 103,.01, 115.03, 129.04, 147.07, 57.02, 137.06, 113.08, 128.09, 113.08,
+            131.04, 114.04, 97.05, 128.06, 156.10, 87.03, 101.05, 99.07, 186.08, 163.06};
     private String[][] codons = new String[20][];
+
+    public List<Amino> getDatabase() {
+        return database;
+    }
 
     public DataBase() {
         fillCodons();
         for (int i = 0; i < 20; i++) {
             list.clear();
-            database.put(titles[i], makeList(codons[i]));
+            database.add(new Amino(titles[i], codons[i], masses[i]));
+
         }
     }
 
