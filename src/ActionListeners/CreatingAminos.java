@@ -46,9 +46,12 @@ public class CreatingAminos implements ActionListener {
             button.setName(Character.toString(aminos[i]));
             button.addActionListener(new CreatingCodons());
             button.setBounds(x, y, 50, 20);
+            button.addKeyListener(new CreatingCompareMode());
 
             Start.gui.getPanelBottom().add(button);
         }
+        JButton but = (JButton)e.getSource();
+        but.setFocusable(false);
         Start.gui.showGui();
         Start.gui.getContentPane().setFocusable(true);
 

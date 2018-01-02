@@ -100,30 +100,30 @@ public class CreatingCodons implements ActionListener {
             if (Start.panel1 != null && Start.panel2 != null) {
 
                 if (Start.panel1.getName().compareTo(Start.panel2.getName()) != 0) {
-                    int count = 0;
+                    int count1 = 0;
+
                     for (int i = 0; i < Start.panel1.getComponents().length; i++) {
                         boolean flag = false;
+
                         Component comp1 = Start.panel1.getComponents()[i];
                         for (int j = 0; j < Start.panel2.getComponents().length; j++) {
                             Component comp2 = Start.panel2.getComponents()[j];
                             if (isOneCodonChange(comp1.getName(), comp2.getName())) {
                                 flag = true;
                                 if (comp2.getForeground() != Color.BLACK) {
-                                    comp1.setForeground(colors[count]);
-                                    comp2.setBackground(colors[count]);
+                                    comp1.setForeground(comp2.getForeground());
                                 } else {
                                     if (comp1.getForeground() != Color.BLACK) {
                                         comp2.setForeground(comp1.getForeground());
                                     } else {
-
-                                        comp1.setForeground(colors[count]);
-                                        comp2.setForeground(colors[count]);
+                                        comp1.setForeground(colors[count1]);
+                                        comp2.setForeground(colors[count1]);
                                     }
                                 }
                             }
                         }
                         if (flag) {
-                            count++;
+                            count1++;
                         }
 
                     }
@@ -150,6 +150,8 @@ public class CreatingCodons implements ActionListener {
             }
             pop.add(panel);
             pop.show(Start.gui.getPanelBottom(), x + tmp.getWidth() / 4, y + tmp.getHeight());
+            tmp.setFocusable(false);
+            pop.setFocusable(false);
             Start.gui.getContentPane().setFocusable(true);
         }
 

@@ -15,6 +15,7 @@ public class GUI extends JFrame {
     private JPanel panelTop = new JPanel();
     private JPanel panelMiddle = new JPanel();
     private static JPanel panelBottom = new JPanel();
+    private CreatingCompareMode ccm = new CreatingCompareMode();
 
     public GUI(String title) {
         super(title);
@@ -26,7 +27,7 @@ public class GUI extends JFrame {
         this.getContentPane().add(panelTop);
         this.getContentPane().add(panelMiddle);
         this.getContentPane().setFocusable(true);
-        this.getContentPane().addKeyListener(new CreatingCompareMode());
+        this.getContentPane().addKeyListener(ccm);
     }
 
     public JTextField getTf() {
@@ -39,8 +40,9 @@ public class GUI extends JFrame {
 
     public void showGui() {
         this.setVisible(false);
-        panelBottom.addKeyListener(new CreatingCompareMode());
+        panelBottom.addKeyListener(ccm);
         this.getContentPane().add(panelBottom);
+        this.getContentPane().setFocusable(true);
         this.setVisible(true);
     }
 
@@ -48,14 +50,19 @@ public class GUI extends JFrame {
     private void addingCompsRight() {
         panelTop.setBackground(Color.BLACK);
         panelMiddle.setBackground(Color.BLACK);
+
+        panelMiddle.addKeyListener(ccm);
+        panelTop.addKeyListener(ccm);
         panelTop.setLayout(new FlowLayout());
         panelTop.setPreferredSize(new Dimension(900, 100));
+        tf.addKeyListener(ccm);
         panelTop.add(tf);
         panelMiddle.setLayout(new FlowLayout());
         panelMiddle.setPreferredSize(new Dimension(900, 100));
         panelBottom.setBackground(Color.LIGHT_GRAY);
         panelBottom.setLayout(null);
         panelBottom.setPreferredSize(new Dimension(900, 500));
+        but.addKeyListener(ccm);
         but.setPreferredSize(new Dimension(100, 20));
         but.addActionListener(new CreatingAminos());
         panelMiddle.add(but);
