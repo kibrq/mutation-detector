@@ -30,7 +30,7 @@ public class CreatingCodons implements ActionListener {
         int x = tmp.getX();
         int y = tmp.getY();
 
-        DataBase db = Start.db;
+        DataBase db = Start.getDb();
         int k = -1;
         for (int i = 0; i < db.getDatabase().size(); i++) {
             if (key.compareTo(db.getDatabase().get(i).getTitle()) == 0) {
@@ -40,7 +40,7 @@ public class CreatingCodons implements ActionListener {
         if (k == -1) {
             return;
         }
-        if (Start.isCompareMode) {
+        if (Start.isCompareMode()) {
             JPanel panel = new JPanel(new FlowLayout(1, 1, 5));
             panel.setName(key);
             panel.setBackground(Color.LIGHT_GRAY);
@@ -53,13 +53,13 @@ public class CreatingCodons implements ActionListener {
 
             if (Start.panel1 == null) {
                 Start.panel1 = panel;
-                Start.gui.getPanelBottom().add(Start.panel1, 2);
-                Start.previousList = 2;
+                Start.getGui().getPanelBottom().add(Start.panel1, 2);
+                Start.setPreviousList(2);
             } else if (Start.panel2 == null) {
                 if (Start.panel1.getName().compareTo(panel.getName()) != 0) {
                     Start.panel2 = panel;
-                    Start.previousList = 1;
-                    Start.gui.getPanelBottom().add(Start.panel2, 2);
+                    Start.setPreviousList(1);
+                    Start.getGui().getPanelBottom().add(Start.panel2, 2);
                 } else {
                     Start.panel1.setVisible(false);
                     Start.panel1 = null;
@@ -73,16 +73,16 @@ public class CreatingCodons implements ActionListener {
                 Start.panel2.removeAll();
                 Start.panel2 = null;
             } else {
-                if (Start.previousList == 1) {
+                if (Start.getPreviousList() == 1) {
                     Start.panel1.setVisible(false);
                     Start.panel1 = panel;
-                    Start.gui.getPanelBottom().add(Start.panel1, 2);
-                    Start.previousList = 2;
+                    Start.getGui().getPanelBottom().add(Start.panel1, 2);
+                    Start.setPreviousList(2);
                 } else {
                     Start.panel2.setVisible(false);
                     Start.panel2 = panel;
-                    Start.gui.getPanelBottom().add(Start.panel2, 2);
-                    Start.previousList = 1;
+                    Start.getGui().getPanelBottom().add(Start.panel2, 2);
+                    Start.setPreviousList( 1);
                 }
             }
 
@@ -130,8 +130,8 @@ public class CreatingCodons implements ActionListener {
                 }
 
             }
-            Start.gui.showGui();
-            Start.gui.getContentPane().setFocusable(true);
+            Start.getGui().showGui();
+            Start.getGui().getContentPane().setFocusable(true);
 
         } else {
             if (Start.panel1 != null) {
@@ -149,10 +149,10 @@ public class CreatingCodons implements ActionListener {
                 panel.add(label);
             }
             pop.add(panel);
-            pop.show(Start.gui.getPanelBottom(), x + tmp.getWidth() / 4, y + tmp.getHeight());
+            pop.show(Start.getGui().getPanelBottom(), x + tmp.getWidth() / 4, y + tmp.getHeight());
             tmp.setFocusable(false);
             pop.setFocusable(false);
-            Start.gui.getContentPane().setFocusable(true);
+            Start.getGui().getContentPane().setFocusable(true);
         }
 
 

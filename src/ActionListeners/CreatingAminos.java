@@ -12,13 +12,13 @@ public class CreatingAminos implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        String input = Start.gui.getTf().getText();
+        String input = Start.getGui().getTf().getText().toUpperCase();
         if (input.compareTo("") == 0) {
             return;
         }
-        Start.gui.getPanelBottom().removeAll();
+        Start.getGui().getPanelBottom().removeAll();
         char[] aminos = input.toCharArray();
-        DataBase db = Start.db;
+        DataBase db = Start.getDb();
 
         int x = 900;
         int y = -30;
@@ -48,12 +48,12 @@ public class CreatingAminos implements ActionListener {
             button.setBounds(x, y, 50, 20);
             button.addKeyListener(new CreatingCompareMode());
 
-            Start.gui.getPanelBottom().add(button);
+            Start.getGui().getPanelBottom().add(button);
         }
         JButton but = (JButton)e.getSource();
         but.setFocusable(false);
-        Start.gui.showGui();
-        Start.gui.getContentPane().setFocusable(true);
+        Start.getGui().showGui();
+        Start.getGui().getContentPane().setFocusable(true);
 
     }
 }
