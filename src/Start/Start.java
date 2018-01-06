@@ -51,8 +51,7 @@ public class Start {
     }
 
     public static void main(String[] args) {
-        gui = new GUI("main");
-        gui.showGui();
+        gui = new GUI("Main");
         gui.addKeyListener(new CreatingCompareMode());
     }
 }

@@ -43,7 +43,7 @@ public class CreatingCodons implements ActionListener {
         if (Start.isCompareMode()) {
             JPanel panel = new JPanel(new FlowLayout(1, 1, 5));
             panel.setName(key);
-            panel.setBackground(Color.LIGHT_GRAY);
+            panel.setBackground(Start.getGui().getPanelBottom().getBackground());
             for (String s : db.getDatabase().get(k).getCodons()) {
                 JLabel lb = new JLabel(s);
                 lb.setName(s);
@@ -130,7 +130,8 @@ public class CreatingCodons implements ActionListener {
                 }
 
             }
-            Start.getGui().showGui();
+            Start.getGui().getPanelBottom().repaint();
+            Start.getGui().getPanelBottom().revalidate();
             Start.getGui().getContentPane().setFocusable(true);
 
         } else {
