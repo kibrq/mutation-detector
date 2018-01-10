@@ -47,6 +47,8 @@ public class CreatingAminos implements ActionListener {
             Start.getGui().getPanelBottom().add(button);
         }
         Start.getGui().getPanelBottom().repaint();
+        Start.panel1 = null;
+        Start.panel2 = null;
 
     }
 }
