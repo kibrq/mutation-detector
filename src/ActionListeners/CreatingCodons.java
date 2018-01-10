@@ -9,6 +9,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class CreatingCodons implements ActionListener {
+    private Color mixedColor(Color a, Color b){
+        return new Color((a.getRed()+b.getRed())%256, (a.getGreen()+b.getGreen())%256, (a.getBlue()+b.getBlue())%256);
+    }
     private boolean isOneCodonChange(String o1, String o2) {
         boolean flag1 = o1.substring(0, 2).compareTo(o2.substring(0, 2)) == 0;
         boolean flag2 = o1.substring(1, 3).compareTo(o2.substring(1, 3)) == 0;
@@ -21,7 +24,7 @@ public class CreatingCodons implements ActionListener {
 
     }
 
-    private Color[] colors = {Color.RED, Color.GREEN, Color.YELLOW, Color.BLUE, Color.CYAN, Color.MAGENTA};
+    private Color[] colors = {Color.RED, Color.GREEN, Color.BLUE, Color.WHITE};
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -111,10 +114,11 @@ public class CreatingCodons implements ActionListener {
                             if (isOneCodonChange(comp1.getName(), comp2.getName())) {
                                 flag = true;
                                 if (comp2.getForeground() != Color.BLACK) {
-                                    comp1.setForeground(comp2.getForeground());
+                                   comp1.setForeground(comp2.getBackground());
                                 } else {
                                     if (comp1.getForeground() != Color.BLACK) {
-                                        comp2.setForeground(comp1.getForeground());
+                                        comp2.setForeground(colors[count1]);
+                                        comp1.setForeground(mixedColor(comp1.getForeground(), colors[count1]));
                                     } else {
                                         comp1.setForeground(colors[count1]);
                                         comp2.setForeground(colors[count1]);

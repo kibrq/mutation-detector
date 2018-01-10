@@ -1,6 +1,7 @@
 package Start;
 
-import ActionListeners.CreatingCompareMode;
+
+import ActionListeners.CreatingModes;
 import Database.DataBase;
 import GUI.GUI;
 
@@ -15,9 +16,27 @@ public class Start {
     public static JPanel panel1 = null;
     public static JPanel panel2 = null;
     private static boolean isShiftPressed = false;
+    private static boolean isMassDiff = false;
+    private static boolean Submitted = false;
+
+    public static boolean isSubmitted() {
+        return Submitted;
+    }
+
+    public static void setSubmitted(boolean submitted) {
+        Submitted = submitted;
+    }
 
     public static boolean isCompareMode() {
         return isCompareMode;
+    }
+
+    public static boolean isMassDiff() {
+        return isMassDiff;
+    }
+
+    public static void setIsMassDiff(boolean isMassDiff) {
+        Start.isMassDiff = isMassDiff;
     }
 
     public static void setIsCompareMode(boolean isCompareMode) {
@@ -52,6 +71,6 @@ public class Start {
 
     public static void main(String[] args) {
         gui = new GUI("Main");
-        gui.addKeyListener(new CreatingCompareMode());
+        gui.addKeyListener(new CreatingModes());
     }
 }

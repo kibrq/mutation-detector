@@ -5,50 +5,61 @@ import Start.Start;
 
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class CreatingAminos implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
-
-        String input = Start.getGui().getTf().getText().toUpperCase();
-        if (input.compareTo("") == 0) {
-            return;
-        }
-        Start.getGui().getPanelBottom().removeAll();
-        char[] aminos = input.toCharArray();
-
-        int x = Integer.MAX_VALUE;
-        int y = -30;
-        int len = aminos.length;
-        int wid = Start.getGui().getWidth();
-        int inOneString = wid / 60;
-        for (int i = 0; i < aminos.length; i++) {
-            if (i == 0 || i % inOneString == 0) {
-                y += 30;
-                if (i != 0) {
-                    len -= inOneString;
-
-                }
-                int count = (len) <= inOneString ? len : inOneString;
-                int left = wid - (count * 50 + 10 * (count - 1));
-                x = left / 2;
-            } else {
-                x = x + 60;
+        JButton but =(JButton)e.getSource();
+        if(!Start.isSubmitted()) {
+            String input = Start.getGui().getTf().getText().toUpperCase();
+            if (input.compareTo("") == 0) {
+                Start.getGui().getAminoPanel().repaint();
+                Start.getGui().getScrollPane().revalidate();
+                return;
             }
 
-            JButton button = new JButton(Character.toString(aminos[i]));
-            button.setName(Character.toString(aminos[i]));
-            button.addActionListener(new CreatingCodons());
-            button.setBounds(x, y, 50, 20);
-            button.addKeyListener(new CreatingCompareMode());
+            Start.getGui().getAminoPanel().removeAll();
+            char[] aminos = input.toCharArray();
 
-            Start.getGui().getPanelBottom().add(button);
+
+            for (int i = 0; i < aminos.length; i++) {
+                JButton button = new JButton(Character.toString(aminos[i]));
+                button.setName(Character.toString(aminos[i]));
+                button.addActionListener(new CreatingCodons());
+                button.addKeyListener(new CreatingModes());
+                button.setPreferredSize(new Dimension(50, 20));
+                Start.getGui().getAminoPanel().add(button);
+            }
+            Start.getGui().getAminoPanel().repaint();
+            Start.getGui().getScrollPane().revalidate();
+            Start.panel1 = null;
+            Start.panel2 = null;
+
+            Start.setSubmitted(true);
+            but.setText("Change");
+            Start.getGui().getPanelTop().removeAll();
+            for (int i = 0; i < input.length(); i++) {
+                JLabel label = new JLabel();
+                label.setForeground(Color.WHITE);
+                label.setText(Character.toString(input.charAt(i)));
+                Start.getGui().getPanelTop().add(label);
+            }
+            JLabel label = new JLabel("    "+Start.getGui().getInputDM().getText());
+            label.setForeground(Color.WHITE);
+            Start.getGui().getPanelTop().add(label);
+
+            Start.getGui().getPanelTop().repaint();
+        }else{
+
+            Start.getGui().settingPanelTop();
+            Start.setSubmitted(false);
+            but.setText("Submit");
+            Start.getGui().getPanelTop().repaint();
+
         }
-        Start.getGui().getPanelBottom().repaint();
-        Start.panel1 = null;
-        Start.panel2 = null;
 
     }
 }

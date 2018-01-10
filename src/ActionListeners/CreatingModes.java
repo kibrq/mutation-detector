@@ -6,7 +6,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Stack;
 
-public class CreatingCompareMode implements KeyListener {
+public class CreatingModes implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {
@@ -16,6 +16,7 @@ public class CreatingCompareMode implements KeyListener {
             case KeyEvent.VK_F1:
                 if (Start.isShiftPressed()) {
                     Start.setIsCompareMode(!Start.isCompareMode());
+                    Start.setIsMassDiff(false);
                     if (Start.isCompareMode()) {
                         Start.getGui().setTitle("Main(compare mode)");
                     } else {
@@ -23,6 +24,18 @@ public class CreatingCompareMode implements KeyListener {
                     }
 
                 }
+                break;
+            case KeyEvent.VK_F2:
+                if(Start.isShiftPressed()){
+                    Start.setIsMassDiff(!Start.isMassDiff());
+                    Start.setIsCompareMode(false);
+                    if(Start.isMassDiff()){
+                        Start.getGui().setTitle("Main(mass difference mode)");
+                    }else{
+                        Start.getGui().setTitle("Main");
+                    }
+                }
+
         }
     }
 
