@@ -58,6 +58,16 @@ public class CreatingAminos implements ActionListener {
             Start.setSubmitted(false);
             but.setText("Submit");
             Start.getGui().getPanelTop().repaint();
+            if (Start.panel1 != null) {
+                Start.panel1.setVisible(false);
+                Start.panel1 = null;
+            }
+            if (Start.panel2 != null) {
+                Start.panel2.setVisible(false);
+                Start.panel2 = null;
+            }
+            Start.getGui().getPanelLines().removeAll();
+            Start.getGui().getPanelUnderBottom().repaint();
 
         }
 

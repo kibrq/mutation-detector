@@ -22,11 +22,15 @@ public class GUI extends JFrame {
     private JPanel panelMiddle = new JPanel();
     private JPanel panelBottom = new JPanel();
 
+    private JPanel firstAmino = new JPanel();
+    private JPanel panelLines = new JPanel();
+    private JPanel secondAmino = new JPanel();
+
     public GUI(String title) {
         super(title);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.getContentPane().setLayout(new FlowLayout(1, 1, 1));
-
+        inputSeq.addKeyListener(new CreatingModes());
         addingCompsRight();
         settingPanelTop();
         this.getContentPane().add(panelTop);
@@ -35,6 +39,7 @@ public class GUI extends JFrame {
         this.getContentPane().add(panelUnderBottom);
 
         this.setSize(900, 700);
+        this.addKeyListener(new CreatingModes());
         this.setLocationRelativeTo(null);
         this.setVisible(true);
 
@@ -69,7 +74,6 @@ public class GUI extends JFrame {
         panelTop.setBackground(Color.BLACK);
         panelTop.setLayout(new FlowLayout());
         panelTop.setPreferredSize(new Dimension(900, 100));
-        inputSeq.addKeyListener(new CreatingModes());
         JLabel label = new JLabel("Input sequence:");
         label.setForeground(Color.white);
         panelTop.add(label);
@@ -88,7 +92,9 @@ public class GUI extends JFrame {
         panelMiddle.setPreferredSize(new Dimension(900, 100));
         but.setPreferredSize(new Dimension(100, 20));
         but.addActionListener(new CreatingAminos());
+        but.addKeyListener(new CreatingModes());
         panelMiddle.add(but);
+
 
         panelBottom.setBackground(Color.LIGHT_GRAY);
         panelBottom.setLayout(new FlowLayout());
@@ -101,5 +107,35 @@ public class GUI extends JFrame {
 
         panelUnderBottom.setBackground(Color.LIGHT_GRAY);
         panelUnderBottom.setPreferredSize(new Dimension(900, 430));
+        panelUnderBottom.setLayout(new FlowLayout(1, 0, 1));
+        firstAmino.setPreferredSize(new Dimension(30, 430));
+        firstAmino.setBackground(panelBottom.getBackground());
+        panelLines.setPreferredSize(new Dimension(100, 430));
+        panelLines.setBackground(panelBottom.getBackground());
+        secondAmino.setPreferredSize(new Dimension(30, 430));
+        secondAmino.setBackground(panelBottom.getBackground());
+        panelLines.setLayout(new BorderLayout());
+
+        panelUnderBottom.add(firstAmino);
+        panelUnderBottom.add(panelLines);
+        panelUnderBottom.add(secondAmino);
+
+
+    }
+
+    public JPanel getFirstAmino() {
+        return firstAmino;
+    }
+
+    public JPanel getPanelLines() {
+        return panelLines;
+    }
+
+    public JPanel getSecondAmino() {
+        return secondAmino;
+    }
+
+    public JPanel getPanelUnderBottom() {
+        return panelUnderBottom;
     }
 }
