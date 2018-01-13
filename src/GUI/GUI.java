@@ -8,6 +8,8 @@ import ActionListeners.Scrolling;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 
 public class GUI extends JFrame {
@@ -26,11 +28,33 @@ public class GUI extends JFrame {
     private JPanel panelLines = new JPanel();
     private JPanel secondAmino = new JPanel();
 
+    private JPanel navigationPanel = new JPanel();
+
     public GUI(String title) {
         super(title);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.getContentPane().setLayout(new FlowLayout(1, 1, 1));
         inputSeq.addKeyListener(new CreatingModes());
+        inputSeq.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if(e.getKeyCode()==KeyEvent.VK_ENTER){
+                    inputSeq.setFocusable(false);
+                    inputDM.setFocusable(true);
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+
+            }
+        });
+        inputDM.addKeyListener(new CreatingModes());
         addingCompsRight();
         settingPanelTop();
         this.getContentPane().add(panelTop);
@@ -108,19 +132,28 @@ public class GUI extends JFrame {
         panelUnderBottom.setBackground(Color.LIGHT_GRAY);
         panelUnderBottom.setPreferredSize(new Dimension(900, 430));
         panelUnderBottom.setLayout(new FlowLayout(1, 0, 1));
-        firstAmino.setPreferredSize(new Dimension(30, 430));
+        firstAmino.setPreferredSize(new Dimension(30, 330));
         firstAmino.setBackground(panelBottom.getBackground());
-        panelLines.setPreferredSize(new Dimension(100, 430));
+        panelLines.setPreferredSize(new Dimension(100, 330));
         panelLines.setBackground(panelBottom.getBackground());
-        secondAmino.setPreferredSize(new Dimension(30, 430));
+        secondAmino.setPreferredSize(new Dimension(35, 330));
         secondAmino.setBackground(panelBottom.getBackground());
         panelLines.setLayout(new BorderLayout());
+        navigationPanel.setLayout(new FlowLayout(1, 50, 0));
+        navigationPanel.setBackground(panelBottom.getBackground());
+        navigationPanel.setPreferredSize(new Dimension(900, 100));
+
 
         panelUnderBottom.add(firstAmino);
         panelUnderBottom.add(panelLines);
         panelUnderBottom.add(secondAmino);
+        panelUnderBottom.add(navigationPanel);
 
 
+    }
+
+    public JPanel getNavigationPanel() {
+        return navigationPanel;
     }
 
     public JPanel getFirstAmino() {

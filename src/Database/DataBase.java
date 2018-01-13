@@ -14,7 +14,7 @@ public class DataBase {
             131.04049, 114.04293, 97.05276, 128.05858, 156.10111, 87.03203, 101.04768, 99.06841, 186.07931, 163.06333};
     private String[][] codons = new String[20][];
 
-    public List<Amino> getDatabase() {
+    public ArrayList<Amino> getDatabase() {
         return database;
     }
 

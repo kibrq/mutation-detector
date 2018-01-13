@@ -25,4 +25,9 @@ public class Amino {
     public double getMass() {
         return mass;
     }
+
+    @Override
+    public String toString() {
+        return title;
+    }
 }

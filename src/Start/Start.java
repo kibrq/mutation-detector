@@ -9,6 +9,7 @@ import GUI.GUI;
 import javax.swing.*;
 
 public class Start {
+    private static int currentCandidate = 0;
     private static GUI gui = null;
     private static boolean isCompareMode = false;
     private static DataBase db = new DataBase();
@@ -18,6 +19,22 @@ public class Start {
     private static boolean isShiftPressed = false;
     private static boolean isMassDiff = false;
     private static boolean Submitted = false;
+
+    public static int getCurrentCandidate() {
+        return currentCandidate;
+    }
+
+    public static void minusCur() {
+        currentCandidate--;
+    }
+
+    public static void plusCur() {
+        currentCandidate++;
+    }
+
+    public static void setCurrentCandidate(int currentCandidate) {
+        Start.currentCandidate = currentCandidate;
+    }
 
     public static boolean isSubmitted() {
         return Submitted;

@@ -35,4 +35,9 @@ public class Line {
     public void setB(MyPoint b) {
         this.b = b;
     }
+
+    @Override
+    public String toString() {
+        return a.toString()+" "+b.toString()+" "+color.toString();
+    }
 }

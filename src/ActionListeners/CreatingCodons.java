@@ -1,7 +1,7 @@
 package ActionListeners;
 
-import Database.DataBase;
 import GUI.GUI;
+import Model.Amino;
 import Model.Line;
 import Model.MyPoint;
 import Start.Start;
@@ -13,11 +13,13 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class CreatingCodons implements ActionListener {
+    private GUI gui = Start.getGui();
 
-    private double round(double a) {
-        a *= 10000;
+    private double round(double a, int radix) {
+        a *= Math.pow(10, radix);
         a = Math.round(a);
-        return a /= 10000;
+        a/=Math.pow(10, radix);
+        return a;
     }
 
     private boolean isOneCodonChange(String o1, String o2) {
@@ -29,18 +31,184 @@ public class CreatingCodons implements ActionListener {
 
     }
 
-    private Color[] colors = {Color.RED, Color.GREEN, Color.BLUE, Color.WHITE, Color.CYAN, Color.MAGENTA};
+    private ArrayList<Integer> y_s1 = new ArrayList<>();
+    private ArrayList<Integer> y_s2 = new ArrayList<>();
+    private ArrayList<Line> lines = new ArrayList<>();
+    private int k = -1;
+    private ArrayList<Amino> db = Start.getDb().getDatabase();
+
+    private void massDiff() {
+        Start.setCurrentCandidate(0);
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 100, 5));
+        panel.setPreferredSize(new Dimension(150, 430));
+        JLabel lb1 = new JLabel(db.get(k).getTitle());
+        panel.add(lb1);
+        panel.setName(db.get(k).getTitle());
+        panel.setBackground(gui.getPanelBottom().getBackground());
+        int l = 26;
+        for (String s : db.get(k).getCodons()) {
+            y_s1.add(l);
+            JLabel lb = new JLabel(s);
+            lb.setName(s);
+            panel.add(lb);
+            l += 21;
+        }
+        y_s1.add(l);
+        Start.panel1 = panel;
+        gui.getFirstAmino().add(Start.panel1);
+        gui.getFirstAmino().revalidate();
+
+        ArrayList<Amino> candidates = new ArrayList<>();
+        double dm = gui.getInputDM().getText().compareTo("") == 0 ? 0 : Double.parseDouble(Start.getGui().getInputDM().getText());
+        for (Amino aDb : db) {
+            if (round(Math.abs(aDb.getMass() - db.get(k).getMass()), 1) == dm) {
+                candidates.add(aDb);
+            }
+        }
+        System.out.println(candidates.toString());
+        if (candidates.isEmpty()) {
+            JLabel emp = new JLabel("Empty");
+            Start.panel2 = null;
+            gui.getSecondAmino().add(emp);
+            gui.getSecondAmino().revalidate();
+        } else {
+
+            if (candidates.size() > 1) {
+                JButton prev = new JButton("Prev");
+                JButton next = new JButton("Next");
+
+                prev.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (Start.getCurrentCandidate() - 1 <= -1) {
+                            Start.setCurrentCandidate(candidates.size() - 1);
+                        } else {
+                            Start.minusCur();
+                        }
+                        fillingInY2s(candidates);
+                    }
+                });
+                next.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (Start.getCurrentCandidate() + 1 >= candidates.size()) {
+                            Start.setCurrentCandidate(0);
+                        } else {
+                            Start.plusCur();
+                        }
+                        fillingInY2s(candidates);
+                    }
+                });
+                gui.getNavigationPanel().add(prev);
+                gui.getNavigationPanel().add(next);
+            }
+            gui.getNavigationPanel().repaint();
+            fillingInY2s(candidates);
+        }
+
+
+    }
+
+    private void fillingInY2s(ArrayList<Amino> candidates) {
+        y_s2.clear();
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 100, 5));
+        panel.setPreferredSize(new Dimension(150, 430));
+        JLabel lb1 = new JLabel(candidates.get(Start.getCurrentCandidate()).getTitle());
+        panel.add(lb1);
+        panel.setName(candidates.get(Start.getCurrentCandidate()).getTitle());
+        panel.setBackground(gui.getPanelBottom().getBackground());
+        int l = 26;
+        for (String s : candidates.get(Start.getCurrentCandidate()).getCodons()) {
+            y_s2.add(l);
+            JLabel lb = new JLabel(s);
+            lb.setName(s);
+            panel.add(lb);
+            l += 21;
+        }
+        y_s2.add(l);
+        Start.panel2 = panel;
+        gui.getSecondAmino().removeAll();
+        gui.getSecondAmino().revalidate();
+        gui.getSecondAmino().add(Start.panel2);
+        gui.getSecondAmino().repaint();
+        gui.getPanelLines().removeAll();
+
+        gui.getPanelLines().revalidate();
+        fillInLines();
+
+    }
+
+    private void fillInLines() {
+
+        lines.clear();
+
+        int count1 = 0;
+
+        for (int i = 1; i < Start.panel1.getComponents().length; i++) {
+            boolean flag = false;
+
+            Component comp1 = Start.panel1.getComponents()[i];
+            for (int j = 1; j < Start.panel2.getComponents().length; j++) {
+                Component comp2 = Start.panel2.getComponents()[j];
+                if (isOneCodonChange(comp1.getName(), comp2.getName())) {
+                    flag = true;
+                    int y1;
+                    int y2;
+                    if (Start.isMassDiff()) {
+                        y1 = y_s1.get(i - 1);
+                        y2 = y_s2.get(j - 1);
+                    } else {
+                        y1 = comp1.getY() == 0 ? y_s1.get(i - 1) : comp1.getY();
+                        y2 = comp2.getY() == 0 ? y_s1.get(j - 1) : comp2.getY();
+                    }
+                    MyPoint a = new MyPoint(0, y1);
+                    MyPoint b = new MyPoint(100, y2);
+                    lines.add(new Line(a, b, colors[count1]));
+                }
+            }
+            if (flag) {
+                count1++;
+            }
+        }
+        class DrawPanel extends JPanel {
+            public void paint(Graphics g) {
+                g.setColor(Color.BLACK);
+                for (Line tmp : lines) {
+                    g.setColor(tmp.getColor());
+                    g.drawLine(tmp.getA().getX(), tmp.getA().getY() + 13, tmp.getB().getX(), tmp.getB().getY() + 13);
+                }
+            }
+        }
+        gui.getPanelLines().add(new DrawPanel(), BorderLayout.CENTER);
+        gui.getPanelLines().repaint();
+        gui.getPanelLines().revalidate();
+        gui.getFirstAmino().repaint();
+        gui.getSecondAmino().repaint();
+        gui.getPanelUnderBottom().repaint();
+
+//        double firMass = 0;
+//        double secMass = 0;
+//        for (int i = 0; i < db.size(); i++) {
+//            if (db.get(i).getTitle().compareTo(Start.panel1.getName()) == 0) {
+//                firMass = db.get(i).getMass();
+//            }
+//            if (db.get(i).getTitle().compareTo(Start.panel2.getName()) == 0) {
+//                secMass = db.get(i).getMass();
+//            }
+//        }
+//        double dm = round(Math.abs(firMass - secMass), 5);
+    }
+
+
+    private Color[] colors = {Color.RED, Color.BLACK, Color.BLUE, Color.WHITE, Color.CYAN, Color.MAGENTA};
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        GUI gui = Start.getGui();
         JButton tmp = (JButton) e.getSource();
         String key = tmp.getName();
 
-        DataBase db = Start.getDb();
-        int k = -1;
-        for (int i = 0; i < db.getDatabase().size(); i++) {
-            if (key.compareTo(db.getDatabase().get(i).getTitle()) == 0) {
+        for (int i = 0; i < db.size(); i++) {
+            if (key.compareTo(db.get(i).getTitle()) == 0) {
                 k = i;
             }
         }
@@ -48,40 +216,38 @@ public class CreatingCodons implements ActionListener {
             return;
         }
         if (Start.isCompareMode()) {
-            JPanel panel = new JPanel(new FlowLayout(1, 100, 5));
+            JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 100, 5));
             panel.setPreferredSize(new Dimension(150, 430));
             JLabel lb1 = new JLabel(key);
             panel.add(lb1);
             panel.setName(key);
             panel.setBackground(gui.getPanelBottom().getBackground());
-            ArrayList<Integer> y_s = new ArrayList<>();
+
             int l = 26;
-            for (String s : db.getDatabase().get(k).getCodons()) {
-                y_s.add(l);
+            for (String s : db.get(k).getCodons()) {
+                y_s1.add(l);
                 JLabel lb = new JLabel(s);
                 lb.setName(s);
                 panel.add(lb);
                 l += 21;
             }
-            y_s.add(l);
+            y_s1.add(l);
 
             if (Start.panel1 == null) {
                 if (Start.panel2 != null && Start.panel2.getName().compareTo(panel.getName()) == 0) {
                     Start.panel2.setVisible(false);
                     Start.panel2 = null;
-                }
-                Start.panel1 = panel;
-                gui.getFirstAmino().add(Start.panel1);
-                Start.setPreviousList(2);
-                gui.getFirstAmino().revalidate();
+                } else {
+                    Start.panel1 = panel;
+                    gui.getFirstAmino().add(Start.panel1);
+                    Start.setPreviousList(2);
 
+                }
             } else if (Start.panel2 == null) {
                 if (Start.panel1.getName().compareTo(panel.getName()) != 0) {
                     Start.panel2 = panel;
                     Start.setPreviousList(1);
                     gui.getSecondAmino().add(Start.panel2);
-                    gui.getSecondAmino().revalidate();
-
                 } else {
                     Start.panel1.setVisible(false);
                     Start.panel1 = null;
@@ -98,76 +264,35 @@ public class CreatingCodons implements ActionListener {
                     Start.panel1 = panel;
                     gui.getFirstAmino().add(Start.panel1);
                     Start.setPreviousList(2);
-                    gui.getFirstAmino().revalidate();
+
                 } else {
                     Start.panel2.setVisible(false);
                     Start.panel2 = panel;
                     gui.getSecondAmino().add(Start.panel2);
                     Start.setPreviousList(1);
-                    gui.getSecondAmino().revalidate();
                 }
             }
 
+            gui.getFirstAmino().revalidate();
+            gui.getSecondAmino().revalidate();
             gui.getPanelLines().removeAll();
-            ArrayList<Line> al = new ArrayList<>();
             if (Start.panel1 != null && Start.panel2 != null) {
-
-                if (Start.panel1.getName().compareTo(Start.panel2.getName()) != 0) {
-                    int count1 = 0;
-
-                    for (int i = 1; i < Start.panel1.getComponents().length; i++) {
-                        boolean flag = false;
-
-                        Component comp1 = Start.panel1.getComponents()[i];
-                        for (int j = 1; j < Start.panel2.getComponents().length; j++) {
-                            Component comp2 = Start.panel2.getComponents()[j];
-                            if (isOneCodonChange(comp1.getName(), comp2.getName())) {
-                                flag = true;
-                                int y1 = comp1.getY() == 0 ? y_s.get(i - 1) : comp1.getY();
-                                int y2 = comp2.getY() == 0 ? y_s.get(j - 1) : comp2.getY();
-                                MyPoint a = new MyPoint(0, y1);
-                                MyPoint b = new MyPoint(100, y2);
-                                al.add(new Line(a, b, colors[count1]));
-                            }
-                        }
-                        if (flag) {
-                            count1++;
-                        }
-
-                    }
-                }
-
-
-                double firMass = 0;
-                double secMass = 0;
-                for (int i = 0; i < db.getDatabase().size(); i++) {
-                    if (db.getDatabase().get(i).getTitle().compareTo(Start.panel1.getName()) == 0) {
-                        firMass = db.getDatabase().get(i).getMass();
-                    }
-                    if (db.getDatabase().get(i).getTitle().compareTo(Start.panel2.getName()) == 0) {
-                        secMass = db.getDatabase().get(i).getMass();
-                    }
-                }
-                double dm = round(Math.abs(firMass - secMass));
-
-                class DrawPanel extends JPanel {
-                    public void paint(Graphics g) {
-                        g.setColor(Color.BLACK);
-                        g.setFont(Font.getFont(Font.SERIF));
-                        g.drawString("dm : " + Double.toString(dm)+"g", 20, 20);
-                        for (Line tmp : al) {
-                            g.setColor(tmp.getColor());
-                            g.drawLine(tmp.getA().getX(), tmp.getA().getY() + 13, tmp.getB().getX(), tmp.getB().getY() + 13);
-                        }
-                    }
-                }
-                gui.getPanelLines().add(new DrawPanel(), BorderLayout.CENTER);
-                gui.getPanelLines().repaint();
-                gui.getPanelLines().revalidate();
+                fillInLines();
             }
             gui.getFirstAmino().repaint();
             gui.getSecondAmino().repaint();
             gui.getPanelUnderBottom().repaint();
+        } else if (Start.isMassDiff()) {
+            gui.getFirstAmino().removeAll();
+            gui.getFirstAmino().repaint();
+            gui.getSecondAmino().removeAll();
+            gui.getSecondAmino().repaint();
+            gui.getPanelLines().removeAll();
+            gui.getPanelLines().repaint();
+            gui.getNavigationPanel().removeAll();
+            gui.getNavigationPanel().repaint();
+
+            massDiff();
         } else {
             if (Start.panel1 != null) {
                 Start.panel1.setVisible(false);
@@ -178,9 +303,9 @@ public class CreatingCodons implements ActionListener {
                 Start.panel2 = null;
             }
             JPopupMenu pop = new JPopupMenu();
-            JPanel panel = new JPanel(new GridLayout(db.getDatabase().get(k).getCodons().length, 1, 0, 10));
-            for (int i = 0; i < db.getDatabase().get(k).getCodons().length; i++) {
-                JLabel label = new JLabel(db.getDatabase().get(k).getCodons()[i]);
+            JPanel panel = new JPanel(new GridLayout(db.get(k).getCodons().length, 1, 0, 10));
+            for (int i = 0; i < db.get(k).getCodons().length; i++) {
+                JLabel label = new JLabel(db.get(k).getCodons()[i]);
                 panel.add(label);
             }
             pop.add(panel);
@@ -192,4 +317,3 @@ public class CreatingCodons implements ActionListener {
 
     }
 }
-

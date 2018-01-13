@@ -1,6 +1,6 @@
 package ActionListeners;
 
-import Database.DataBase;
+import GUI.GUI;
 import Start.Start;
 
 
@@ -12,16 +12,17 @@ import java.awt.event.ActionListener;
 public class CreatingAminos implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
-        JButton but =(JButton)e.getSource();
-        if(!Start.isSubmitted()) {
-            String input = Start.getGui().getTf().getText().toUpperCase();
+        JButton but = (JButton) e.getSource();
+        GUI gui = Start.getGui();
+        if (!Start.isSubmitted()) {
+            String input = gui.getTf().getText().toUpperCase();
             if (input.compareTo("") == 0) {
-                Start.getGui().getAminoPanel().repaint();
-                Start.getGui().getScrollPane().revalidate();
+                gui.getAminoPanel().repaint();
+                gui.getScrollPane().revalidate();
                 return;
             }
 
-            Start.getGui().getAminoPanel().removeAll();
+            gui.getAminoPanel().removeAll();
             char[] aminos = input.toCharArray();
 
 
@@ -31,33 +32,34 @@ public class CreatingAminos implements ActionListener {
                 button.addActionListener(new CreatingCodons());
                 button.addKeyListener(new CreatingModes());
                 button.setPreferredSize(new Dimension(50, 20));
-                Start.getGui().getAminoPanel().add(button);
+                gui.getAminoPanel().add(button);
             }
-            Start.getGui().getAminoPanel().repaint();
-            Start.getGui().getScrollPane().revalidate();
+            gui.getAminoPanel().repaint();
+            gui.getScrollPane().revalidate();
             Start.panel1 = null;
             Start.panel2 = null;
 
             Start.setSubmitted(true);
             but.setText("Change");
-            Start.getGui().getPanelTop().removeAll();
+            gui.getPanelTop().removeAll();
             for (int i = 0; i < input.length(); i++) {
                 JLabel label = new JLabel();
                 label.setForeground(Color.WHITE);
                 label.setText(Character.toString(input.charAt(i)));
-                Start.getGui().getPanelTop().add(label);
+                gui.getPanelTop().add(label);
             }
-            JLabel label = new JLabel("    "+Start.getGui().getInputDM().getText());
+            double a = gui.getInputDM().getText().compareTo("")==0?0:Double.parseDouble(Start.getGui().getInputDM().getText());
+            JLabel label = new JLabel("    " +a+"g");
             label.setForeground(Color.WHITE);
-            Start.getGui().getPanelTop().add(label);
+            gui.getPanelTop().add(label);
 
-            Start.getGui().getPanelTop().repaint();
-        }else{
+            gui.getPanelTop().repaint();
+        } else {
 
-            Start.getGui().settingPanelTop();
+            gui.settingPanelTop();
             Start.setSubmitted(false);
             but.setText("Submit");
-            Start.getGui().getPanelTop().repaint();
+            gui.getPanelTop().repaint();
             if (Start.panel1 != null) {
                 Start.panel1.setVisible(false);
                 Start.panel1 = null;
@@ -66,8 +68,14 @@ public class CreatingAminos implements ActionListener {
                 Start.panel2.setVisible(false);
                 Start.panel2 = null;
             }
-            Start.getGui().getPanelLines().removeAll();
-            Start.getGui().getPanelUnderBottom().repaint();
+            gui.getFirstAmino().removeAll();
+            gui.getSecondAmino().removeAll();
+            gui.getPanelLines().removeAll();
+            gui.getPanelUnderBottom().repaint();
+            gui.getNavigationPanel().removeAll();
+            gui.getNavigationPanel().repaint();
+            gui.getTf().setFocusable(true);
+
 
         }
 

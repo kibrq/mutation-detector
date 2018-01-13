@@ -4,7 +4,7 @@ import Start.*;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.Stack;
+
 
 public class CreatingModes implements KeyListener {
     @Override
@@ -26,18 +26,20 @@ public class CreatingModes implements KeyListener {
                 }
                 break;
             case KeyEvent.VK_F2:
-                if(Start.isShiftPressed()){
+                if (Start.isShiftPressed()) {
+
                     Start.setIsMassDiff(!Start.isMassDiff());
                     Start.setIsCompareMode(false);
-                    if(Start.isMassDiff()){
+                    if (Start.isMassDiff()) {
                         Start.getGui().setTitle("Main(mass difference mode)");
-                    }else{
+                    } else {
                         Start.getGui().setTitle("Main");
                     }
                 }
-
         }
+
     }
+
 
     @Override
     public void keyReleased(KeyEvent e) {

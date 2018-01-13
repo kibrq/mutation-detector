@@ -23,4 +23,9 @@ public class MyPoint {
     public void setY(int y) {
         this.y = y;
     }
+
+    @Override
+    public String toString() {
+        return x+" "+y;
+    }
 }
