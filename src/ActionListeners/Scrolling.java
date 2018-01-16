@@ -11,7 +11,7 @@ public class Scrolling implements AdjustmentListener {
     public void adjustmentValueChanged(AdjustmentEvent e) {
         if (Start.isSubmitted()) {
             for (int i = 0; i < Start.getGui().getPanelTop().getComponentCount(); i++) {
-                if(i>=e.getValue()/60&&i<e.getValue()/60+4){
+                if(i>=e.getValue()/60&&i<e.getValue()/60+Start.countInScrollPanel){
                     Start.getGui().getPanelTop().getComponents()[i].setForeground(Color.RED);
                 }else {
                     Start.getGui().getPanelTop().getComponents()[i].setForeground(Color.WHITE);

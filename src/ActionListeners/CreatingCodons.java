@@ -61,7 +61,7 @@ public class CreatingCodons implements ActionListener {
         ArrayList<Amino> candidates = new ArrayList<>();
         double dm = gui.getInputDM().getText().compareTo("") == 0 ? 0 : Double.parseDouble(Start.getGui().getInputDM().getText());
         for (Amino aDb : db) {
-            if (round(Math.abs(aDb.getMass() - db.get(k).getMass()), 1) == dm) {
+            if (round(Math.abs(aDb.getMass() - db.get(k).getMass()), 1) == round(dm, 1)) {
                 candidates.add(aDb);
             }
         }
@@ -162,7 +162,7 @@ public class CreatingCodons implements ActionListener {
                         y2 = comp2.getY() == 0 ? y_s1.get(j - 1) : comp2.getY();
                     }
                     MyPoint a = new MyPoint(0, y1);
-                    MyPoint b = new MyPoint(100, y2);
+                    MyPoint b = new MyPoint(gui.getPanelLines().getWidth(), y2);
                     lines.add(new Line(a, b, colors[count1]));
                 }
             }
@@ -170,15 +170,36 @@ public class CreatingCodons implements ActionListener {
                 count1++;
             }
         }
+        double dm = 0;
+        if(Start.isCompareMode()) {
+            double firMass = 0;
+            double secMass = 0;
+            for (int i = 0; i < db.size(); i++) {
+                if (db.get(i).getTitle().compareTo(Start.panel1.getName()) == 0) {
+                    firMass = db.get(i).getMass();
+                }
+                if (db.get(i).getTitle().compareTo(Start.panel2.getName()) == 0) {
+                    secMass = db.get(i).getMass();
+                }
+            }
+            dm = round(Math.abs(firMass - secMass), 5);
+        }
+        double dm1 = dm;
         class DrawPanel extends JPanel {
             public void paint(Graphics g) {
                 g.setColor(Color.BLACK);
+                if(Start.isCompareMode()){
+                    g.setFont(Font.getFont(Font.SANS_SERIF));
+                    String diff="dm:"+Double.toString(dm1)+"d";
+                    g.drawString(diff, 0,0);
+                }
                 for (Line tmp : lines) {
                     g.setColor(tmp.getColor());
                     g.drawLine(tmp.getA().getX(), tmp.getA().getY() + 13, tmp.getB().getX(), tmp.getB().getY() + 13);
                 }
             }
         }
+
         gui.getPanelLines().add(new DrawPanel(), BorderLayout.CENTER);
         gui.getPanelLines().repaint();
         gui.getPanelLines().revalidate();
@@ -186,17 +207,6 @@ public class CreatingCodons implements ActionListener {
         gui.getSecondAmino().repaint();
         gui.getPanelUnderBottom().repaint();
 
-//        double firMass = 0;
-//        double secMass = 0;
-//        for (int i = 0; i < db.size(); i++) {
-//            if (db.get(i).getTitle().compareTo(Start.panel1.getName()) == 0) {
-//                firMass = db.get(i).getMass();
-//            }
-//            if (db.get(i).getTitle().compareTo(Start.panel2.getName()) == 0) {
-//                secMass = db.get(i).getMass();
-//            }
-//        }
-//        double dm = round(Math.abs(firMass - secMass), 5);
     }
 
 
@@ -217,12 +227,11 @@ public class CreatingCodons implements ActionListener {
         }
         if (Start.isCompareMode()) {
             JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 100, 5));
-            panel.setPreferredSize(new Dimension(150, 430));
+            panel.setPreferredSize(new Dimension(30, 430));
             JLabel lb1 = new JLabel(key);
             panel.add(lb1);
             panel.setName(key);
             panel.setBackground(gui.getPanelBottom().getBackground());
-
             int l = 26;
             for (String s : db.get(k).getCodons()) {
                 y_s1.add(l);
@@ -310,7 +319,7 @@ public class CreatingCodons implements ActionListener {
             }
             pop.add(panel);
             pop.addKeyListener(new CreatingModes());
-            pop.show(gui.getPanelUnderBottom(), 430, 0);
+            pop.show(gui.getPanelUnderBottom(), gui.getWidth()/2-20, 0);
 
         }
 

@@ -3,8 +3,9 @@ package GUI;
 
 import ActionListeners.CreatingAminos;
 import ActionListeners.CreatingModes;
+import ActionListeners.FillingForm;
 import ActionListeners.Scrolling;
-
+import Start.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,15 +14,18 @@ import java.awt.event.KeyListener;
 
 
 public class GUI extends JFrame {
-    private JButton but = new JButton("Submit");
+    private JPanel panelTop = new JPanel();
     private JTextField inputSeq = new JTextField(50);
     private JTextField inputDM = new JTextField(8);
-    private JPanel aminoPanel = new JPanel();
-    private JScrollPane scrollPane = new JScrollPane(aminoPanel);
-    private JPanel panelUnderBottom = new JPanel();
-    private static JPanel panelTop = new JPanel();
+    private JTextField inputPPM = new JTextField(5);
+
+    private JButton but = new JButton("Submit");
 
     private JPanel panelMiddle = new JPanel();
+    private JPanel aminoPanel = new JPanel();
+    private JScrollPane scrollPane = new JScrollPane(aminoPanel);
+
+    private JPanel panelUnderBottom = new JPanel();
     private JPanel panelBottom = new JPanel();
 
     private JPanel firstAmino = new JPanel();
@@ -30,43 +34,41 @@ public class GUI extends JFrame {
 
     private JPanel navigationPanel = new JPanel();
 
+
     public GUI(String title) {
         super(title);
+        this.setSize(1000, 700);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.getContentPane().setLayout(new FlowLayout(1, 1, 1));
+        inputSeq.setName("1");
+        inputDM.setName("2");
+        inputPPM.setName("3");
+        inputSeq.addKeyListener(new FillingForm());
+        inputDM.addKeyListener(new FillingForm());
+        inputPPM.addKeyListener(new FillingForm());
         inputSeq.addKeyListener(new CreatingModes());
-        inputSeq.addKeyListener(new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode()==KeyEvent.VK_ENTER){
-                    inputSeq.setFocusable(false);
-                    inputDM.setFocusable(true);
-                }
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-
-            }
-        });
         inputDM.addKeyListener(new CreatingModes());
+        inputPPM.addKeyListener(new CreatingModes());
+
         addingCompsRight();
         settingPanelTop();
+
         this.getContentPane().add(panelTop);
         this.getContentPane().add(panelMiddle);
         this.getContentPane().add(panelBottom);
         this.getContentPane().add(panelUnderBottom);
 
-        this.setSize(900, 700);
-        this.addKeyListener(new CreatingModes());
         this.setLocationRelativeTo(null);
         this.setVisible(true);
 
+    }
+
+    public JButton getBut() {
+        return but;
+    }
+
+    public JTextField getInputPPM() {
+        return inputPPM;
     }
 
     public JPanel getPanelTop() {
@@ -96,16 +98,20 @@ public class GUI extends JFrame {
     public void settingPanelTop() {
         panelTop.removeAll();
         panelTop.setBackground(Color.BLACK);
-        panelTop.setLayout(new FlowLayout());
-        panelTop.setPreferredSize(new Dimension(900, 100));
-        JLabel label = new JLabel("Input sequence:");
+        panelTop.setLayout(new FlowLayout(FlowLayout.CENTER, 1 ,0));
+        panelTop.setPreferredSize(new Dimension(this.getWidth(), 100));
+        JLabel label = new JLabel("Sequence:  ");
         label.setForeground(Color.white);
         panelTop.add(label);
         panelTop.add(inputSeq);
-        JLabel label1 = new JLabel("Input dM:");
+        JLabel label1 = new JLabel("  dM:  ");
         label1.setForeground(Color.white);
         panelTop.add(label1);
         panelTop.add(inputDM);
+        JLabel  label2 = new JLabel("  ppm:  ");
+        label2.setForeground(Color.WHITE);
+        panelTop.add(label2);
+        panelTop.add(inputPPM);
     }
 
     private void addingCompsRight() {
@@ -113,7 +119,7 @@ public class GUI extends JFrame {
 
         panelMiddle.setBackground(Color.BLACK);
         panelMiddle.setLayout(new FlowLayout());
-        panelMiddle.setPreferredSize(new Dimension(900, 100));
+        panelMiddle.setPreferredSize(new Dimension(this.getWidth(),100));
         but.setPreferredSize(new Dimension(100, 20));
         but.addActionListener(new CreatingAminos());
         but.addKeyListener(new CreatingModes());
@@ -122,26 +128,26 @@ public class GUI extends JFrame {
 
         panelBottom.setBackground(Color.LIGHT_GRAY);
         panelBottom.setLayout(new FlowLayout());
-        panelBottom.setPreferredSize(new Dimension(900, 70));
-        scrollPane.setPreferredSize(new Dimension(250, 50));
+        panelBottom.setPreferredSize(new Dimension(this.getWidth(), 70));
+        scrollPane.setPreferredSize(new Dimension(60*Start.countInScrollPanel + 10, 50));
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         scrollPane.getHorizontalScrollBar().addAdjustmentListener(new Scrolling());
         aminoPanel.setLayout(new FlowLayout(1, 10, 0));
         panelBottom.add(scrollPane);
 
         panelUnderBottom.setBackground(Color.LIGHT_GRAY);
-        panelUnderBottom.setPreferredSize(new Dimension(900, 430));
+        panelUnderBottom.setPreferredSize(new Dimension(this.getWidth(), this.getHeight()-panelTop.getHeight()-panelMiddle.getHeight()-panelBottom.getHeight()));
         panelUnderBottom.setLayout(new FlowLayout(1, 0, 1));
         firstAmino.setPreferredSize(new Dimension(30, 330));
         firstAmino.setBackground(panelBottom.getBackground());
-        panelLines.setPreferredSize(new Dimension(100, 330));
+        panelLines.setPreferredSize(new Dimension(200, 330));
         panelLines.setBackground(panelBottom.getBackground());
         secondAmino.setPreferredSize(new Dimension(35, 330));
         secondAmino.setBackground(panelBottom.getBackground());
         panelLines.setLayout(new BorderLayout());
         navigationPanel.setLayout(new FlowLayout(1, 50, 0));
         navigationPanel.setBackground(panelBottom.getBackground());
-        navigationPanel.setPreferredSize(new Dimension(900, 100));
+        navigationPanel.setPreferredSize(new Dimension(this.getWidth(), this.getHeight()/7));
 
 
         panelUnderBottom.add(firstAmino);

@@ -45,13 +45,20 @@ public class CreatingAminos implements ActionListener {
             for (int i = 0; i < input.length(); i++) {
                 JLabel label = new JLabel();
                 label.setForeground(Color.WHITE);
+                label.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 20));
                 label.setText(Character.toString(input.charAt(i)));
                 gui.getPanelTop().add(label);
             }
             double a = gui.getInputDM().getText().compareTo("")==0?0:Double.parseDouble(Start.getGui().getInputDM().getText());
-            JLabel label = new JLabel("    " +a+"g");
+            JLabel label = new JLabel("    " +a+"d");
+            label.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 20));
             label.setForeground(Color.WHITE);
             gui.getPanelTop().add(label);
+             a = gui.getInputPPM().getText().compareTo("")==0?0:Double.parseDouble(Start.getGui().getInputDM().getText());
+            JLabel label1 = new JLabel("    " +a+"ppm");
+            label1.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 20));
+            label1.setForeground(Color.WHITE);
+            gui.getPanelTop().add(label1);
 
             gui.getPanelTop().repaint();
         } else {

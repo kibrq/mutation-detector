@@ -19,6 +19,7 @@ public class Start {
     private static boolean isShiftPressed = false;
     private static boolean isMassDiff = false;
     private static boolean Submitted = false;
+    final public static int countInScrollPanel = 10;
 
     public static int getCurrentCandidate() {
         return currentCandidate;
