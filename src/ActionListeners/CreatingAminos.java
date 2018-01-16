@@ -54,13 +54,14 @@ public class CreatingAminos implements ActionListener {
             label.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 20));
             label.setForeground(Color.WHITE);
             gui.getPanelTop().add(label);
-             a = gui.getInputPPM().getText().compareTo("")==0?0:Double.parseDouble(Start.getGui().getInputDM().getText());
+             a = gui.getInputPPM().getText().compareTo("")==0?0:Double.parseDouble(Start.getGui().getInputPPM().getText());
             JLabel label1 = new JLabel("    " +a+"ppm");
             label1.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 20));
             label1.setForeground(Color.WHITE);
             gui.getPanelTop().add(label1);
 
             gui.getPanelTop().repaint();
+            ;
         } else {
 
             gui.settingPanelTop();

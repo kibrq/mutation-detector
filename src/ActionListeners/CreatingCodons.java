@@ -65,7 +65,6 @@ public class CreatingCodons implements ActionListener {
                 candidates.add(aDb);
             }
         }
-        System.out.println(candidates.toString());
         if (candidates.isEmpty()) {
             JLabel emp = new JLabel("Empty");
             Start.panel2 = null;
@@ -185,17 +184,18 @@ public class CreatingCodons implements ActionListener {
             dm = round(Math.abs(firMass - secMass), 5);
         }
         double dm1 = dm;
+
         class DrawPanel extends JPanel {
             public void paint(Graphics g) {
-                g.setColor(Color.BLACK);
-                if(Start.isCompareMode()){
-                    g.setFont(Font.getFont(Font.SANS_SERIF));
-                    String diff="dm:"+Double.toString(dm1)+"d";
-                    g.drawString(diff, 0,0);
-                }
                 for (Line tmp : lines) {
                     g.setColor(tmp.getColor());
                     g.drawLine(tmp.getA().getX(), tmp.getA().getY() + 13, tmp.getB().getX(), tmp.getB().getY() + 13);
+                }
+                if(Start.isCompareMode()){
+                    g.setColor(Color.BLACK);
+                    g.setFont(new Font(Font.DIALOG, Font.ROMAN_BASELINE, 15));
+                    String diff="dm: "+Double.toString(dm1)+"d";
+                    g.drawString(diff, 65,20);
                 }
             }
         }
