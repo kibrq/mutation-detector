@@ -14,7 +14,13 @@ import java.util.ArrayList;
 
 public class CreatingCodons implements ActionListener {
     private GUI gui = Start.getGui();
-
+    private double ppm = gui.getInputPPM().getText().compareTo("")==0?0:Double.parseDouble(Start.getGui().getInputPPM().getText());
+    private boolean isMassDifference(Amino a1, Amino a2, double dm, double ppm){
+        double trulyDm = round(Math.abs(a1.getMass() - a2.getMass()),5);
+        double mist = ppm/Math.pow(10, 6);
+        
+        return trulyDm>=(dm-mist)&&trulyDm<=(dm+mist);
+    }
     private double round(double a, int radix) {
         a *= Math.pow(10, radix);
         a = Math.round(a);
@@ -61,7 +67,7 @@ public class CreatingCodons implements ActionListener {
         ArrayList<Amino> candidates = new ArrayList<>();
         double dm = gui.getInputDM().getText().compareTo("") == 0 ? 0 : Double.parseDouble(Start.getGui().getInputDM().getText());
         for (Amino aDb : db) {
-            if (round(Math.abs(aDb.getMass() - db.get(k).getMass()), 1) == round(dm, 1)) {
+            if (isMassDifference(aDb, db.get(k), dm, ppm)) {
                 candidates.add(aDb);
             }
         }

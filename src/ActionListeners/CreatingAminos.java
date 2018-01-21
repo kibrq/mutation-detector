@@ -61,7 +61,7 @@ public class CreatingAminos implements ActionListener {
             gui.getPanelTop().add(label1);
 
             gui.getPanelTop().repaint();
-            ;
+
         } else {
 
             gui.settingPanelTop();
