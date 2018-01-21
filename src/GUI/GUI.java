@@ -38,7 +38,7 @@ public class GUI extends JFrame {
         super(title);
         this.setSize(1000, 700);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.getContentPane().setLayout(new FlowLayout(1, 1, 1));
+        this.getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER, 1, 1));
         inputSeq.setName("1");
         inputDM.setName("2");
         inputPPM.setName("3");
@@ -131,12 +131,12 @@ public class GUI extends JFrame {
         scrollPane.setPreferredSize(new Dimension(60*Start.countInScrollPanel + 10, 50));
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         scrollPane.getHorizontalScrollBar().addAdjustmentListener(new Scrolling());
-        aminoPanel.setLayout(new FlowLayout(1, 10, 0));
+        aminoPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0));
         panelBottom.add(scrollPane);
 
         panelUnderBottom.setBackground(Color.LIGHT_GRAY);
         panelUnderBottom.setPreferredSize(new Dimension(this.getWidth(), this.getHeight()-panelTop.getHeight()-panelMiddle.getHeight()-panelBottom.getHeight()));
-        panelUnderBottom.setLayout(new FlowLayout(1, 0, 1));
+        panelUnderBottom.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 1));
         firstAmino.setPreferredSize(new Dimension(30, 330));
         firstAmino.setBackground(panelBottom.getBackground());
         panelLines.setPreferredSize(new Dimension(200, 330));
@@ -144,7 +144,7 @@ public class GUI extends JFrame {
         secondAmino.setPreferredSize(new Dimension(35, 330));
         secondAmino.setBackground(panelBottom.getBackground());
         panelLines.setLayout(new BorderLayout());
-        navigationPanel.setLayout(new FlowLayout(1, 50, 0));
+        navigationPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 0));
         navigationPanel.setBackground(panelBottom.getBackground());
         navigationPanel.setPreferredSize(new Dimension(this.getWidth(), this.getHeight()/7));
 

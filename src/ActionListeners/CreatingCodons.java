@@ -7,24 +7,28 @@ import Model.MyPoint;
 import Start.Start;
 
 import javax.swing.*;
+import javax.xml.stream.events.StartDocument;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 
 public class CreatingCodons implements ActionListener {
     private GUI gui = Start.getGui();
-    private double ppm = gui.getInputPPM().getText().compareTo("")==0?0:Double.parseDouble(Start.getGui().getInputPPM().getText());
-    private boolean isMassDifference(Amino a1, Amino a2, double dm, double ppm){
-        double trulyDm = round(Math.abs(a1.getMass() - a2.getMass()),5);
-        double mist = ppm/Math.pow(10, 6);
-        
-        return trulyDm>=(dm-mist)&&trulyDm<=(dm+mist);
+    private double ppm = gui.getInputPPM().getText().compareTo("") == 0 ? 0 : Double.parseDouble(Start.getGui().getInputPPM().getText());
+
+    private boolean isMassDifference(Amino a1, Amino a2, double dm, double ppm) {
+        double trulyDm = round(Math.abs(a1.getMass() - a2.getMass()), 5);
+        double mist = ppm / Math.pow(10, 6);
+        return trulyDm >= (dm - mist) && trulyDm <= (dm + mist);
     }
+
     private double round(double a, int radix) {
         a *= Math.pow(10, radix);
         a = Math.round(a);
-        a/=Math.pow(10, radix);
+        a /= Math.pow(10, radix);
         return a;
     }
 
@@ -108,6 +112,7 @@ public class CreatingCodons implements ActionListener {
                 gui.getNavigationPanel().add(next);
             }
             gui.getNavigationPanel().repaint();
+            
             fillingInY2s(candidates);
         }
 
@@ -149,6 +154,7 @@ public class CreatingCodons implements ActionListener {
 
         int count1 = 0;
 
+
         for (int i = 1; i < Start.panel1.getComponents().length; i++) {
             boolean flag = false;
 
@@ -157,6 +163,7 @@ public class CreatingCodons implements ActionListener {
                 Component comp2 = Start.panel2.getComponents()[j];
                 if (isOneCodonChange(comp1.getName(), comp2.getName())) {
                     flag = true;
+
                     int y1;
                     int y2;
                     if (Start.isMassDiff()) {
@@ -176,19 +183,19 @@ public class CreatingCodons implements ActionListener {
             }
         }
         double dm = 0;
-        if(Start.isCompareMode()) {
-            double firMass = 0;
-            double secMass = 0;
-            for (int i = 0; i < db.size(); i++) {
-                if (db.get(i).getTitle().compareTo(Start.panel1.getName()) == 0) {
-                    firMass = db.get(i).getMass();
-                }
-                if (db.get(i).getTitle().compareTo(Start.panel2.getName()) == 0) {
-                    secMass = db.get(i).getMass();
-                }
+
+        double firMass = 0;
+        double secMass = 0;
+        for (Amino aDb : db) {
+            if (aDb.getTitle().compareTo(Start.panel1.getName()) == 0) {
+                firMass = aDb.getMass();
             }
-            dm = round(Math.abs(firMass - secMass), 5);
+            if (aDb.getTitle().compareTo(Start.panel2.getName()) == 0) {
+                secMass = aDb.getMass();
+            }
         }
+        dm = round(Math.abs(firMass - secMass), 5);
+
         double dm1 = dm;
 
         class DrawPanel extends JPanel {
@@ -197,13 +204,13 @@ public class CreatingCodons implements ActionListener {
                     g.setColor(tmp.getColor());
                     g.drawLine(tmp.getA().getX(), tmp.getA().getY() + 13, tmp.getB().getX(), tmp.getB().getY() + 13);
                 }
-                if(Start.isCompareMode()){
-                    g.setColor(Color.BLACK);
-                    g.setFont(new Font(Font.DIALOG, Font.ROMAN_BASELINE, 15));
-                    String diff="dm: "+Double.toString(dm1)+"d";
-                    g.drawString(diff, 65,20);
-                }
+
+                g.setColor(Color.BLACK);
+                g.setFont(new Font(Font.DIALOG, Font.PLAIN, 15));
+                String diff = "dm: " + Double.toString(dm1) + "d";
+                g.drawString(diff, 65, 20);
             }
+
         }
 
         gui.getPanelLines().add(new DrawPanel(), BorderLayout.CENTER);
@@ -325,7 +332,7 @@ public class CreatingCodons implements ActionListener {
             }
             pop.add(panel);
             pop.addKeyListener(new CreatingModes());
-            pop.show(gui.getPanelUnderBottom(), gui.getWidth()/2-20, 0);
+            pop.show(gui.getPanelUnderBottom(), gui.getWidth() / 2 - 20, 0);
 
         }
 
