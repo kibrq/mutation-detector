@@ -157,6 +157,7 @@ public class GUI extends JFrame {
 
     }
 
+
     public JPanel getNavigationPanel() {
         return navigationPanel;
     }

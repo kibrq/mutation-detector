@@ -4,6 +4,7 @@ import Start.*;
 
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -23,7 +24,7 @@ public class FillingForm implements KeyListener {
                     break;
                 case "3":
                     Start.getGui().getInputPPM().setFocusable(false);
-                    Start.getGui().getBut().setEnabled(true);
+                    Start.getGui().getBut().doClick();
                     break;
             }
         }

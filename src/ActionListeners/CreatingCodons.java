@@ -112,7 +112,7 @@ public class CreatingCodons implements ActionListener {
                 gui.getNavigationPanel().add(next);
             }
             gui.getNavigationPanel().repaint();
-            
+
             fillingInY2s(candidates);
         }
 

@@ -20,6 +20,15 @@ public class Start {
     private static boolean isMassDiff = false;
     private static boolean Submitted = false;
     final public static int countInScrollPanel = 10;
+    private static int previousAdjusmentValue = 0;
+
+    public static int getPreviousAdjusmentValue() {
+        return previousAdjusmentValue;
+    }
+
+    public static void setPreviousAdjusmentValue(int previousAdjusmentValue) {
+        Start.previousAdjusmentValue = previousAdjusmentValue;
+    }
 
     public static int getCurrentCandidate() {
         return currentCandidate;
