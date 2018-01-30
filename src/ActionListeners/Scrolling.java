@@ -11,23 +11,21 @@ public class Scrolling implements AdjustmentListener {
     public void adjustmentValueChanged(AdjustmentEvent e) {
 
         if (Start.isSubmitted()) {
+            int wid = Start.buttonWidth;
             int value = e.getValue();
-            int start = value / 60;
+            int start = value / wid;
 
-            int end = (value >= start * 60 + 35 && value <= (start + 1) * 60) ? Start.countInScrollPanel + 1 : Start.countInScrollPanel;
+            int end = (value >= start * wid + (wid / 2) + 5 && value <= (start + 1) * wid) ? Start.countInScrollPanel + 1 : Start.countInScrollPanel;
             end += start;
             int i = start;
-            while (i < end && i < Start.getGui().getAminoPanel().getComponentCount()) {
-                Start.getGui().getPanelTop().getComponent(i).setForeground(Color.RED);
-                i++;
+            for (int j = 0; j < Start.getGui().getAminoPanel().getComponentCount(); j++) {
+                if (j >= i && j < end) {
+                    Start.getGui().getPanelTop().getComponent(j).setForeground(Color.RED);
+                } else {
+                    Start.getGui().getPanelTop().getComponent(j).setForeground(Color.WHITE);
+                }
             }
-            if (start > 0) {
-                Start.getGui().getPanelTop().getComponent(start - 1).setForeground(Color.WHITE);
-            }
-            if (end < Start.getGui().getAminoPanel().getComponentCount()) {
-                Start.getGui().getPanelTop().getComponent(end).setForeground(Color.WHITE);
-            }
-        }
 
+        }
     }
 }

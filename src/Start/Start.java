@@ -4,6 +4,7 @@ package Start;
 import ActionListeners.CreatingModes;
 import Database.DataBase;
 import GUI.GUI;
+import Model.Amino;
 
 
 import javax.swing.*;
@@ -18,17 +19,13 @@ public class Start {
     public static JPanel panel2 = null;
     private static boolean isShiftPressed = false;
     private static boolean isMassDiff = false;
+    public static boolean switchToRed = false;
     private static boolean Submitted = false;
     final public static int countInScrollPanel = 10;
-    private static int previousAdjusmentValue = 0;
+    public static double massesPrefix[];
+    final static public int buttonWidth = 60;
 
-    public static int getPreviousAdjusmentValue() {
-        return previousAdjusmentValue;
-    }
 
-    public static void setPreviousAdjusmentValue(int previousAdjusmentValue) {
-        Start.previousAdjusmentValue = previousAdjusmentValue;
-    }
 
     public static int getCurrentCandidate() {
         return currentCandidate;

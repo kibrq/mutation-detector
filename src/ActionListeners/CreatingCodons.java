@@ -19,9 +19,9 @@ public class CreatingCodons implements ActionListener {
     private GUI gui = Start.getGui();
     private double ppm = gui.getInputPPM().getText().compareTo("") == 0 ? 0 : Double.parseDouble(Start.getGui().getInputPPM().getText());
 
-    private boolean isMassDifference(Amino a1, Amino a2, double dm, double ppm) {
-        double trulyDm = round(Math.abs(a1.getMass() - a2.getMass()), 5);
-        double mist = ppm / Math.pow(10, 6);
+    private boolean isMassDifference(Amino a1, Amino a2, double dm) {
+        double trulyDm = round(a1.getMass() - a2.getMass(), 5);
+        double mist = ppm * Start.massesPrefix[k] / Math.pow(10, 6);
         return trulyDm >= (dm - mist) && trulyDm <= (dm + mist);
     }
 
@@ -70,9 +70,9 @@ public class CreatingCodons implements ActionListener {
 
         ArrayList<Amino> candidates = new ArrayList<>();
         double dm = gui.getInputDM().getText().compareTo("") == 0 ? 0 : Double.parseDouble(Start.getGui().getInputDM().getText());
-        for (Amino aDb : db) {
-            if (isMassDifference(aDb, db.get(k), dm, ppm)) {
-                candidates.add(aDb);
+        for (int i = 0; i < db.size(); i++) {
+            if (isMassDifference(db.get(k), db.get(i), dm)) {
+                candidates.add(db.get(i));
             }
         }
         if (candidates.isEmpty()) {
@@ -194,7 +194,7 @@ public class CreatingCodons implements ActionListener {
                 secMass = aDb.getMass();
             }
         }
-        dm = round(Math.abs(firMass - secMass), 5);
+        dm = round(firMass - secMass, 5);
 
         double dm1 = dm;
 
@@ -202,12 +202,13 @@ public class CreatingCodons implements ActionListener {
             public void paint(Graphics g) {
                 for (Line tmp : lines) {
                     g.setColor(tmp.getColor());
+
                     g.drawLine(tmp.getA().getX(), tmp.getA().getY() + 13, tmp.getB().getX(), tmp.getB().getY() + 13);
                 }
 
                 g.setColor(Color.BLACK);
                 g.setFont(new Font(Font.DIALOG, Font.PLAIN, 15));
-                String diff = "dm: " + Double.toString(dm1) + "d";
+                String diff = "dm: " + Double.toString(dm1) + "Da";
                 g.drawString(diff, 65, 20);
             }
 
@@ -224,11 +225,13 @@ public class CreatingCodons implements ActionListener {
 
 
     private Color[] colors = {Color.RED, Color.BLACK, Color.BLUE, Color.WHITE, Color.CYAN, Color.MAGENTA};
+    private double[] massesPrefix;
 
     @Override
     public void actionPerformed(ActionEvent e) {
         JButton tmp = (JButton) e.getSource();
         String key = tmp.getName();
+
 
         for (int i = 0; i < db.size(); i++) {
             if (key.compareTo(db.get(i).getTitle()) == 0) {

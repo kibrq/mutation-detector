@@ -3,7 +3,6 @@ package GUI;
 
 import ActionListeners.CreatingAminos;
 import ActionListeners.CreatingModes;
-import ActionListeners.FillingForm;
 import ActionListeners.Scrolling;
 import Start.*;
 
@@ -36,15 +35,10 @@ public class GUI extends JFrame {
 
     public GUI(String title) {
         super(title);
-        this.setSize(1000, 700);
+        this.setSize(Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER, 1, 1));
-        inputSeq.setName("1");
-        inputDM.setName("2");
-        inputPPM.setName("3");
-        inputSeq.addKeyListener(new FillingForm());
-        inputDM.addKeyListener(new FillingForm());
-        inputPPM.addKeyListener(new FillingForm());
+
         inputSeq.addKeyListener(new CreatingModes());
         inputDM.addKeyListener(new CreatingModes());
         inputPPM.addKeyListener(new CreatingModes());
