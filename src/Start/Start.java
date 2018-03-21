@@ -14,7 +14,7 @@ public class Start {
     private static GUI gui = null;
     private static boolean isCompareMode = false;
     private static DataBase db = new DataBase();
-    private static int previousList = 0;
+
     public static JPanel panel1 = null;
     public static JPanel panel2 = null;
     private static boolean isShiftPressed = false;
@@ -72,13 +72,8 @@ public class Start {
     }
 
 
-    public static int getPreviousList() {
-        return previousList;
-    }
 
-    public static void setPreviousList(int previousList) {
-        Start.previousList = previousList;
-    }
+
 
 
     public static boolean isShiftPressed() {

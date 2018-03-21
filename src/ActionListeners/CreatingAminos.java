@@ -11,7 +11,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Random;
+
 
 public class CreatingAminos implements ActionListener {
     @Override
@@ -37,7 +37,7 @@ public class CreatingAminos implements ActionListener {
                 }
 
                 JButton button = new JButton(Character.toString(aminos[i]));
-                button.setName(Character.toString(aminos[i]));
+                button.setName(Integer.toString(i));
                 button.addActionListener(new CreatingCodons());
                 button.addKeyListener(new CreatingModes());
                 button.setPreferredSize(new Dimension(50, 20));

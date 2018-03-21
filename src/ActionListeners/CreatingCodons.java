@@ -21,7 +21,7 @@ public class CreatingCodons implements ActionListener {
 
     private boolean isMassDifference(Amino a1, Amino a2, double dm) {
         double trulyDm = round(a1.getMass() - a2.getMass(), 5);
-        double mist = ppm * Start.massesPrefix[k] / Math.pow(10, 6);
+        double mist = ppm * Start.massesPrefix[numInArr] / Math.pow(10, 6);
         return trulyDm >= (dm - mist) && trulyDm <= (dm + mist);
     }
 
@@ -223,15 +223,15 @@ public class CreatingCodons implements ActionListener {
 
     }
 
-
+    static private int numInArr = 0;
     private Color[] colors = {Color.RED, Color.BLACK, Color.BLUE, Color.WHITE, Color.CYAN, Color.MAGENTA};
-    private double[] massesPrefix;
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
         JButton tmp = (JButton) e.getSource();
-        String key = tmp.getName();
-
+        String key = tmp.getText();
+        numInArr = Integer.parseInt(tmp.getName());
 
         for (int i = 0; i < db.size(); i++) {
             if (key.compareTo(db.get(i).getTitle()) == 0) {
@@ -258,43 +258,49 @@ public class CreatingCodons implements ActionListener {
             }
             y_s1.add(l);
 
-            if (Start.panel1 == null) {
-                if (Start.panel2 != null && Start.panel2.getName().compareTo(panel.getName()) == 0) {
-                    Start.panel2.setVisible(false);
-                    Start.panel2 = null;
-                } else {
-                    Start.panel1 = panel;
-                    gui.getFirstAmino().add(Start.panel1);
-                    Start.setPreviousList(2);
-
-                }
-            } else if (Start.panel2 == null) {
-                if (Start.panel1.getName().compareTo(panel.getName()) != 0) {
-                    Start.panel2 = panel;
-                    Start.setPreviousList(1);
-                    gui.getSecondAmino().add(Start.panel2);
-                } else {
+            if (Start.panel1 != null && Start.panel2 != null) {
+                if(Start.panel1.getName().compareTo(panel.getName())==0) {
                     Start.panel1.setVisible(false);
                     Start.panel1 = null;
-                }
-            } else if (Start.panel1.getName().compareTo(panel.getName()) == 0) {
-                Start.panel1.setVisible(false);
-                Start.panel1 = null;
-            } else if (Start.panel2.getName().compareTo(panel.getName()) == 0) {
-                Start.panel2.setVisible(false);
-                Start.panel2 = null;
-            } else {
-                if (Start.getPreviousList() == 1) {
-                    Start.panel1.setVisible(false);
-                    Start.panel1 = panel;
-                    gui.getFirstAmino().add(Start.panel1);
-                    Start.setPreviousList(2);
-
-                } else {
+                    Start.getGui().getFirstAmino().removeAll();
+                }else if(Start.panel2.getName().compareTo(panel.getName())==0){
                     Start.panel2.setVisible(false);
-                    Start.panel2 = panel;
-                    gui.getSecondAmino().add(Start.panel2);
-                    Start.setPreviousList(1);
+                    Start.panel2 = null;
+                    Start.getGui().getSecondAmino().removeAll();
+                }else{
+                    Start.panel1.setVisible(false);
+                    Start.panel1 = null;
+                    Start.getGui().getFirstAmino().removeAll();
+                    Start.panel2.setVisible(false);
+                    Start.panel2 = null;
+                    Start.getGui().getSecondAmino().removeAll();
+                    Start.panel1 = panel;
+                    Start.getGui().getFirstAmino().add(Start.panel1);
+                }
+            }else if(Start.panel1 ==null&&Start.panel2==null){
+                    Start.panel1 = panel;
+                    Start.getGui().getFirstAmino().add(Start.panel1);
+            }else{
+                if(Start.panel1==null){
+                    if(Start.panel2.getName().compareTo(panel.getName())==0) {
+                        Start.panel2.setVisible(false);
+                        Start.panel2 = null;
+                        Start.getGui().getSecondAmino().removeAll();
+                    }else{
+                        Start.panel1 = panel;
+                        Start.getGui().getFirstAmino().add(Start.panel1);
+
+                    }
+                }else{
+                    if(Start.panel1.getName().compareTo(panel.getName())==0) {
+                        Start.panel1.setVisible(false);
+                        Start.panel1 = null;
+                        Start.getGui().getFirstAmino().removeAll();
+                    }else{
+                        Start.panel2 = panel;
+                        Start.getGui().getSecondAmino().add(Start.panel2);
+
+                    }
                 }
             }
 
