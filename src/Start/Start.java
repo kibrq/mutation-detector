@@ -23,8 +23,11 @@ public class Start {
     private static boolean Submitted = false;
     final public static int countInScrollPanel = 10;
     public static double massesPrefix[];
+    public static Amino seq[];
+    public static int numPrefix = -1;
     final static public int buttonWidth = 60;
-
+    public static boolean isPrefixSelect = false;
+    public static boolean isSuffixSelect = false;
 
 
     public static int getCurrentCandidate() {

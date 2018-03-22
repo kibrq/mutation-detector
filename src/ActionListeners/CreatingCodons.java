@@ -19,9 +19,9 @@ public class CreatingCodons implements ActionListener {
     private GUI gui = Start.getGui();
     private double ppm = gui.getInputPPM().getText().compareTo("") == 0 ? 0 : Double.parseDouble(Start.getGui().getInputPPM().getText());
 
-    private boolean isMassDifference(Amino a1, Amino a2, double dm) {
+    private boolean isMassDifference(Amino a1, Amino a2) {
         double trulyDm = round(a1.getMass() - a2.getMass(), 5);
-        double mist = ppm * Start.massesPrefix[numInArr] / Math.pow(10, 6);
+        double mist = ppm * Start.massesPrefix[Start.numPrefix] / Math.pow(10, 6);
         return trulyDm >= (dm - mist) && trulyDm <= (dm + mist);
     }
 
@@ -46,8 +46,10 @@ public class CreatingCodons implements ActionListener {
     private ArrayList<Line> lines = new ArrayList<>();
     private int k = -1;
     private ArrayList<Amino> db = Start.getDb().getDatabase();
+    private double dm = gui.getInputDM().getText().compareTo("") == 0 ? 0 : Double.parseDouble(Start.getGui().getInputDM().getText());
 
     private void massDiff() {
+
         Start.setCurrentCandidate(0);
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 100, 5));
         panel.setPreferredSize(new Dimension(150, 430));
@@ -69,9 +71,8 @@ public class CreatingCodons implements ActionListener {
         gui.getFirstAmino().revalidate();
 
         ArrayList<Amino> candidates = new ArrayList<>();
-        double dm = gui.getInputDM().getText().compareTo("") == 0 ? 0 : Double.parseDouble(Start.getGui().getInputDM().getText());
         for (int i = 0; i < db.size(); i++) {
-            if (isMassDifference(db.get(k), db.get(i), dm)) {
+            if (isMassDifference(db.get(k), db.get(i))) {
                 candidates.add(db.get(i));
             }
         }
@@ -231,8 +232,10 @@ public class CreatingCodons implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         JButton tmp = (JButton) e.getSource();
         String key = tmp.getText();
-        numInArr = Integer.parseInt(tmp.getName());
-
+        if (Start.numPrefix != -1) {
+            numInArr = Integer.parseInt(tmp.getName());
+            Start.numPrefix = numInArr;
+        }
         for (int i = 0; i < db.size(); i++) {
             if (key.compareTo(db.get(i).getTitle()) == 0) {
                 k = i;
@@ -259,15 +262,15 @@ public class CreatingCodons implements ActionListener {
             y_s1.add(l);
 
             if (Start.panel1 != null && Start.panel2 != null) {
-                if(Start.panel1.getName().compareTo(panel.getName())==0) {
+                if (Start.panel1.getName().compareTo(panel.getName()) == 0) {
                     Start.panel1.setVisible(false);
                     Start.panel1 = null;
                     Start.getGui().getFirstAmino().removeAll();
-                }else if(Start.panel2.getName().compareTo(panel.getName())==0){
+                } else if (Start.panel2.getName().compareTo(panel.getName()) == 0) {
                     Start.panel2.setVisible(false);
                     Start.panel2 = null;
                     Start.getGui().getSecondAmino().removeAll();
-                }else{
+                } else {
                     Start.panel1.setVisible(false);
                     Start.panel1 = null;
                     Start.getGui().getFirstAmino().removeAll();
@@ -277,26 +280,26 @@ public class CreatingCodons implements ActionListener {
                     Start.panel1 = panel;
                     Start.getGui().getFirstAmino().add(Start.panel1);
                 }
-            }else if(Start.panel1 ==null&&Start.panel2==null){
-                    Start.panel1 = panel;
-                    Start.getGui().getFirstAmino().add(Start.panel1);
-            }else{
-                if(Start.panel1==null){
-                    if(Start.panel2.getName().compareTo(panel.getName())==0) {
+            } else if (Start.panel1 == null && Start.panel2 == null) {
+                Start.panel1 = panel;
+                Start.getGui().getFirstAmino().add(Start.panel1);
+            } else {
+                if (Start.panel1 == null) {
+                    if (Start.panel2.getName().compareTo(panel.getName()) == 0) {
                         Start.panel2.setVisible(false);
                         Start.panel2 = null;
                         Start.getGui().getSecondAmino().removeAll();
-                    }else{
+                    } else {
                         Start.panel1 = panel;
                         Start.getGui().getFirstAmino().add(Start.panel1);
 
                     }
-                }else{
-                    if(Start.panel1.getName().compareTo(panel.getName())==0) {
+                } else {
+                    if (Start.panel1.getName().compareTo(panel.getName()) == 0) {
                         Start.panel1.setVisible(false);
                         Start.panel1 = null;
                         Start.getGui().getFirstAmino().removeAll();
-                    }else{
+                    } else {
                         Start.panel2 = panel;
                         Start.getGui().getSecondAmino().add(Start.panel2);
 
@@ -314,6 +317,10 @@ public class CreatingCodons implements ActionListener {
             gui.getSecondAmino().repaint();
             gui.getPanelUnderBottom().repaint();
         } else if (Start.isMassDiff()) {
+            if (Start.isPrefixSelect || Start.isSuffixSelect) {
+                System.out.println("Hel");
+                PrefixSuffixSelect();
+            }
             gui.getFirstAmino().removeAll();
             gui.getFirstAmino().repaint();
             gui.getSecondAmino().removeAll();
@@ -346,5 +353,23 @@ public class CreatingCodons implements ActionListener {
         }
 
 
+    }
+
+    private void PrefixSuffixSelect() {
+        if (Start.isPrefixSelect) {
+            for (int i = 0; i <= numInArr; i++) {
+                Amino acid = Start.seq[i];
+                for (int j = 0; j < db.size(); j++) {
+                    if (isMassDifference(acid, db.get(j))) {
+                        gui.getPanelTop().getComponent(i).setForeground(Color.YELLOW);
+                        gui.getAminoPanel().getComponent(i).setForeground(Color.YELLOW);
+                    }
+                }
+            }
+            gui.getPanelTop().repaint();
+            gui.getPanelTop().revalidate();
+            gui.getAminoPanel().revalidate();
+            gui.getAminoPanel().repaint();
+        }
     }
 }

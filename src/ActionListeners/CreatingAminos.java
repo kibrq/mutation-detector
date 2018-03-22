@@ -28,10 +28,12 @@ public class CreatingAminos implements ActionListener {
             gui.getAminoPanel().removeAll();
             char[] aminos = input.toCharArray();
             Start.massesPrefix = new double[aminos.length];
+            Start.seq = new Amino[aminos.length];
             ArrayList<Amino> al = Start.getDb().getDatabase();
             for (int i = 0; i < aminos.length; i++) {
                 for (int j = 0; j < al.size(); j++) {
                     if (aminos[i] == al.get(j).getTitle().charAt(0)) {
+                        Start.seq[i] = al.get(j);
                         Start.massesPrefix[i] = i == 0 ? al.get(j).getMass() : Start.massesPrefix[i - 1] + al.get(j).getMass();
                     }
                 }
@@ -40,6 +42,7 @@ public class CreatingAminos implements ActionListener {
                 button.setName(Integer.toString(i));
                 button.addActionListener(new CreatingCodons());
                 button.addKeyListener(new CreatingModes());
+                button.addKeyListener(new PrefixSuffixSelect());
                 button.setPreferredSize(new Dimension(50, 20));
                 gui.getAminoPanel().add(button);
             }

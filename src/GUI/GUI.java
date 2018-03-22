@@ -3,6 +3,7 @@ package GUI;
 
 import ActionListeners.CreatingAminos;
 import ActionListeners.CreatingModes;
+import ActionListeners.PrefixSuffixSelect;
 import ActionListeners.Scrolling;
 import Start.*;
 
@@ -35,13 +36,17 @@ public class GUI extends JFrame {
 
     public GUI(String title) {
         super(title);
-        this.setSize(Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height);
+        this.setSize(Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height-200);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER, 1, 1));
 
         inputSeq.addKeyListener(new CreatingModes());
         inputDM.addKeyListener(new CreatingModes());
         inputPPM.addKeyListener(new CreatingModes());
+
+        inputSeq.addKeyListener(new PrefixSuffixSelect());
+        inputDM.addKeyListener(new PrefixSuffixSelect());
+        inputPPM.addKeyListener(new PrefixSuffixSelect());
 
         addingCompsRight();
         settingPanelTop();
@@ -116,6 +121,7 @@ public class GUI extends JFrame {
         but.setPreferredSize(new Dimension(100, 20));
         but.addActionListener(new CreatingAminos());
         but.addKeyListener(new CreatingModes());
+        but.addKeyListener(new PrefixSuffixSelect());
         panelMiddle.add(but);
 
 
