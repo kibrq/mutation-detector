@@ -11,9 +11,8 @@ public class Help {
     {
         GUI gui = Variables.getGui();
         int left = gui.getScrollPane().getHorizontalScrollBar().getValue();
-        System.out.println(left);
         for (int i = 0; i < gui.getPanelTop().getComponentCount() - 2; i++) {
-            if (gui.getPanelTop().getComponent(i).getForeground() == Color.YELLOW) {
+            if (gui.getPanelTop().getComponent(i).getForeground() == Variables.colorOfChoosen) {
                 gui.getAminoPanel().getComponent(i).setForeground(Color.BLACK);
                 if (i * (Variables.buttonWidth + 10) >= left && i * (Variables.buttonWidth + 10) <= left + (Variables.countInScrollPanel * (Variables.buttonWidth + 10))) {
                     gui.getPanelTop().getComponent(i).setForeground(Color.RED);

@@ -8,6 +8,7 @@ import Model.Amino;
 
 
 import javax.swing.*;
+import java.awt.*;
 
 public class Variables {
     private static int currentCandidate = 0;
@@ -16,6 +17,7 @@ public class Variables {
     private static DataBase db = new DataBase();
     public static int numSuffix = -1;
     public static double[] massesSuffix;
+    public static Color colorOfChoosen = Color.blue;
     public static JPanel panel1 = null;
     public static JPanel panel2 = null;
     private static boolean isShiftPressed = false;
