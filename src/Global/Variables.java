@@ -1,7 +1,7 @@
-package Start;
+package Global;
 
 
-import ActionListeners.CreatingModes;
+import Listeners.KeyListeners.CreatingModes;
 import Database.DataBase;
 import GUI.GUI;
 import Model.Amino;
@@ -9,17 +9,17 @@ import Model.Amino;
 
 import javax.swing.*;
 
-public class Start {
+public class Variables {
     private static int currentCandidate = 0;
     private static GUI gui = null;
     private static boolean isCompareMode = false;
     private static DataBase db = new DataBase();
-
+    public static int numSuffix = -1;
+    public static double[] massesSuffix;
     public static JPanel panel1 = null;
     public static JPanel panel2 = null;
     private static boolean isShiftPressed = false;
     private static boolean isMassDiff = false;
-    public static boolean switchToRed = false;
     private static boolean Submitted = false;
     final public static int countInScrollPanel = 10;
     public static double massesPrefix[];
@@ -43,7 +43,7 @@ public class Start {
     }
 
     public static void setCurrentCandidate(int currentCandidate) {
-        Start.currentCandidate = currentCandidate;
+        Variables.currentCandidate = currentCandidate;
     }
 
     public static boolean isSubmitted() {
@@ -63,11 +63,11 @@ public class Start {
     }
 
     public static void setIsMassDiff(boolean isMassDiff) {
-        Start.isMassDiff = isMassDiff;
+        Variables.isMassDiff = isMassDiff;
     }
 
     public static void setIsCompareMode(boolean isCompareMode) {
-        Start.isCompareMode = isCompareMode;
+        Variables.isCompareMode = isCompareMode;
     }
 
     public static DataBase getDb() {
@@ -84,15 +84,14 @@ public class Start {
     }
 
     public static void setIsShiftPressed(boolean isShiftPressed) {
-        Start.isShiftPressed = isShiftPressed;
+        Variables.isShiftPressed = isShiftPressed;
     }
 
     public static GUI getGui() {
         return gui;
     }
 
-    public static void main(String[] args) {
-        gui = new GUI("Main");
-        gui.addKeyListener(new CreatingModes());
+    public static void setGui(GUI gui1){
+        gui = gui1;
     }
 }

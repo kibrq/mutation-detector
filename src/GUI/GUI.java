@@ -1,11 +1,11 @@
 package GUI;
 
 
-import ActionListeners.CreatingAminos;
-import ActionListeners.CreatingModes;
-import ActionListeners.PrefixSuffixSelect;
-import ActionListeners.Scrolling;
-import Start.*;
+import Listeners.ActionListners.SubmitButton.CreatingAminos;
+import Listeners.KeyListeners.CreatingModes;
+import Listeners.KeyListeners.PrefixSuffixSelect;
+import Listeners.KeyListeners.Scrolling;
+import Global.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,7 +36,7 @@ public class GUI extends JFrame {
 
     public GUI(String title) {
         super(title);
-        this.setSize(Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height-200);
+        this.setSize(Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER, 1, 1));
 
@@ -128,7 +128,7 @@ public class GUI extends JFrame {
         panelBottom.setBackground(Color.LIGHT_GRAY);
         panelBottom.setLayout(new FlowLayout());
         panelBottom.setPreferredSize(new Dimension(this.getWidth(), 70));
-        scrollPane.setPreferredSize(new Dimension(60*Start.countInScrollPanel + 10, 50));
+        scrollPane.setPreferredSize(new Dimension(Variables.buttonWidth* Variables.countInScrollPanel + 10, 50));
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         scrollPane.getHorizontalScrollBar().addAdjustmentListener(new Scrolling());
         aminoPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0));
