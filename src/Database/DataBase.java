@@ -27,14 +27,7 @@ public class DataBase {
         }
     }
 
-    private ArrayList<String> makeList(String arr[]) {
-        ArrayList al = new ArrayList();
-        for (String e : arr
-                ) {
-            al.add(e);
-        }
-        return al;
-    }
+
 
     private void fillCodons() {
         codons[0] = new String[]{"GCA", "GCC", "GCG", "GCT"};

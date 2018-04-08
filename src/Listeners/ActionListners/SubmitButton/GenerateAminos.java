@@ -3,6 +3,7 @@ package Listeners.ActionListners.SubmitButton;
 import GUI.GUI;
 import Global.Variables;
 import Listeners.ActionListners.AminoButton.CreatingCodons;
+import Listeners.ActionListners.AminoButton.Help;
 import Listeners.KeyListeners.CreatingModes;
 import Listeners.KeyListeners.PrefixSuffixSelect;
 import Model.Amino;
@@ -13,7 +14,8 @@ import java.util.ArrayList;
 
 public class GenerateAminos {
     public static void generate() {
-        double waterMass = 2 * 1.00794 + 15.9994;
+        Help.repaintPanelTop();
+        double waterMass = 18.01057;
         GUI gui = Variables.getGui();
         String input = gui.getTf().getText().toUpperCase();
         if (input.compareTo("") == 0) {
@@ -34,7 +36,6 @@ public class GenerateAminos {
                     flag = true;
                     Variables.seq[i] = al.get(j);
                     Variables.massesPrefix[i] = i == 0 ? al.get(j).getMass() : Variables.massesPrefix[i - 1] + al.get(j).getMass();
-                    Variables.massesPrefix[i] += waterMass;
                     Variables.massesSuffix[i] = al.get(j).getMass() + waterMass;
                 }
             }

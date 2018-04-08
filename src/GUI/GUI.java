@@ -12,7 +12,7 @@ import java.awt.*;
 
 
 
-public class GUI extends JFrame {
+public class GUI extends JPanel {
     private JPanel panelTop = new JPanel();
     private JTextField inputSeq = new JTextField(50);
     private JTextField inputDM = new JTextField(8);
@@ -34,11 +34,10 @@ public class GUI extends JFrame {
     private JPanel navigationPanel = new JPanel();
 
 
-    public GUI(String title) {
-        super(title);
-        this.setSize(Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER, 1, 1));
+    public GUI() {
+        this.setSize(Start.frame.getWidth(), Start.frame.getHeight());
+
+        this.setLayout(new FlowLayout(FlowLayout.CENTER, 1, 1));
 
         inputSeq.addKeyListener(new CreatingModes());
         inputDM.addKeyListener(new CreatingModes());
@@ -51,12 +50,11 @@ public class GUI extends JFrame {
         addingCompsRight();
         settingPanelTop();
 
-        this.getContentPane().add(panelTop);
-        this.getContentPane().add(panelMiddle);
-        this.getContentPane().add(panelBottom);
-        this.getContentPane().add(panelUnderBottom);
+        this.add(panelTop);
+        this.add(panelMiddle);
+        this.add(panelBottom);
+        this.add(panelUnderBottom);
 
-        this.setLocationRelativeTo(null);
         this.setVisible(true);
 
     }
