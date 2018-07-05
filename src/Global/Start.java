@@ -34,7 +34,7 @@ public class Start {
         for (int i = 0; i < input.size(); i++) {
             String[] tmp = input.get(i).split("\\s+");
             int len = tmp[0].length() > 5 ? 5 : tmp[0].length();
-            JMenuItem item = new JMenuItem(tmp[0].substring(0, len));
+            JMenuItem item = new JMenuItem(tmp[0].substring(0, len).toUpperCase()+"...");
             item.setName(input.get(i));
             item.addActionListener(new SelectPanel());
             aminos.add(item);

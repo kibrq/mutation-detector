@@ -14,7 +14,7 @@ public class SelectPanel implements ActionListener {
         JMenuItem t = (JMenuItem) e.getSource();
         String[] tmp = t.getName().split("\\s+");
         GUI gui = new GUI();
-        gui.getTf().setText(tmp[0]);
+        gui.getTf().setText(tmp[0].toUpperCase());
         gui.getInputDM().setText(tmp[1]);
         Variables.setGui(gui);
         Start.frame.getContentPane().removeAll();

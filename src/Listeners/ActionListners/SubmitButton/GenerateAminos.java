@@ -35,7 +35,7 @@ public class GenerateAminos {
                 if (aminos[i] == al.get(j).getTitle().charAt(0)) {
                     flag = true;
                     Variables.seq[i] = al.get(j);
-                    Variables.massesPrefix[i] = i == 0 ? al.get(j).getMass() : Variables.massesPrefix[i - 1] + al.get(j).getMass();
+                    Variables.massesPrefix[i] = i == 0 ? al.get(j).getMass()+waterMass : Variables.massesPrefix[i - 1] + al.get(j).getMass()+waterMass;
                     Variables.massesSuffix[i] = al.get(j).getMass() + waterMass;
                 }
             }
@@ -58,6 +58,7 @@ public class GenerateAminos {
         for (int i = aminos.length - 2; i >= 0; i--) {
             Variables.massesSuffix[i] += Variables.massesSuffix[i + 1];
         }
+        System.out.println(Variables.massesSuffix[0]+" "+Variables.massesPrefix[Variables.massesPrefix.length-1]);
         gui.getAminoPanel().repaint();
         gui.getScrollPane().revalidate();
         Variables.panel1 = null;
