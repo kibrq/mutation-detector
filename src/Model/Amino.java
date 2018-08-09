@@ -30,4 +30,9 @@ public class Amino {
     public String toString() {
         return title;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return this.title.equals(((Amino)obj).title);
+    }
 }

@@ -1,45 +1,35 @@
 package Global;
 
 import GUI.*;
+import Listeners.ActionListners.MenuBarAminosActionListener;
 import Listeners.ActionListners.SelectPanel;
-import Listeners.KeyListeners.CreatingModes;
-import org.omg.CORBA.MARSHAL;
+
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import static javafx.scene.input.KeyCode.J;
+
 
 public class Start {
     public static JFrame frame = null;
-
+    public static ArrayList<String> input = new ArrayList<>();
     public static void main(String[] args) throws FileNotFoundException {
         Scanner sc = new Scanner(new File("input.in"));
         JFrame mainF = new JFrame("Main");
         frame = mainF;
         JMenuBar menuBar = new JMenuBar();
-        JMenu aminos = new JMenu("Aminos");
+        JButton aminos = new JButton("Aminos");
         JMenu help = new JMenu("Help");
-        ArrayList<String> input = new ArrayList<>();
 
         while (sc.hasNext()) {
-            input.add(sc.nextLine());
+            input.add(sc.nextLine().toUpperCase());
         }
-        for (int i = 0; i < input.size(); i++) {
-            String[] tmp = input.get(i).split("\\s+");
-            int len = tmp[0].length() > 5 ? 5 : tmp[0].length();
-            JMenuItem item = new JMenuItem(tmp[0].substring(0, len).toUpperCase()+"...");
-            item.setName(input.get(i));
-            item.addActionListener(new SelectPanel());
-            aminos.add(item);
-            aminos.addSeparator();
-        }
+
+        aminos.addActionListener(new MenuBarAminosActionListener());
 
         JMenuItem item = new JMenuItem("Help");
         item.addActionListener(e -> {

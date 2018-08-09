@@ -14,9 +14,13 @@ public class CreatingModes implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         GUI gui = Variables.getGui();
+
         switch (e.getKeyCode()) {
+
             case KeyEvent.VK_SHIFT:
                 Variables.setIsShiftPressed(true);
+                Variables.isPrefixSelect = false;
+                Variables.isSuffixSelect = false;
                 break;
             case KeyEvent.VK_F1:
                 if (Variables.isShiftPressed()) {

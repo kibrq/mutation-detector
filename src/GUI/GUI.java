@@ -1,11 +1,12 @@
 package GUI;
 
 
+
+import Global.*;
 import Listeners.ActionListners.SubmitButton.CreatingAminos;
 import Listeners.KeyListeners.CreatingModes;
 import Listeners.KeyListeners.PrefixSuffixSelect;
 import Listeners.KeyListeners.Scrolling;
-import Global.*;
 
 import javax.swing.*;
 import java.awt.*;

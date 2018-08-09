@@ -419,6 +419,6 @@ public class CreatingCodons implements ActionListener {
     }
 
     private boolean isThisOneFit(Amino a1, Amino a2) {
-        return isOneCodonChanges(a1, a2) && isMassDifference(a1, a2);
+        return isOneCodonChanges(a1, a2) && isMassDifference(a1, a2) && (!a1.equals(a2));
     }
 }

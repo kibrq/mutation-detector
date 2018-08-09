@@ -1,7 +1,7 @@
 package Global;
 
 
-import Listeners.KeyListeners.CreatingModes;
+
 import Database.DataBase;
 import GUI.GUI;
 import Model.Amino;
@@ -11,6 +11,16 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Variables {
+    private static String previousStringInSearchTextField = "";
+
+    public static String getPreviousStringInSearchTextField() {
+        return previousStringInSearchTextField;
+    }
+
+    public static void setPreviousStringInSearchTextField(String previousStringInSearchTextField) {
+        Variables.previousStringInSearchTextField = previousStringInSearchTextField;
+    }
+
     private static int currentCandidate = 0;
     private static GUI gui = null;
     private static boolean isCompareMode = false;
