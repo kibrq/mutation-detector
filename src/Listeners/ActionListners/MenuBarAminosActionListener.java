@@ -76,18 +76,19 @@ public class MenuBarAminosActionListener implements ActionListener {
 
 
         JSplitPane panelMiddle = new JSplitPane();
-
+        panelMiddle.setResizeWeight(0.5);
 
         panelMiddle.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
 
-        panelMiddle.setPreferredSize(new Dimension(width - 20, height - panelTop.getHeight() - panelLabels.getHeight() - 50));
+        panelMiddle.setPreferredSize(new Dimension(width - 20, height - panelTop.getHeight() - panelLabels.getHeight() - 112));
 
 
         JScrollPane scrollPaneLeft = new JScrollPane(leftPanel);
         JScrollPane scrollPaneRight = new JScrollPane(rightPanel);
 
-        scrollPaneLeft.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        scrollPaneRight.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+        scrollPaneLeft.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPaneRight.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPaneLeft.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPaneRight.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         GridLayout gl = new GridLayout();

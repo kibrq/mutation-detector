@@ -353,6 +353,7 @@ public class CreatingCodons implements ActionListener {
     }
 
     private void PrefixSuffixSelect() {
+
         Variables.numPrefix = -1;
         Variables.numSuffix = -1;
         Help.removeAllFromUnderBottomPanel();
@@ -403,6 +404,8 @@ public class CreatingCodons implements ActionListener {
                 popupMenu.show(gui.getAminoPanel(), 0, -40);
             }
         }
+        Variables.isSuffixSelect = false;
+        Variables.isPrefixSelect = false;
     }
 
     private boolean isOneCodonChanges(Amino a1, Amino a2) {
