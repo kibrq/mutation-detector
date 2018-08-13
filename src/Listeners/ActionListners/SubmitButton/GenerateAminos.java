@@ -1,9 +1,9 @@
 package Listeners.ActionListners.SubmitButton;
 
+import AdditionalClasses.UsefullFunctions;
 import GUI.GUI;
 import Global.Variables;
 import Listeners.ActionListners.AminoButton.CreatingCodons;
-import Listeners.ActionListners.AminoButton.Help;
 import Listeners.KeyListeners.CreatingModes;
 import Listeners.KeyListeners.PrefixSuffixSelect;
 import Model.Amino;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class GenerateAminos {
     public static void generate() {
-        Help.repaintPanelTop();
+        UsefullFunctions.repaintPanelTop();
         double waterMass = 18.01057;
         GUI gui = Variables.getGui();
         String input = gui.getTf().getText().toUpperCase();

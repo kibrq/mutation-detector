@@ -1,7 +1,6 @@
 package GUI;
 
 
-
 import Global.*;
 import Listeners.ActionListners.SubmitButton.CreatingAminos;
 import Listeners.KeyListeners.CreatingModes;
@@ -10,7 +9,6 @@ import Listeners.KeyListeners.Scrolling;
 
 import javax.swing.*;
 import java.awt.*;
-
 
 
 public class GUI extends JPanel {
@@ -28,11 +26,15 @@ public class GUI extends JPanel {
     private JPanel panelUnderBottom = new JPanel();
     private JPanel panelBottom = new JPanel();
 
+    private JPanel panelUnderBottomLeft = new JPanel();
+    private JPanel panelUnderBottomRight = new JPanel();
+
     private JPanel firstAmino = new JPanel();
     private JPanel panelLines = new JPanel();
     private JPanel secondAmino = new JPanel();
 
-    private JPanel navigationPanel = new JPanel();
+
+    private JPanel navigationPanel1 = new JPanel();
 
 
     public GUI() {
@@ -50,6 +52,7 @@ public class GUI extends JPanel {
 
         addingCompsRight();
         settingPanelTop();
+        fillingUnderBottomPanel(false);
 
         this.add(panelTop);
         this.add(panelMiddle);
@@ -95,8 +98,8 @@ public class GUI extends JPanel {
     public void settingPanelTop() {
         panelTop.removeAll();
         panelTop.setBackground(Color.BLACK);
-        panelTop.setLayout(new FlowLayout(FlowLayout.CENTER, 1 ,0));
-        panelTop.setPreferredSize(new Dimension(this.getWidth(), 100));
+        panelTop.setLayout(new FlowLayout(FlowLayout.CENTER, 1, 0));
+        panelTop.setPreferredSize(new Dimension(this.getWidth(), this.getHeight() / 11));
         JLabel label = new JLabel("Sequence:  ");
         label.setForeground(Color.white);
         panelTop.add(label);
@@ -105,7 +108,7 @@ public class GUI extends JPanel {
         label1.setForeground(Color.white);
         panelTop.add(label1);
         panelTop.add(inputDM);
-        JLabel  label2 = new JLabel("  ppm:  ");
+        JLabel label2 = new JLabel("  ppm:  ");
         label2.setForeground(Color.WHITE);
         panelTop.add(label2);
         panelTop.add(inputPPM);
@@ -113,10 +116,9 @@ public class GUI extends JPanel {
 
     private void addingCompsRight() {
 
-
         panelMiddle.setBackground(Color.BLACK);
         panelMiddle.setLayout(new FlowLayout());
-        panelMiddle.setPreferredSize(new Dimension(this.getWidth(),100));
+        panelMiddle.setPreferredSize(new Dimension(this.getWidth(), this.getHeight() / 14));
         but.setPreferredSize(new Dimension(100, 20));
         but.addActionListener(new CreatingAminos());
         but.addKeyListener(new CreatingModes());
@@ -126,39 +128,61 @@ public class GUI extends JPanel {
 
         panelBottom.setBackground(Color.LIGHT_GRAY);
         panelBottom.setLayout(new FlowLayout());
-        panelBottom.setPreferredSize(new Dimension(this.getWidth(), 70));
-        scrollPane.setPreferredSize(new Dimension(Variables.buttonWidth* Variables.countInScrollPanel + 10, 50));
+        panelBottom.setPreferredSize(new Dimension(this.getWidth(), this.getHeight() / 11));
+        scrollPane.setPreferredSize(new Dimension(Variables.buttonWidth * Variables.countInScrollPanel + 10, 50));
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         scrollPane.getHorizontalScrollBar().addAdjustmentListener(new Scrolling());
         aminoPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0));
         panelBottom.add(scrollPane);
 
         panelUnderBottom.setBackground(Color.LIGHT_GRAY);
-        panelUnderBottom.setPreferredSize(new Dimension(this.getWidth(), this.getHeight()-panelTop.getHeight()-panelMiddle.getHeight()-panelBottom.getHeight()));
-        panelUnderBottom.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 1));
-        firstAmino.setPreferredSize(new Dimension(30, 330));
+        panelUnderBottom.setPreferredSize(new Dimension(this.getWidth(), this.getHeight() - panelTop.getHeight() - panelMiddle.getHeight() - panelBottom.getHeight()));
+        panelUnderBottom.setLayout(new FlowLayout(FlowLayout.CENTER, -20, 0));
+        firstAmino.setPreferredSize(new Dimension(30, 4 * this.getHeight() / 5));
         firstAmino.setBackground(panelBottom.getBackground());
-        panelLines.setPreferredSize(new Dimension(200, 330));
+        panelLines.setPreferredSize(new Dimension(200, 4 * this.getHeight() / 5));
         panelLines.setBackground(panelBottom.getBackground());
-        secondAmino.setPreferredSize(new Dimension(35, 330));
+        secondAmino.setPreferredSize(new Dimension(35, 4 * this.getHeight() / 5));
         secondAmino.setBackground(panelBottom.getBackground());
+
+        panelUnderBottomLeft.setPreferredSize(new Dimension(this.getWidth() / 2, this.getHeight() - panelTop.getHeight() - panelMiddle.getHeight() - panelBottom.getHeight()));
+        panelUnderBottomLeft.setLayout(new FlowLayout(FlowLayout.CENTER, 1, 5));
+
+        panelUnderBottomLeft.setBackground(panelBottom.getBackground());
+
         panelLines.setLayout(new BorderLayout());
-        navigationPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 0));
-        navigationPanel.setBackground(panelBottom.getBackground());
-        navigationPanel.setPreferredSize(new Dimension(this.getWidth(), this.getHeight()/7));
+
+        panelUnderBottomLeft.add(firstAmino);
+        panelUnderBottomLeft.add(panelLines);
+        panelUnderBottomLeft.add(secondAmino);
+
+        navigationPanel1.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 0));
+        navigationPanel1.setBackground(panelBottom.getBackground());
+        navigationPanel1.setPreferredSize(new Dimension(this.getWidth() / 2, this.getHeight() / 7));
+
+        panelUnderBottomRight.setPreferredSize(new Dimension(this.getWidth() / 2, this.getHeight() - panelTop.getHeight() - panelMiddle.getHeight() - panelBottom.getHeight()));
+        panelUnderBottomRight.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        panelUnderBottomRight.setBackground(panelBottom.getBackground());
+
+        panelUnderBottomLeft.add(navigationPanel1);
 
 
-        panelUnderBottom.add(firstAmino);
-        panelUnderBottom.add(panelLines);
-        panelUnderBottom.add(secondAmino);
-        panelUnderBottom.add(navigationPanel);
+    }
+
+    public void fillingUnderBottomPanel(boolean addPanelUnderBottomRight) {
+
+        panelUnderBottom.add(panelUnderBottomLeft);
+
+        if (addPanelUnderBottomRight) {
+            panelUnderBottom.add(panelUnderBottomRight);
+        }
 
 
     }
 
 
     public JPanel getNavigationPanel() {
-        return navigationPanel;
+        return navigationPanel1;
     }
 
     public JPanel getFirstAmino() {
@@ -175,5 +199,9 @@ public class GUI extends JPanel {
 
     public JPanel getPanelUnderBottom() {
         return panelUnderBottom;
+    }
+
+    public JPanel getPanelUnderBottomRight() {
+        return panelUnderBottomRight;
     }
 }

@@ -1,5 +1,8 @@
 package Model;
 
+import Database.DataBase;
+import Global.Variables;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
@@ -12,6 +15,17 @@ public class Amino {
         this.title = title;
         this.codons = codons;
         this.mass = mass;
+    }
+    public Amino(String title){
+        DataBase db = Variables.getDb();
+        for(Amino a : db.getDatabase()){
+            if(a.title.equals(title)){
+                this.title = a.title;
+                this.codons = a.codons;
+                this.mass = a.mass;
+                return;
+            }
+        }
     }
 
     public String getTitle() {

@@ -1,8 +1,8 @@
 package Listeners.ActionListners.SubmitButton;
 
+import AdditionalClasses.UsefullFunctions;
 import GUI.GUI;
 import Global.Variables;
-import Listeners.ActionListners.AminoButton.Help;
 
 
 public class Clear {
@@ -20,7 +20,7 @@ public class Clear {
             Variables.panel2.setVisible(false);
             Variables.panel2 = null;
         }
-        Help.removeAllFromUnderBottomPanel();
+        UsefullFunctions.removeAllFromUnderBottomPanel();
         gui.getTf().setFocusable(true);
     }
 }

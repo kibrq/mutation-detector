@@ -1,5 +1,6 @@
 package Global;
 
+import AdditionalClasses.UsefullFunctions;
 import GUI.*;
 import Listeners.ActionListners.MenuBarAminosActionListener;
 import Listeners.ActionListners.SelectPanel;
@@ -9,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -17,7 +19,7 @@ import java.util.Scanner;
 public class Start {
     public static JFrame frame = null;
     public static ArrayList<String> input = new ArrayList<>();
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws IOException {
         Scanner sc = new Scanner(new File("input.in"));
         JFrame mainF = new JFrame("Main");
         frame = mainF;
@@ -57,6 +59,7 @@ public class Start {
         menuBar.add(help);
         mainF.setJMenuBar(menuBar);
         mainF.setVisible(true);
+        UsefullFunctions.parseModification();
 
     }
 }

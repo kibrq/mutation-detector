@@ -1,33 +1,32 @@
 package Global;
 
 
-
 import Database.DataBase;
 import GUI.GUI;
 import Model.Amino;
+import Model.Modification;
 
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Variables {
     private static String previousStringInSearchTextField = "";
 
-    public static String getPreviousStringInSearchTextField() {
-        return previousStringInSearchTextField;
-    }
-
-    public static void setPreviousStringInSearchTextField(String previousStringInSearchTextField) {
-        Variables.previousStringInSearchTextField = previousStringInSearchTextField;
-    }
+    private static ArrayList<Modification> modificationDataBase = new ArrayList<>();
 
     private static int currentCandidate = 0;
+
     private static GUI gui = null;
     private static boolean isCompareMode = false;
     private static DataBase db = new DataBase();
     public static int numSuffix = -1;
     public static double[] massesSuffix;
-    public static Color colorOfChoosen = Color.blue;
+    final public static Color colorOfChoosenByChange = Color.blue;
+    final public static Color colorOfChoosenByModification = Color.GREEN;
+    final public static Color colorOfChoosen = Color.YELLOW;
     public static JPanel panel1 = null;
     public static JPanel panel2 = null;
     private static boolean isShiftPressed = false;
@@ -40,7 +39,31 @@ public class Variables {
     final static public int buttonWidth = 60;
     public static boolean isPrefixSelect = false;
     public static boolean isSuffixSelect = false;
+    private static HashMap<Integer, ArrayList<Modification>>tmpModifications = new HashMap<>();
 
+    public static HashMap<Integer, ArrayList<Modification>> getTmpModifications() {
+        return tmpModifications;
+    }
+
+    public static void setTmpModifications(HashMap<Integer, ArrayList<Modification>> tmpModifications) {
+        Variables.tmpModifications = tmpModifications;
+    }
+
+    public static String getPreviousStringInSearchTextField() {
+        return previousStringInSearchTextField;
+    }
+
+    public static void setPreviousStringInSearchTextField(String previousStringInSearchTextField) {
+        Variables.previousStringInSearchTextField = previousStringInSearchTextField;
+    }
+
+    public static ArrayList<Modification> getModificationDataBase() {
+        return modificationDataBase;
+    }
+
+    public static void setModificationDataBase(ArrayList<Modification> modificationDataBase) {
+        Variables.modificationDataBase = modificationDataBase;
+    }
 
     public static int getCurrentCandidate() {
         return currentCandidate;
@@ -87,10 +110,6 @@ public class Variables {
     }
 
 
-
-
-
-
     public static boolean isShiftPressed() {
         return isShiftPressed;
     }
@@ -103,7 +122,7 @@ public class Variables {
         return gui;
     }
 
-    public static void setGui(GUI gui1){
+    public static void setGui(GUI gui1) {
         gui = gui1;
     }
 }

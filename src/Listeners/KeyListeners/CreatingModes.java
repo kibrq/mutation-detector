@@ -1,12 +1,13 @@
 package Listeners.KeyListeners;
 
+import AdditionalClasses.UsefullFunctions;
 import GUI.GUI;
 import Global.*;
-import Listeners.ActionListners.AminoButton.Help;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.Stack;
+
+import static AdditionalClasses.UsefullFunctions.removeAllFromUnderBottomPanel;
 
 
 public class CreatingModes implements KeyListener {
@@ -28,6 +29,11 @@ public class CreatingModes implements KeyListener {
                     Variables.setIsMassDiff(false);
                     if (Variables.isCompareMode()) {
                         Start.frame.setTitle("Main(compare mode)");
+                        Variables.getGui().getPanelUnderBottom().removeAll();
+                        Variables.getGui().fillingUnderBottomPanel(false);
+                        Variables.getGui().getPanelUnderBottom().revalidate();
+                        Variables.getGui().getPanelUnderBottom().repaint();
+
                     } else {
                         Start.frame.setTitle("Main");
                     }
@@ -39,8 +45,8 @@ public class CreatingModes implements KeyListener {
                         Variables.panel2.setVisible(false);
                         Variables.panel2 = null;
                     }
-                    Help.removeAllFromUnderBottomPanel();
-                    Help.repaintPanelTop();
+                    UsefullFunctions.removeAllFromUnderBottomPanel();
+                    UsefullFunctions.repaintPanelTop();
 
                 }
                 break;
@@ -51,8 +57,16 @@ public class CreatingModes implements KeyListener {
                     Variables.setIsCompareMode(false);
                     if (Variables.isMassDiff()) {
                         Start.frame.setTitle("Main(mass difference mode)");
+                        Variables.getGui().getPanelUnderBottom().removeAll();
+                        Variables.getGui().fillingUnderBottomPanel(true);
+                        Variables.getGui().getPanelUnderBottom().revalidate();
+                        Variables.getGui().getPanelUnderBottom().repaint();
                     } else {
                         Start.frame.setTitle("Main");
+                        Variables.getGui().getPanelUnderBottom().removeAll();
+                        Variables.getGui().fillingUnderBottomPanel(false);
+                        Variables.getGui().getPanelUnderBottom().revalidate();
+                        Variables.getGui().getPanelUnderBottom().repaint();
                     }
                     if (Variables.panel1 != null) {
                         Variables.panel1.setVisible(false);
@@ -62,8 +76,8 @@ public class CreatingModes implements KeyListener {
                         Variables.panel2.setVisible(false);
                         Variables.panel2 = null;
                     }
-                    Help.removeAllFromUnderBottomPanel();
-                    Help.repaintPanelTop();
+                    UsefullFunctions.removeAllFromUnderBottomPanel();
+                    UsefullFunctions.repaintPanelTop();
                 }
                 break;
         }

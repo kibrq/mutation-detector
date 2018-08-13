@@ -22,7 +22,7 @@ public class Scrolling implements AdjustmentListener {
             end += start;
             int i = start;
             for (int j = 0; j < gui.getAminoPanel().getComponentCount(); j++) {
-                if (gui.getPanelTop().getComponent(j).getForeground() != Variables.colorOfChoosen) {
+                if (gui.getPanelTop().getComponent(j).getForeground() == Color.RED || gui.getPanelTop().getComponent(j).getForeground() == Color.WHITE) {
                     if (j >= i && j < end) {
                         gui.getPanelTop().getComponent(j).setForeground(Color.RED);
                     } else {
