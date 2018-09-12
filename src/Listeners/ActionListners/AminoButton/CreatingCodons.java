@@ -22,15 +22,29 @@ import java.util.Iterator;
 public class CreatingCodons implements ActionListener {
     private GUI gui = Variables.getGui();
     private double ppm = gui.getInputPPM().getText().compareTo("") == 0 ? 0 : Double.parseDouble(Variables.getGui().getInputPPM().getText());
+    private double mistake = Variables.getCurrentMistake();
 
-    private boolean isMassDifference(Amino a1, Amino a2) {
-        double trulyDm = round(a1.getMass() - a2.getMass(), 5);
+    private void countMistake() {
         int index = Variables.numPrefix == -1 ? (Variables.numSuffix == -1 ? numInArr : Variables.numSuffix) : Variables.numPrefix;
 
 
-        double mist = index != Variables.numSuffix ? ppm * Variables.massesPrefix[index] / Math.pow(10, 6) : ppm * Variables.massesSuffix[index] / Math.pow(10, 6);
+        double mist = index != Variables.numSuffix ? ppm * Variables.massesPrefix[index] / Math.pow(10, 6) : ppm / Math.pow(10, 6) * (Variables.massesPrefix[Variables.massesPrefix.length - 1] + Variables.massesPrefix[index]);
+        mistake = mist;
+        mistake = round(mistake, 2);
+        Variables.setCurrentMistake(mistake);
+        System.out.println("Mistake is " + mistake);
 
-        return trulyDm >= (dm - mist) && trulyDm <= (dm + mist);
+        gui.getCurrentMistake().setText("  Current mistake:" + " " + mistake + "Da");
+        gui.getCurrentMistake().repaint();
+        gui.getPanelTop().repaint();
+        gui.getPanelTop().revalidate();
+    }
+
+    private boolean isMassDifference(Amino a1, Amino a2) {
+        mistake = Variables.getCurrentMistake();
+        double trulyDm = round(a2.getMass() - a1.getMass(), 5);
+
+        return trulyDm >= (dm - mistake) && trulyDm <= (dm + mistake);
     }
 
     private double round(double a, int radix) {
@@ -66,14 +80,16 @@ public class CreatingCodons implements ActionListener {
         panel.add(la);
         pan.add(panel);
         boolean flag = false;
-        for (Modification mod : Variables.getTmpModifications().get(numInArr)) {
-            flag = true;
-            JPanel panel1 = new JPanel();
-            panel1.setBackground(pan.getBackground());
-            JLabel la1 = new JLabel(mod.getName());
-            panel1.setPreferredSize(new Dimension(pan.getWidth(), 30));
-            panel1.add(la1);
-            pan.add(panel1);
+        if (Variables.getTmpModifications().get(numInArr) != null) {
+            for (Modification mod : Variables.getTmpModifications().get(numInArr)) {
+                flag = true;
+                JPanel panel1 = new JPanel();
+                panel1.setBackground(pan.getBackground());
+                JLabel la1 = new JLabel(mod.getName());
+                panel1.setPreferredSize(new Dimension(pan.getWidth(), 30));
+                panel1.add(la1);
+                pan.add(panel1);
+            }
         }
         if (!flag) {
             JPanel panel1 = new JPanel();
@@ -85,6 +101,7 @@ public class CreatingCodons implements ActionListener {
         }
         pan.revalidate();
         pan.repaint();
+
 
     }
 
@@ -231,7 +248,7 @@ public class CreatingCodons implements ActionListener {
                 secMass = aDb.getMass();
             }
         }
-        dm = round(firMass - secMass, 5);
+        dm = round(secMass - firMass, 5);
 
         double dm1 = dm;
 
@@ -394,17 +411,18 @@ public class CreatingCodons implements ActionListener {
     private void PrefixSuffixSelect() {
 
 
-
         UsefullFunctions.removeAllFromUnderBottomPanel();
         UsefullFunctions.repaintPanelTop();
+        UsefullFunctions.refreshPanelTop();
 
+        countMistake();
 
         boolean flag = false;
-        Variables.numSuffix =-1;
-        Variables.numPrefix=-1;
-        if(Variables.isPrefixSelect){
+        Variables.numSuffix = -1;
+        Variables.numPrefix = -1;
+        if (Variables.isPrefixSelect) {
             Variables.numPrefix = numInArr;
-        }else{
+        } else {
             Variables.numSuffix = numInArr;
         }
 
@@ -445,10 +463,12 @@ public class CreatingCodons implements ActionListener {
         gui.getAminoPanel().repaint();
         if (!flag) {
             JPopupMenu popupMenu = new JPopupMenu();
-            String s = Variables.isPrefixSelect? "prefix":"suffix";
-            popupMenu.add(new JLabel("There is no amino acids with such mass difference in this"+" "+s));
+            String s = Variables.isPrefixSelect ? "prefix" : "suffix";
+            popupMenu.add(new JLabel("There is no amino acids with such mass difference in this" + " " + s));
             popupMenu.show(gui.getBut(), -20, 30);
         }
+        UsefullFunctions.underlineAminos(Variables.isPrefixSelect? endIndex:0, Variables.isPrefixSelect?Variables.seq.length:beginIndex );
+
         Variables.isSuffixSelect = false;
         Variables.isPrefixSelect = false;
 

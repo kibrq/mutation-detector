@@ -39,7 +39,17 @@ public class Variables {
     final static public int buttonWidth = 60;
     public static boolean isPrefixSelect = false;
     public static boolean isSuffixSelect = false;
+    private static double currentMistake = 0;
     private static HashMap<Integer, ArrayList<Modification>>tmpModifications = new HashMap<>();
+
+
+    public static double getCurrentMistake() {
+        return currentMistake;
+    }
+
+    public static void setCurrentMistake(double currentMistake) {
+        Variables.currentMistake = currentMistake;
+    }
 
     public static HashMap<Integer, ArrayList<Modification>> getTmpModifications() {
         return tmpModifications;

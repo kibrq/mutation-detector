@@ -16,6 +16,7 @@ public class GUI extends JPanel {
     private JTextField inputSeq = new JTextField(50);
     private JTextField inputDM = new JTextField(8);
     private JTextField inputPPM = new JTextField(5);
+    private JLabel currentMistake = new JLabel();
 
     private JButton but = new JButton("Submit");
 
@@ -36,6 +37,9 @@ public class GUI extends JPanel {
 
     private JPanel navigationPanel1 = new JPanel();
 
+    public void setCurrentMistake(JLabel currentMistake) {
+        this.currentMistake = currentMistake;
+    }
 
     public GUI() {
         this.setSize(Start.frame.getWidth(), Start.frame.getHeight());
@@ -62,6 +66,7 @@ public class GUI extends JPanel {
         this.setVisible(true);
 
     }
+
 
     public JButton getBut() {
         return but;
@@ -95,6 +100,10 @@ public class GUI extends JPanel {
         return aminoPanel;
     }
 
+    public JLabel getCurrentMistake() {
+        return currentMistake;
+    }
+
     public void settingPanelTop() {
         panelTop.removeAll();
         panelTop.setBackground(Color.BLACK);
@@ -112,6 +121,10 @@ public class GUI extends JPanel {
         label2.setForeground(Color.WHITE);
         panelTop.add(label2);
         panelTop.add(inputPPM);
+        currentMistake.setText("   Current mistake: Undefined");
+        currentMistake.setForeground(Color.WHITE);
+
+        panelTop.add(currentMistake);
     }
 
     private void addingCompsRight() {

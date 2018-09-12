@@ -28,23 +28,17 @@ public class PrefixSuffixSelect implements KeyListener {
         }
         switch (e.getKeyCode()) {
             case KeyEvent.VK_P:
-                Variables.isPrefixSelect = true;
+                Variables.isPrefixSelect = !Variables.isPrefixSelect;
+                System.out.println("P PRESSED!");
                 break;
             case KeyEvent.VK_S:
-                Variables.isSuffixSelect = true;
+                Variables.isSuffixSelect = !Variables.isSuffixSelect;
                 break;
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        switch (e.getKeyCode()){
-            case KeyEvent.VK_S:
-                Variables.isSuffixSelect = false;
-                break;
-            case KeyEvent.VK_P:
-                Variables.isPrefixSelect = false;
-                break;
-        }
+        //
     }
 }

@@ -104,5 +104,44 @@ public class UsefullFunctions {
         gui.getPanelUnderBottomRight().repaint();
         gui.getPanelUnderBottomRight().revalidate();
     }
+    public static void underlineAminos(int beginIndex, int endIndex){
+        JPanel panel = Variables.getGui().getPanelTop();
+        for(int i = beginIndex; i<endIndex;i++){
+            JLabel label = (JLabel) panel.getComponent(i);
+            label.setText("<HTML><U>"+label.getText()+"</U></HTML>");
 
+        }
+        panel.repaint();
+
+    }
+    public static void refreshPanelTop(){
+        GUI gui = Variables.getGui();
+        String input = gui.getTf().getText().toUpperCase();
+        gui.getPanelTop().removeAll();
+        char[] aminos = input.toCharArray();
+        Color col = aminos.length < 10 ? Color.RED : Color.WHITE;
+        for (int i = 0; i < input.length(); i++) {
+            JLabel label = new JLabel();
+            label.setForeground(col);
+            label.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 20));
+            label.setText(Character.toString(input.charAt(i)));
+            gui.getPanelTop().add(label);
+        }
+        double a = gui.getInputDM().getText().compareTo("") == 0 ? 0 : Double.parseDouble(Variables.getGui().getInputDM().getText());
+        JLabel label = new JLabel("    " + a + "Da");
+        label.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 20));
+        label.setForeground(Color.WHITE);
+        gui.getPanelTop().add(label);
+        a = gui.getInputPPM().getText().compareTo("") == 0 ? 0 : Double.parseDouble(Variables.getGui().getInputPPM().getText());
+        JLabel label1 = new JLabel("    " + a + "ppm");
+        label1.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 20));
+        label1.setForeground(Color.WHITE);
+        JLabel label2 = new JLabel("    Current mistake:  " + Variables.getCurrentMistake() +"Da");
+        label2.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 20));
+        gui.setCurrentMistake(label2);
+        label2.setForeground(Color.WHITE);
+        gui.getPanelTop().add(label1);
+        gui.getPanelTop().add(label2);
+        gui.getPanelTop().repaint();
+    }
 }
