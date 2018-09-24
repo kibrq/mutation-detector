@@ -28,11 +28,13 @@ public class CreatingCodons implements ActionListener {
         int index = Variables.numPrefix == -1 ? (Variables.numSuffix == -1 ? numInArr : Variables.numSuffix) : Variables.numPrefix;
 
 
-        double mist = index != Variables.numSuffix ? ppm * Variables.massesPrefix[index] / Math.pow(10, 6) : ppm / Math.pow(10, 6) * (Variables.massesPrefix[Variables.massesPrefix.length - 1] + Variables.massesPrefix[index]);
+        double mist = Variables.isPrefixSelect ? ppm * Variables.massesPrefix[index] / Math.pow(10, 6) : (ppm / Math.pow(10, 6)) * (Variables.massesPrefix[Variables.massesPrefix.length - 1] + Variables.massesPrefix[index]);
+
+
         mistake = mist;
         mistake = round(mistake, 2);
         Variables.setCurrentMistake(mistake);
-        System.out.println("Mistake is " + mistake);
+        System.out.println("Mistake is " + (Variables.isSuffixSelect ? "suffix " : "prefix ") + mistake);
 
         gui.getCurrentMistake().setText("  Current mistake:" + " " + mistake + "Da");
         gui.getCurrentMistake().repaint();
@@ -467,7 +469,7 @@ public class CreatingCodons implements ActionListener {
             popupMenu.add(new JLabel("There is no amino acids with such mass difference in this" + " " + s));
             popupMenu.show(gui.getBut(), -20, 30);
         }
-        UsefullFunctions.underlineAminos(Variables.isPrefixSelect? endIndex:0, Variables.isPrefixSelect?Variables.seq.length:beginIndex );
+        UsefullFunctions.underlineAminos(Variables.isPrefixSelect ? endIndex : 0, Variables.isPrefixSelect ? Variables.seq.length : beginIndex);
 
         Variables.isSuffixSelect = false;
         Variables.isPrefixSelect = false;
