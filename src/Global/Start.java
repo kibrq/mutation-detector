@@ -3,28 +3,82 @@ package Global;
 import AdditionalClasses.UsefullFunctions;
 import GUI.*;
 import Listeners.ActionListners.MenuBarAminosActionListener;
-import Listeners.ActionListners.SelectPanel;
+import Model.AminoAcid;
+import Model.Mode;
 
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 
-
 public class Start {
     public static JFrame frame = null;
     public static ArrayList<String> input = new ArrayList<>();
+
     public static void main(String[] args) throws IOException {
         Scanner sc = new Scanner(new File("input.in"));
-        JFrame mainF = new JFrame("Main");
+        AminoAcid.setData();
+        JFrame mainF = new JFrame(Variables.getFrameName());
         frame = mainF;
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+
         JMenuBar menuBar = new JMenuBar();
-        JButton aminos = new JButton("Aminos");
+        JButton aminos = new JButton("Peptides");
+        Object action1 = "my action1";
+        Object action2 = "my action2";
+        Object action3 = "my action3";
+        Object action4 = "my action4";
+        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F1, InputEvent.SHIFT_DOWN_MASK), action1);
+        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F2, InputEvent.SHIFT_DOWN_MASK), action2);
+        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_P, 0), action3);
+        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0), action4);
+        panel.getActionMap().put(action1, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GUI gui = Variables.getGui();
+                if (gui != null) {
+                    Variables.clearPanelsWithModCod();
+                    Variables.setMode(Mode.COMPARE);
+                }
+            }
+        });
+        panel.getActionMap().put(action2, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GUI gui = Variables.getGui();
+                if (gui != null) {
+                    Variables.clearPanelsWithModCod();
+                    Variables.setMode(Mode.MASS_DIFFERENCE);
+                }
+            }
+        });
+        panel.getActionMap().put(action3, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Variables.setPrefixSelecting(!Variables.isPrefixSelecting());
+                UsefullFunctions.revalidateRepaint(Variables.getGui().getPanelWithCodons());
+                UsefullFunctions.clearAminoSequence();
+            }
+        });
+        panel.getActionMap().put(action4, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Variables.setSuffixSelecting(!Variables.isPrefixSelecting());
+                UsefullFunctions.revalidateRepaint(Variables.getGui().getPanelWithCodons());
+                UsefullFunctions.clearAminoSequence();
+            }
+        });
+
+        frame.setContentPane(panel);
+
         JMenu help = new JMenu("Help");
 
         while (sc.hasNext()) {
@@ -36,9 +90,9 @@ public class Start {
         JMenuItem item = new JMenuItem("Help");
         item.addActionListener(e -> {
             JPopupMenu popupMenu = new JPopupMenu();
-            JLabel label1 = new JLabel("You can select aminoacid by selecting one of them in 'amino' menu");
-            JLabel label2 = new JLabel("If you want to see all codons of some amino, just get into a normal mode ");
-            JLabel label3 = new JLabel("If you want to compare codons of some two aminos, get into compare mode(shift+f1)");
+            JLabel label1 = new JLabel("You can select peptide by selecting one of them in 'peptide' menu");
+            JLabel label2 = new JLabel("If you want to see all codons of some amino acid, just get into a normal mode");
+            JLabel label3 = new JLabel("If you want to compare codons of two amino acids, get into compare mode(shift+f1)");
             JLabel label4 = new JLabel("If you want to see possible substitution get into massDifference mode(shift+f2). In this mode you can select prefix(where you think sub might occur) by holding P and click on end of this prefix");
             JLabel label5 = new JLabel("You can do same thing with suffix but you have to hold S instead of P");
             JLabel label6 = new JLabel("If you want to get into normal mode, you have to press combination of keys which you have pressed last");

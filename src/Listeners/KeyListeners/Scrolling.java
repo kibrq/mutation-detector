@@ -8,29 +8,32 @@ import java.awt.event.AdjustmentListener;
 
 import GUI.*;
 
+import javax.swing.*;
+
 public class Scrolling implements AdjustmentListener {
     @Override
     public void adjustmentValueChanged(AdjustmentEvent e) {
 
-        if (Variables.isSubmitted()) {
-            GUI gui = Variables.getGui();
-            int wid = Variables.buttonWidth;
-            int value = e.getValue();
-            int start = value / wid;//first number of Amino which would be red
 
-            int end = (value >= start * wid + (wid / 2) + 5 && value <= (start + 1) * wid) ? Variables.countInScrollPanel + 1 : Variables.countInScrollPanel;//it is checking for transition location of ScrollBar
-            end += start;
-            int i = start;
-            for (int j = 0; j < gui.getAminoPanel().getComponentCount(); j++) {
-                if (gui.getPanelTop().getComponent(j).getForeground() == Color.RED || gui.getPanelTop().getComponent(j).getForeground() == Color.WHITE) {
-                    if (j >= i && j < end) {
-                        gui.getPanelTop().getComponent(j).setForeground(Color.RED);
-                    } else {
-                        gui.getPanelTop().getComponent(j).setForeground(Color.WHITE);
-                    }
+        GUI gui = Variables.getGui();
+        int wid = Variables.getButtonWidth();
+        int value = e.getValue();
+        int start = value / wid;//first number of Amino which would be red
+        int end = (value >= start * wid + (wid / 2) + 5 && value <= (start + 1) * wid) ? Variables.getCountInScrollPanel() + 1 : Variables.getCountInScrollPanel();//it is checking for transition location of ScrollBar
+        end += start;
+        int i = start;
+        JPanel panel = gui.getAminoSequence();
+        for (int j = 0; j < panel.getName().length(); j++) {
+            if (panel.getComponent(j).getForeground() == Variables.getNormalColor() || panel.getComponent(j).getForeground() == Variables.getColorInViewOfScroll()) {
+                if (j >= i && j < end) {
+
+                    panel.getComponent(j).setForeground(Variables.getColorInViewOfScroll());
+                } else {
+                    panel.getComponent(j).setForeground(Variables.getNormalColor());
                 }
             }
-
         }
+
     }
 }
+
