@@ -13,27 +13,33 @@ import javax.swing.*;
 public class Scrolling implements AdjustmentListener {
     @Override
     public void adjustmentValueChanged(AdjustmentEvent e) {
-
-
         GUI gui = Variables.getGui();
-        int wid = Variables.getButtonWidth();
-        int value = e.getValue();
-        int start = value / wid;//first number of Amino which would be red
-        int end = (value >= start * wid + (wid / 2) + 5 && value <= (start + 1) * wid) ? Variables.getCountInScrollPanel() + 1 : Variables.getCountInScrollPanel();//it is checking for transition location of ScrollBar
-        end += start;
-        int i = start;
-        JPanel panel = gui.getAminoSequence();
-        for (int j = 0; j < panel.getName().length(); j++) {
-            if (panel.getComponent(j).getForeground() == Variables.getNormalColor() || panel.getComponent(j).getForeground() == Variables.getColorInViewOfScroll()) {
-                if (j >= i && j < end) {
-
-                    panel.getComponent(j).setForeground(Variables.getColorInViewOfScroll());
-                } else {
-                    panel.getComponent(j).setForeground(Variables.getNormalColor());
-                }
+        int width = Variables.getButtonWidth();
+        int count = gui.getScrollPane().getWidth() / (Variables.getButtonWidth() + 1);
+        int x = e.getValue() - 5;
+        int start = (x) / (width + 5);
+        if (x > (width + 5) * start + width / 2) {
+            start++;
+            count--;
+            if(x>(width + 5) * (start-1)+width-5){
+                count++;
             }
         }
+        int i = 0;
+        for (Component component : gui.getAminoSequence().getComponents()) {
+            if (component.getForeground() == Variables.getNormalColor() || component.getForeground() == Variables.getColorInViewOfScroll()) {
+                if (i >= start && i < start + count) {
+                    component.setForeground(Variables.getColorInViewOfScroll());
+                } else {
+                    component.setForeground(Variables.getNormalColor());
+                }
+            }
+            i++;
+
+        }
+
 
     }
+
 }
 

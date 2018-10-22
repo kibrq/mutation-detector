@@ -24,6 +24,11 @@ public class Variables {
     private final static Color colorInViewOfScroll = new Color(220, 20, 40);
     private final static Color colorOfMod = new Color(20, 200, 50);
     private final static Color colorOfBoth = new Color(200, 200, 50);
+    private final static Color colorOfCheckedPrefix_Suffix = new Color(197, 146, 152);
+
+    private final static Color colorOfRightPanel = new Color(245, 223, 209);
+    private final static Color colorOfPanelWithSequnece = new Color(216, 194, 180);
+    private final static Color colorOfPanelWithCodonsModifications = new Color(232, 210, 196);
 
     private final static Font fontForTitles = new Font(Font.SANS_SERIF, Font.BOLD, 24);
     private final static Font fontForLittleSignings = new Font(Font.SANS_SERIF, Font.PLAIN, 20);
@@ -48,7 +53,7 @@ public class Variables {
     private static AminoAcid a2 = null;
     final private static int countInScrollPanel = 10;
     private static double massesPrefix[];
-    final static private int buttonWidth = 60;
+    final static private int buttonWidth = 45;
     private static boolean prefixSelecting = false;
     private static boolean suffixSelecting = false;
     private static HashMap<AminoAcid, ArrayList<Modification>> tmpModifications = new HashMap<>();
@@ -325,5 +330,21 @@ public class Variables {
         for (Component component : gui.getPanelWithAminoButtons().getComponents()) {
             component.setEnabled(Variables.isSuffixSelecting());
         }
+    }
+
+    public static Color getColorOfRightPanel() {
+        return colorOfRightPanel;
+    }
+
+    public static Color getColorOfPanelWithSequnece() {
+        return colorOfPanelWithSequnece;
+    }
+
+    public static Color getColorOfPanelWithCodonsModifications() {
+        return colorOfPanelWithCodonsModifications;
+    }
+
+    public static Color getColorOfCheckedPrefix_Suffix() {
+        return colorOfCheckedPrefix_Suffix;
     }
 }

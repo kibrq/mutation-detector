@@ -169,10 +169,12 @@ public class CreatingCodons implements ActionListener {
 
             if (Variables.getMode() != Mode.COMPARE) {
                 JPanel panel2 = new ModificationPanel();
+                panel2.setBackground(Variables.getColorOfPanelWithCodonsModifications());
                 Variables.getGui().getPanelWithModifications().add(panel2, BorderLayout.CENTER);
             }
             UsefullFunctions.revalidateRepaint(Variables.getGui().getPanelWithModifications());
             JPanel panel1 = new PaintPanel();
+            panel1.setBackground(Variables.getColorOfPanelWithCodonsModifications());
             Variables.getGui().getPanelWithCodons().removeAll();
             Variables.getGui().getPanelWithCodons().add(panel1, BorderLayout.CENTER);
             UsefullFunctions.revalidateRepaint(Variables.getGui().getPanelWithCodons());
@@ -198,19 +200,23 @@ public class CreatingCodons implements ActionListener {
             start = num;
             end = Variables.getSeq().length;
         }
+        boolean pref = Variables.isPrefixSelecting();
         Variables.setPrefixSelecting(false);
         Variables.setSuffixSelecting(false);
+        boolean flah = false;
         for (int i = 0; i < Variables.getSeq().length; i++) {
-            Variables.getGui().getPanelWithAminoButtons().setEnabled(false);
+            Variables.getGui().getPanelWithAminoButtons().getComponent(i).setEnabled(false);
             if (i >= start && i < end) {
                 findCandidatesForThisAmino(Variables.getSeq()[i]);
                 if (!Variables.getCandidates().get(Variables.getSeq()[i]).isEmpty()) {
+                    flah = true;
                     Variables.getGui().getAminoSequence().getComponent(i).setForeground(Variables.getColorOfMut());
                     Variables.getGui().getPanelWithAminoButtons().getComponent(i).setForeground(Variables.getColorOfMut());
                     Variables.getGui().getPanelWithAminoButtons().getComponent(i).setEnabled(true);
                 }
                 findModifications(Variables.getSeq()[i]);
                 if (!Variables.getTmpModifications().get(Variables.getSeq()[i]).isEmpty()) {
+                    flah = true;
                     Variables.getTmpModifications().get(Variables.getSeq()[i]).sort(new Comparator<Modification>() {
                         @Override
                         public int compare(Modification o1, Modification o2) {
@@ -230,7 +236,20 @@ public class CreatingCodons implements ActionListener {
 
                     }
                 }
+            }else {
+                if (pref && i >= end) {
+                    Variables.getGui().getAminoSequence().getComponent(i).setForeground(Variables.getColorOfCheckedPrefix_Suffix());
+                    Variables.getGui().getPanelWithAminoButtons().getComponent(i).setForeground(Variables.getColorOfCheckedPrefix_Suffix());
+                } else if (!pref && i < start) {
+                    Variables.getGui().getAminoSequence().getComponent(i).setForeground(Variables.getColorOfCheckedPrefix_Suffix());
+                    Variables.getGui().getPanelWithAminoButtons().getComponent(i).setForeground(Variables.getColorOfCheckedPrefix_Suffix());
+                }
             }
+        }
+        if (!flah) {
+            JPopupMenu pm = new JPopupMenu();
+            pm.add(new JLabel("There is no neither modifications nor substitutions in this " + (pref ? "prefix" : "suffix")));
+            pm.show(Variables.getGui().getScrollPane(), 0, 50);
         }
 
     }

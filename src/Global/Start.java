@@ -22,6 +22,7 @@ public class Start {
     public static JFrame frame = null;
     public static ArrayList<String> input = new ArrayList<>();
 
+
     public static void main(String[] args) throws IOException {
         Scanner sc = new Scanner(new File("input.in"));
         AminoAcid.setData();
@@ -34,8 +35,8 @@ public class Start {
         JButton aminos = new JButton("Peptides");
         Object action1 = "my action1";
         Object action2 = "my action2";
-        Object action3 = "my action3";
-        Object action4 = "my action4";
+        Object action3 = "prefix";
+        Object action4 = "suffix";
         panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F1, InputEvent.SHIFT_DOWN_MASK), action1);
         panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F2, InputEvent.SHIFT_DOWN_MASK), action2);
         panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_P, 0), action3);
@@ -47,6 +48,8 @@ public class Start {
                 if (gui != null) {
                     Variables.clearPanelsWithModCod();
                     Variables.setMode(Mode.COMPARE);
+                    Variables.getGui().getSuffix().setVisible(false);
+                    Variables.getGui().getPrefix().setVisible(false);
                 }
             }
         });
@@ -57,25 +60,25 @@ public class Start {
                 if (gui != null) {
                     Variables.clearPanelsWithModCod();
                     Variables.setMode(Mode.MASS_DIFFERENCE);
+                    Variables.getGui().getSuffix().setVisible(Variables.getMode() == Mode.MASS_DIFFERENCE);
+                    Variables.getGui().getPrefix().setVisible(Variables.getMode() == Mode.MASS_DIFFERENCE);
                 }
             }
         });
         panel.getActionMap().put(action3, new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Variables.setPrefixSelecting(!Variables.isPrefixSelecting());
-                UsefullFunctions.revalidateRepaint(Variables.getGui().getPanelWithCodons());
-                UsefullFunctions.clearAminoSequence();
+                UsefullFunctions.prefixAction();
             }
         });
         panel.getActionMap().put(action4, new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Variables.setSuffixSelecting(!Variables.isPrefixSelecting());
-                UsefullFunctions.revalidateRepaint(Variables.getGui().getPanelWithCodons());
-                UsefullFunctions.clearAminoSequence();
+                UsefullFunctions.suffixAction();
             }
         });
+
+        panel.setBackground(Variables.getColorOfPanelWithCodonsModifications());
 
         frame.setContentPane(panel);
 

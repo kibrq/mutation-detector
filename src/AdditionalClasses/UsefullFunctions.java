@@ -51,7 +51,7 @@ public class UsefullFunctions {
                 component.setForeground(Variables.getNormalColor());
             }
         }
-        Variables.getGui().getScrollPane().getHorizontalScrollBar().getAdjustmentListeners()[0].adjustmentValueChanged(new AdjustmentEvent(new MyAdjustable() , 0, 0, Variables.getGui().getScrollPane().getHorizontalScrollBar().getValue()));
+        Variables.getGui().getScrollPane().getHorizontalScrollBar().getAdjustmentListeners()[0].adjustmentValueChanged(new AdjustmentEvent(new MyAdjustable(), 0, 0, Variables.getGui().getScrollPane().getHorizontalScrollBar().getValue()));
         for (Component component : Variables.getGui().getPanelWithAminoButtons().getComponents()) {
             if (component.getForeground() != Variables.getNormalColor()) {
                 component.setForeground(Variables.getNormalColor());
@@ -60,83 +60,94 @@ public class UsefullFunctions {
         Variables.clearPanelsWithModCod();
     }
 
-
-
-}
-class MyAdjustable implements Adjustable{
-
-    @Override
-    public int getOrientation() {
-        return 0;
+    public static void prefixAction() {
+        Variables.setPrefixSelecting(!Variables.isPrefixSelecting());
+        UsefullFunctions.revalidateRepaint(Variables.getGui().getPanelWithCodons());
+        UsefullFunctions.clearAminoSequence();
     }
 
-    @Override
-    public void setMinimum(int min) {
-
+    public static void suffixAction() {
+        Variables.setSuffixSelecting(!Variables.isSuffixSelecting());
+        UsefullFunctions.revalidateRepaint(Variables.getGui().getPanelWithCodons());
+        UsefullFunctions.clearAminoSequence();
     }
 
-    @Override
-    public int getMinimum() {
-        return 0;
-    }
 
-    @Override
-    public void setMaximum(int max) {
+    public static class MyAdjustable implements Adjustable {
 
-    }
+        @Override
+        public int getOrientation() {
+            return 0;
+        }
 
-    @Override
-    public int getMaximum() {
-        return 0;
-    }
+        @Override
+        public void setMinimum(int min) {
 
-    @Override
-    public void setUnitIncrement(int u) {
+        }
 
-    }
+        @Override
+        public int getMinimum() {
+            return 0;
+        }
 
-    @Override
-    public int getUnitIncrement() {
-        return 0;
-    }
+        @Override
+        public void setMaximum(int max) {
 
-    @Override
-    public void setBlockIncrement(int b) {
+        }
 
-    }
+        @Override
+        public int getMaximum() {
+            return 0;
+        }
 
-    @Override
-    public int getBlockIncrement() {
-        return 0;
-    }
+        @Override
+        public void setUnitIncrement(int u) {
 
-    @Override
-    public void setVisibleAmount(int v) {
+        }
 
-    }
+        @Override
+        public int getUnitIncrement() {
+            return 0;
+        }
 
-    @Override
-    public int getVisibleAmount() {
-        return 0;
-    }
+        @Override
+        public void setBlockIncrement(int b) {
 
-    @Override
-    public void setValue(int v) {
+        }
 
-    }
+        @Override
+        public int getBlockIncrement() {
+            return 0;
+        }
 
-    @Override
-    public int getValue() {
-        return 0;
-    }
+        @Override
+        public void setVisibleAmount(int v) {
 
-    @Override
-    public void addAdjustmentListener(AdjustmentListener l) {
+        }
 
-    }
+        @Override
+        public int getVisibleAmount() {
+            return 0;
+        }
 
-    @Override
-    public void removeAdjustmentListener(AdjustmentListener l) {
+        @Override
+        public void setValue(int v) {
 
+        }
+
+        @Override
+        public int getValue() {
+            return 0;
+        }
+
+        @Override
+        public void addAdjustmentListener(AdjustmentListener l) {
+
+        }
+
+        @Override
+        public void removeAdjustmentListener(AdjustmentListener l) {
+
+        }
     }
 }
