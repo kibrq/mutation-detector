@@ -7,6 +7,7 @@ import Listeners.ActionListners.AminoButton.CreatingCodons;
 import Listeners.KeyListeners.ChangePPM;
 import Listeners.KeyListeners.Scrolling;
 import Model.AminoAcid;
+import MyComponents.JAminoAcidChooser;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,6 +15,8 @@ import java.awt.event.*;
 
 
 public class GUI extends JPanel {
+    private int rightPanelWidth = 400;
+
     private JSplitPane splitPane = new JSplitPane();
 
     private JPanel panelLeft = new JPanel();
@@ -45,6 +48,10 @@ public class GUI extends JPanel {
     private JButton changePPM = new JButton();
     private JLabel currentMode = new JLabel();
     private JLabel currentMistake = new JLabel();
+
+    private JPanel panelRightBottom = new JPanel();
+    private JAminoAcidChooser ac1;
+    private JAminoAcidChooser ac2;
 
 
     public GUI() {
@@ -79,7 +86,7 @@ public class GUI extends JPanel {
         panelLeft.add(panelLeftCenter, BorderLayout.CENTER);
 
         splitPane.setLeftComponent(panelLeft);
-        splitPane.getLeftComponent().setMinimumSize(new Dimension(200, 300));
+        splitPane.getLeftComponent().setMinimumSize(new Dimension(900, 300));
     }
 
     private void setPanelLeftTop() {
@@ -101,7 +108,7 @@ public class GUI extends JPanel {
 
     private void setPanelLeftCenter() {
         splitPaneCodMod.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
-        splitPaneCodMod.setResizeWeight(0.55);
+        splitPaneCodMod.setResizeWeight(0.5);
 
         panelLeftCenter.setLayout(new BorderLayout());
         panelWithScrollPane.setLayout(new BoxLayout(panelWithScrollPane, BoxLayout.Y_AXIS));
@@ -202,11 +209,13 @@ public class GUI extends JPanel {
 
     private void setPanelRight() {
         panelRight.setLayout(new BoxLayout(panelRight, BoxLayout.Y_AXIS));
+        setNormalSize(panelRight, new Dimension(400, this.getHeight()));
 
         setPanelRightTop();
-
+        setPanelRightBottom();
         panelRight.add(panelRightTop);
-        panelRight.add(Box.createVerticalStrut(600));
+        panelRight.add(Box.createVerticalStrut(100));
+        panelRight.add(panelRightBottom);
         panelRight.setBackground(Variables.getColorOfRightPanel());
 
         splitPane.setRightComponent(panelRight);
@@ -216,12 +225,15 @@ public class GUI extends JPanel {
         Font leftLabel = new Font(Font.SANS_SERIF, Font.PLAIN, 15);
         Font rightLabel = new Font(Font.SANS_SERIF, Font.BOLD, 15);
         panelRightTop.setLayout(new BoxLayout(panelRightTop, BoxLayout.Y_AXIS));
+        setNormalSize(panelRightTop, new Dimension(rightPanelWidth, 200));
         panelRightTop.setBackground(Variables.getColorOfRightPanel());
 
         JPanel panel1 = new MyTmpPanel();
         JPanel panel2 = new MyTmpPanel();
         JPanel panel4 = new MyTmpPanel();
         JPanel panel3 = new MyTmpPanel();
+        JPanel[] panels = {panel1, panel2, panel3, panel4};
+        setNormalSize(panels, new Dimension(rightPanelWidth, 50));
 
         panel1.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 0));
         JLabel label1 = new JLabel("Mass Difference: ");
@@ -289,10 +301,65 @@ public class GUI extends JPanel {
         panelRightTop.add(Box.createVerticalStrut(10));
         panelRightTop.add(panel1);
         panelRightTop.add(panel2);
-        panelRightTop.add(Box.createVerticalStrut(125));
+        panelRightTop.add(Box.createVerticalGlue());
         panelRightTop.add(panel4);
         panelRightTop.add(panel3);
 
+
+    }
+
+    private void setPanelRightBottom() {
+        JPanel panel1 = new JPanel();
+        int hGap = 100;
+        panel1.setLayout(new FlowLayout(FlowLayout.CENTER, hGap, 0));
+        int AACWidth = 60;
+        ac1 = new JAminoAcidChooser(new Dimension(AACWidth, 20));
+        ac2 = new JAminoAcidChooser(new Dimension(AACWidth, 20));
+        setNormalSize(panel1, new Dimension(panelRightTop.getWidth(), 50));
+        panel1.setBackground(Variables.getColorOfRightPanel());
+        panel1.add(ac1.getRoot());
+        panel1.add(ac2.getRoot());
+        class CodonPanel extends JPanel {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                if (ac1.getAminoAcid() != ac2.getAminoAcid()) {
+                    int x = hGap + AACWidth / 2 - 24;
+                    Color[] colors = {new Color(100, 200, 150), new Color(230, 200, 150), new Color(10, 130, 5), new Color(200, 10, 150), new Color(100, 200, 150)};
+                    Graphics2D g2d = (Graphics2D) g;
+                    for (int i = 0; i < ac1.getAminoAcid().getCodons().length; i++) {
+                        g2d.drawString(ac1.getAminoAcid().getCodons()[i], x, 10 + 20 * (i));
+                    }
+                    for (int i = 0; i < ac2.getAminoAcid().getCodons().length; i++) {
+                        g2d.drawString(ac2.getAminoAcid().getCodons()[i], this.getWidth() - x - 24, 10 + 20 * i);
+                    }
+                    int count = 0;
+                    for (int i = 0; i < ac1.getAminoAcid().getCodons().length; i++) {
+                        for (int j = 0; j < ac2.getAminoAcid().getCodons().length; j++) {
+                            if (CreatingCodons.isSMP(ac1.getAminoAcid().getCodons()[i], ac2.getAminoAcid().getCodons()[j])) {
+                                g2d.setColor(colors[count]);
+                                count = (count + 1) % colors.length;
+                                g2d.drawLine(x + 24, 10 + 20 * (i - 1) + 15, this.getWidth() - x - 24, 10 + 20 * (j - 1) + 15);
+                            }
+                        }
+                    }
+
+                }
+            }
+
+        }
+        CodonPanel cp = new CodonPanel();
+        cp.setBackground(Variables.getColorOfRightPanel());
+        ac1.addValueChangeListener(e ->
+                cp.repaint()
+        );
+        ac2.addValueChangeListener(e ->
+                cp.repaint()
+        );
+        setNormalSize(panelRightBottom, new Dimension(rightPanelWidth, 400));
+        panelRightBottom.setLayout(new BorderLayout());
+        panelRightBottom.add(panel1, BorderLayout.NORTH);
+        panelRightBottom.add(cp, BorderLayout.CENTER);
 
     }
 
@@ -520,6 +587,7 @@ public class GUI extends JPanel {
 
     class MyTmpPanel extends JPanel {
         public MyTmpPanel() {
+            super();
             this.setBackground(Variables.getColorOfRightPanel());
         }
     }
@@ -530,5 +598,17 @@ public class GUI extends JPanel {
 
     public JButton getPrefix() {
         return prefix;
+    }
+
+    public static void setNormalSize(JComponent component, Dimension d) {
+        component.setMaximumSize(d);
+        component.setMinimumSize(d);
+        component.setPreferredSize(d);
+    }
+
+    public static void setNormalSize(JComponent[] comps, Dimension d) {
+        for (JComponent comp : comps) {
+            setNormalSize(comp, d);
+        }
     }
 }

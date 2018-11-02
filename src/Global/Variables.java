@@ -39,7 +39,7 @@ public class Variables {
     private static HashMap<AminoAcid, ArrayList<Modification>> modificationDataBase = new HashMap<>();
 
     private static int currentCandidate = 0;
-    private static HashMap<AminoAcid, ArrayList<AminoAcid>> candidates = new HashMap<>();
+    private static HashMap<Integer, ArrayList<AminoAcid>> candidates = new HashMap<>();
     private static AminoAcid currentAmino = null;
 
     private static Mode mode = Mode.NORMAL;
@@ -54,9 +54,27 @@ public class Variables {
     final private static int countInScrollPanel = 10;
     private static double massesPrefix[];
     final static private int buttonWidth = 45;
+    private static boolean prefixSelected = false;
+    private static boolean suffixSelected = false;
     private static boolean prefixSelecting = false;
     private static boolean suffixSelecting = false;
-    private static HashMap<AminoAcid, ArrayList<Modification>> tmpModifications = new HashMap<>();
+    private static HashMap<Integer, ArrayList<Modification>> tmpModifications = new HashMap<>();
+
+    public static boolean isPrefixSelected() {
+        return prefixSelected;
+    }
+
+    public static void setPrefixSelected(boolean prefixSelected) {
+        Variables.prefixSelected = prefixSelected;
+    }
+
+    public static boolean isSuffixSelected() {
+        return suffixSelected;
+    }
+
+    public static void setSuffixSelected(boolean suffixSelected) {
+        Variables.suffixSelected = suffixSelected;
+    }
 
     public static String getFrameName() {
         return FRAME_NAME;
@@ -88,9 +106,6 @@ public class Variables {
         switch (Variables.mode) {
             case NORMAL:
                 gui.getCurrentMode().setText(NORMAL_MODE);
-                break;
-            case COMPARE:
-                gui.getCurrentMode().setText(COMPARE_MODE);
                 break;
             case MASS_DIFFERENCE:
                 gui.getCurrentMode().setText(MASS_DIFFERENCE_MODE);
@@ -158,13 +173,6 @@ public class Variables {
         return fontForLittleSignings;
     }
 
-    public static HashMap<AminoAcid, ArrayList<Modification>> getTmpModifications() {
-        return tmpModifications;
-    }
-
-    public static void setTmpModifications(HashMap<AminoAcid, ArrayList<Modification>> tmpModifications) {
-        Variables.tmpModifications = tmpModifications;
-    }
 
     public static String getPreviousStringInSearchTextField() {
         return previousStringInSearchTextField;
@@ -289,12 +297,20 @@ public class Variables {
     }
 
 
-    public static HashMap<AminoAcid, ArrayList<AminoAcid>> getCandidates() {
+    public static HashMap<Integer, ArrayList<AminoAcid>> getCandidates() {
         return candidates;
     }
 
-    public static void setCandidates(HashMap<AminoAcid, ArrayList<AminoAcid>> candidates) {
+    public static void setCandidates(HashMap<Integer, ArrayList<AminoAcid>> candidates) {
         Variables.candidates = candidates;
+    }
+
+    public static HashMap<Integer, ArrayList<Modification>> getTmpModifications() {
+        return tmpModifications;
+    }
+
+    public static void setTmpModifications(HashMap<Integer, ArrayList<Modification>> tmpModifications) {
+        Variables.tmpModifications = tmpModifications;
     }
 
     public static void setToBegin() {

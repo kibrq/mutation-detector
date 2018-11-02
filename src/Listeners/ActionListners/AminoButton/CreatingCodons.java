@@ -11,6 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.UnknownServiceException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -20,7 +21,7 @@ public class CreatingCodons implements ActionListener {
     double ppm = 0;
     double dm = 0;
 
-    static class PaintPanel extends JPanel {
+    class PaintPanel extends JPanel {
         Color[] colors = {new Color(200, 0, 0), new Color(0, 200, 0), new Color(0, 0, 200), new Color(100, 0, 0), new Color(0, 100, 0), new Color(0, 0, 100), new Color(100, 20, 100), new Color(20, 100, 100)};
 
         @Override
@@ -34,14 +35,31 @@ public class CreatingCodons implements ActionListener {
             if (Variables.getMode() != Mode.NORMAL) {
                 g2d.setFont(Variables.getFontForTitles());
                 g2d.drawString("Substitutions", this.getWidth() / 2 - 68, 20);
+                StringBuilder s = new StringBuilder();
                 if (Variables.getA1() != null) {
-                    g2d.drawString(Variables.getA1().getTitle(), x, y);
+                    s.append(Variables.getA1().getTitle());
+                    s.append("(");
+                    boolean first = true;
+                    for (int i = 0; i < Variables.getSeq().length; i++) {
+                        if (Variables.getSeq()[i] == Variables.getA1()) {
+                            if (!first) {
+                                s.append(",");
+                            }
+                            s.append(Integer.toString(i + 1));
+                            first = false;
+                        }
+                    }
+                    s.append(")");
+                    g2d.drawString(s.toString(), x, y);
                     g2d.setFont(Variables.getFontForLittleSignings());
                     int y1 = y + 60;
-                    for (String s : Variables.getA1().getCodons()) {
-                        g2d.drawString(s, x - 11, y1);
+                    for (String s1 : Variables.getA1().getCodons()) {
+                        g2d.drawString(s1, x - 11, y1);
                         y1 += 30;
                     }
+                    g2d.setFont(new Font(Font.SERIF, Font.ITALIC, 15));
+                    g2d.drawString("Current mistake is " + Double.toString(countTMPMistake(i)) + "Da", x * 3 - 35 * 3 + 5, y + 350);
+
 
                 }
                 g2d.setFont(Variables.getFontForTitles());
@@ -50,23 +68,23 @@ public class CreatingCodons implements ActionListener {
                     g2d.drawString(Variables.getA2().getTitle(), this.getWidth() - x - 30, y);
                     g2d.setFont(Variables.getFontForLittleSignings());
                     int y1 = y + 60;
-                    for (String s : Variables.getA2().getCodons()) {
-                        g2d.drawString(s, this.getWidth() - x - 41, y1);
+                    for (String s1 : Variables.getA2().getCodons()) {
+                        g2d.drawString(s1, this.getWidth() - x - 41, y1);
                         y1 += 30;
                     }
                 } else if (Variables.getMode() == Mode.MASS_DIFFERENCE) {
-                    g2d.drawString("Empty", this.getWidth() - x - 50, y);
+                    g2d.drawString("NONE", this.getWidth() - x - 50, y);
                 }
                 if (Variables.getA1() != null && Variables.getA2() != null) {
                     g2d.setFont(new Font(Font.SERIF, Font.ITALIC, 15));
                     double dm1 = UsefullFunctions.round(Variables.getA1().getMass() - Variables.getA2().getMass());
-                    g2d.drawString("Difference in mass is " + Double.toString(dm1) + "Da", x * 3 - 35 * 3 + 5, y);
+                    g2d.drawString("Difference in mass is " + Double.toString(dm1) + "Da", x * 3 - 35 * 3 + 5, y + 300);
                     int color = 0;
                     int i = 0;
-                    for (String s : Variables.getA1().getCodons()) {
+                    for (String s1 : Variables.getA1().getCodons()) {
                         int j = 0;
-                        for (String s1 : Variables.getA2().getCodons()) {
-                            if (isSMP(s, s1)) {
+                        for (String s2 : Variables.getA2().getCodons()) {
+                            if (isSMP(s1, s2)) {
                                 g2d.setColor(colors[color]);
                                 g2d.drawLine(x + 3 * 10 + 4, y + 60 + 30 * i - 8, this.getWidth() - x - 44, y + 60 + 30 * j - 8);
                                 color++;
@@ -80,9 +98,9 @@ public class CreatingCodons implements ActionListener {
             } else {
                 g2d.setFont(Variables.getFontForTitles());
                 String s = "Encoding codons for " + Variables.getCurrentAmino().getFullName() + ":";
-                g2d.drawString(s, this.getWidth() / 2 - 75, 20);
+                g2d.drawString(s, this.getWidth() / 2 - s.length() * 10 / 2, 20);
 
-                x = this.getWidth() / 2 - 75;
+                x = this.getWidth() / 2 - s.length() * 10 / 2;
                 int l = s.length() * 8;
                 g2d.setFont(Variables.getFontForLittleSignings());
                 int y1 = y + 20;
@@ -94,7 +112,7 @@ public class CreatingCodons implements ActionListener {
         }
     }
 
-    static class ModificationPanel extends JPanel {
+    class ModificationPanel extends JPanel {
         @Override
         protected void paintComponent(Graphics g) {
             int x = 128;
@@ -105,11 +123,16 @@ public class CreatingCodons implements ActionListener {
             q.drawString("Possible modifications", this.getWidth() / 2 - x, y);
             y += 60;
             q.setFont(Variables.getFontForLittleSignings());
-            int i = 1;
-            for (Modification mod : Variables.getMode() == Mode.MASS_DIFFERENCE ? Variables.getTmpModifications().get(Variables.getCurrentAmino()) : Variables.getModificationDataBase().get(Variables.getCurrentAmino())) {
-                q.drawString(i + ". " + mod.getName() + " (" + mod.getMassDifference() + "Da)", this.getWidth() / 2 - x, y);
+            int j = 1;
+            boolean flag = false;
+            for (Modification mod : Variables.getMode() == Mode.MASS_DIFFERENCE ? Variables.getTmpModifications().get(i) : Variables.getModificationDataBase().get(Variables.getCurrentAmino())) {
+                q.drawString(j + ". " + mod.getName() + " (" + mod.getMassDifference() + "Da)", this.getWidth() / 2 - x, y);
                 y += 30;
-                i++;
+                flag = true;
+                j++;
+            }
+            if (!flag) {
+                q.drawString("NONE", this.getWidth() / 2 - 10, y);
             }
 
         }
@@ -122,8 +145,9 @@ public class CreatingCodons implements ActionListener {
         Variables.getGui().getPanelWithCodons().removeAll();
         Variables.getGui().getPanelWithModifications().removeAll();
         String s = ((JButton) e.getSource()).getText();
+        i = Integer.parseInt(((JButton) e.getSource()).getName());
+        System.out.println(i);
         if (Variables.isPrefixSelecting() || Variables.isSuffixSelecting()) {
-            i = Integer.parseInt(((JButton) e.getSource()).getName());
             paintAminoSequence(i);
 
         } else {
@@ -136,30 +160,17 @@ public class CreatingCodons implements ActionListener {
                 case NORMAL:
                     Variables.setA1(a);
                     break;
-                case COMPARE:
-                    if (Variables.getA1() == null) {
-                        Variables.setA1(a);
-                    } else if (Variables.getA2() == null && !Variables.getA1().getTitle().equals(a.getTitle())) {
-                        Variables.setA2(a);
-                    } else if (Variables.getA1().getTitle().equals(a.getTitle())) {
-                        Variables.setA1(null);
-                        Variables.setA2(null);
-                    } else {
-                        Variables.setA1(a);
-                        Variables.setA2(null);
-                    }
-                    Variables.getGui().getPanelWithCodons().repaint();
-                    break;
                 case MASS_DIFFERENCE:
                     Variables.setA1(a);
                     Variables.getGui().getNext().setVisible(false);
-                    if (Variables.getCandidates() != null && !Variables.getCandidates().get(a).isEmpty()) {
-                        Variables.setA2(Variables.getCandidates().get(a).get(Variables.getCurrentCandidate()));
-                        if (Variables.getCandidates().get(a).size() > 1) {
+                    if (Variables.getCandidates() != null && !Variables.getCandidates().get(i).isEmpty()) {
+                        Variables.setA2(Variables.getCandidates().get(i).get(Variables.getCurrentCandidate()));
+                        if (Variables.getCandidates().get(i).size() > 1) {
                             Variables.getGui().getNext().setVisible(true);
                             Variables.getGui().getPanelWithNavigationButton().repaint();
                         }
                     } else {
+                        System.out.println(Variables.getCandidates().get(i));
                         Variables.setA2(null);
                     }
                     break;
@@ -167,11 +178,11 @@ public class CreatingCodons implements ActionListener {
             }
 
 
-            if (Variables.getMode() != Mode.COMPARE) {
-                JPanel panel2 = new ModificationPanel();
-                panel2.setBackground(Variables.getColorOfPanelWithCodonsModifications());
-                Variables.getGui().getPanelWithModifications().add(panel2, BorderLayout.CENTER);
-            }
+            JPanel panel2 = new ModificationPanel();
+            panel2.setMinimumSize(new Dimension(300, 200));
+            panel2.setBackground(Variables.getColorOfPanelWithCodonsModifications());
+            Variables.getGui().getPanelWithModifications().add(panel2, BorderLayout.CENTER);
+
             UsefullFunctions.revalidateRepaint(Variables.getGui().getPanelWithModifications());
             JPanel panel1 = new PaintPanel();
             panel1.setBackground(Variables.getColorOfPanelWithCodonsModifications());
@@ -183,11 +194,17 @@ public class CreatingCodons implements ActionListener {
     }
 
     private void countMistake() {
+        System.out.println(i);
         Variables.setCurrentMistake(Variables.isPrefixSelecting() ? ppm * Variables.getMassesPrefix()[i] / Math.pow(10, 6) : ppm * (Variables.getMassesPrefix()[Variables.getMassesPrefix().length - 1] + Variables.getMassesPrefix()[i]) / Math.pow(10, 6));
     }
 
-    private void paintAminoSequence(int num) {
+    private double countTMPMistake(int num) {
+        return UsefullFunctions.round(Variables.isPrefixSelected() ? ppm * Variables.getMassesPrefix()[num] / Math.pow(10, 6) : ppm * (Variables.getMassesPrefix()[Variables.getMassesPrefix().length - 1] + Variables.getMassesPrefix()[num]) / Math.pow(10, 6));
 
+    }
+
+    private void paintAminoSequence(int num) {
+        Variables.setPrefixSelected(false);
         Variables.setCandidates(new HashMap<>());
         Variables.setTmpModifications(new HashMap<>());
         countMistake();
@@ -196,7 +213,9 @@ public class CreatingCodons implements ActionListener {
         if (Variables.isPrefixSelecting()) {
             start = 0;
             end = num;
+            Variables.setPrefixSelected(true);
         } else {
+            Variables.setPrefixSelected(false);
             start = num;
             end = Variables.getSeq().length;
         }
@@ -207,17 +226,17 @@ public class CreatingCodons implements ActionListener {
         for (int i = 0; i < Variables.getSeq().length; i++) {
             Variables.getGui().getPanelWithAminoButtons().getComponent(i).setEnabled(false);
             if (i >= start && i < end) {
-                findCandidatesForThisAmino(Variables.getSeq()[i]);
-                if (!Variables.getCandidates().get(Variables.getSeq()[i]).isEmpty()) {
+                findCandidatesForThisAmino(Variables.getSeq()[i], i);
+                if (!Variables.getCandidates().get(i).isEmpty()) {
                     flah = true;
                     Variables.getGui().getAminoSequence().getComponent(i).setForeground(Variables.getColorOfMut());
                     Variables.getGui().getPanelWithAminoButtons().getComponent(i).setForeground(Variables.getColorOfMut());
                     Variables.getGui().getPanelWithAminoButtons().getComponent(i).setEnabled(true);
                 }
-                findModifications(Variables.getSeq()[i]);
-                if (!Variables.getTmpModifications().get(Variables.getSeq()[i]).isEmpty()) {
+                findModifications(Variables.getSeq()[i], i);
+                if (!Variables.getTmpModifications().get(i).isEmpty()) {
                     flah = true;
-                    Variables.getTmpModifications().get(Variables.getSeq()[i]).sort(new Comparator<Modification>() {
+                    Variables.getTmpModifications().get(i).sort(new Comparator<Modification>() {
                         @Override
                         public int compare(Modification o1, Modification o2) {
                             if (o1.getMassDifference() != o2.getMassDifference()) {
@@ -236,7 +255,7 @@ public class CreatingCodons implements ActionListener {
 
                     }
                 }
-            }else {
+            } else {
                 if (pref && i >= end) {
                     Variables.getGui().getAminoSequence().getComponent(i).setForeground(Variables.getColorOfCheckedPrefix_Suffix());
                     Variables.getGui().getPanelWithAminoButtons().getComponent(i).setForeground(Variables.getColorOfCheckedPrefix_Suffix());
@@ -254,35 +273,37 @@ public class CreatingCodons implements ActionListener {
 
     }
 
-    private void findModifications(AminoAcid a) {
+    private void findModifications(AminoAcid a, int num) {
         ArrayList<Modification> al = new ArrayList<>();
         for (Modification mod : Variables.getModificationDataBase().get(a)) {
             double dm1 = mod.getMassDifference();
-            if (dm1 >= dm - Variables.getCurrentMistake() && dm1 <= dm + Variables.getCurrentMistake()) {
+            double mistake = countTMPMistake(num);
+            if (dm1 >= dm - mistake && dm1 <= dm + mistake) {
                 al.add(mod);
             }
         }
-        Variables.getTmpModifications().putIfAbsent(a, al);
+        Variables.getTmpModifications().put(num, al);
 
     }
 
-    private void findCandidatesForThisAmino(AminoAcid a) {
+    private void findCandidatesForThisAmino(AminoAcid a, int num) {
         ArrayList<AminoAcid> al = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
-            if (isFit(a, AminoAcid.values()[i])) {
+            if (isFit(a, AminoAcid.values()[i], num)) {
                 al.add(AminoAcid.values()[i]);
             }
         }
-        Variables.getCandidates().put(a, al);
+        Variables.getCandidates().put(num, al);
     }
 
-    private boolean isFit(AminoAcid a, AminoAcid a1) {
-        return isFitByMass(a, a1) && isSMP(a, a1) && !a.equals(a1);
+    private boolean isFit(AminoAcid a, AminoAcid a1, int num) {
+        return isFitByMass(a, a1, num) && isSMP(a, a1) && !a.equals(a1);
     }
 
-    private boolean isFitByMass(AminoAcid a, AminoAcid a1) {
+    private boolean isFitByMass(AminoAcid a, AminoAcid a1, int num) {
         double dm1 = a.getMass() - a1.getMass();
-        return (dm1 <= dm + Variables.getCurrentMistake() && dm1 >= dm - Variables.getCurrentMistake());
+        double mistake = countTMPMistake(num);
+        return (dm1 <= dm + mistake && dm1 >= dm - mistake);
     }
 
     private boolean isSMP(AminoAcid a1, AminoAcid a2) {
@@ -296,7 +317,7 @@ public class CreatingCodons implements ActionListener {
         return false;
     }
 
-    private static boolean isSMP(String a, String a1) {
+    public static boolean isSMP(String a, String a1) {
         return ((a.charAt(0) == a1.charAt(0) && (a.charAt(1) == a1.charAt(1)))
                 || (a.charAt(0) == a1.charAt(0) && a.charAt(2) == a1.charAt(2))
                 || (a.charAt(1) == a1.charAt(1) && (a.charAt(2) == a1.charAt(2))))

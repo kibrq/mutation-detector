@@ -55,24 +55,12 @@ public enum AminoAcid {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public double getMass() {
         return mass;
     }
 
-    public void setMass(double mass) {
-        this.mass = mass;
-    }
-
     public String[] getCodons() {
         return codons;
-    }
-
-    public void setCodons(String[] codons) {
-        this.codons = codons;
     }
 
     public String getFullName() {
