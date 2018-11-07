@@ -122,10 +122,7 @@ public class Variables {
         a2 = null;
         candidates = null;
         tmpModifications = null;
-        gui.getPanelWithModifications().removeAll();
-        gui.getPanelWithCodons().removeAll();
-        UsefullFunctions.revalidateRepaint(gui.getPanelWithModifications());
-        UsefullFunctions.revalidateRepaint(gui.getPanelWithCodons());
+        gui.getScrollPaneWithAminoAcids().removeAndRepaint();
     }
 
     public static AminoAcid getCurrentAmino() {
@@ -161,6 +158,10 @@ public class Variables {
         currentMistake = UsefullFunctions.round(currentMistake);
         Variables.currentMistake = currentMistake;
         Variables.getGui().getCurrentMistake().setText(Double.toString(currentMistake) + "Da");
+    }
+
+    public static boolean aminoAcidsEquals(int i, int j) {
+        return Variables.getCandidates().get(i).size() == Variables.getCandidates().get(j).size() && Variables.getTmpModifications().get(i).size() == Variables.getTmpModifications().get(j).size();
     }
 
 

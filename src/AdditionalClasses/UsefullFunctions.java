@@ -62,13 +62,13 @@ public class UsefullFunctions {
 
     public static void prefixAction() {
         Variables.setPrefixSelecting(!Variables.isPrefixSelecting());
-        UsefullFunctions.revalidateRepaint(Variables.getGui().getPanelWithCodons());
+        Variables.getGui().getScrollPane().getHorizontalScrollBar().setValue(Variables.getGui().getScrollPane().getHorizontalScrollBar().getMaximum());
         UsefullFunctions.clearAminoSequence();
     }
 
     public static void suffixAction() {
         Variables.setSuffixSelecting(!Variables.isSuffixSelecting());
-        UsefullFunctions.revalidateRepaint(Variables.getGui().getPanelWithCodons());
+        Variables.getGui().getScrollPane().getHorizontalScrollBar().setValue(0);
         UsefullFunctions.clearAminoSequence();
     }
 

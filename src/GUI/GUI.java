@@ -3,11 +3,12 @@ package GUI;
 
 import AdditionalClasses.UsefullFunctions;
 import Global.*;
-import Listeners.ActionListners.AminoButton.CreatingCodons;
+import Listeners.ActionListners.AminoButton.AminoAcidClicked;
 import Listeners.KeyListeners.ChangePPM;
 import Listeners.KeyListeners.Scrolling;
 import Model.AminoAcid;
 import MyComponents.JAminoAcidChooser;
+import MyComponents.JScrollPaneWithAminoAcids;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,13 +33,9 @@ public class GUI extends JPanel {
     private JButton suffix = new JButton("Highlight suffix");
     private JButton prefix = new JButton("Highlight prefix");
 
-    private JSplitPane splitPaneCodMod = new JSplitPane();
-    private JPanel panelWithCodons = new JPanel();
 
-    private JPanel panelWithModifications = new JPanel();
-
-    private JPanel panelWithNavigationButton = new JPanel();
-    private JButton next = new JButton();
+    private JPanel innerPane = new JPanel();
+    private JScrollPaneWithAminoAcids scrollPaneWithAminoAcids;
 
     private JPanel panelRight = new JPanel();
 
@@ -107,8 +104,6 @@ public class GUI extends JPanel {
     }
 
     private void setPanelLeftCenter() {
-        splitPaneCodMod.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
-        splitPaneCodMod.setResizeWeight(0.5);
 
         panelLeftCenter.setLayout(new BorderLayout());
         panelWithScrollPane.setLayout(new BoxLayout(panelWithScrollPane, BoxLayout.Y_AXIS));
@@ -148,63 +143,18 @@ public class GUI extends JPanel {
         panelWithScrollPane.add(panel1);
         panelWithScrollPane.add(Box.createVerticalStrut(50));
 
-        panelWithCodons.setPreferredSize(new Dimension(400, 300));
-        panelWithCodons.setLayout(new BorderLayout());
-
-        JPanel panel2 = new JPanel();
-        panel2.setLayout(new BoxLayout(panel2, BoxLayout.Y_AXIS));
-        panel2.setBackground(Variables.getColorOfPanelWithCodonsModifications());
-
-        panelWithCodons.setBackground(Variables.getColorOfPanelWithCodonsModifications());
-        panelWithModifications.setBackground(Variables.getColorOfPanelWithCodonsModifications());
-        panel2.add(Box.createVerticalStrut(40));
-        panel2.add(panelWithCodons);
-        panel2.add(Box.createVerticalStrut(40));
-        setNavigationPanel();
-        panel2.add(panelWithNavigationButton);
-        panelWithModifications.setLayout(new BorderLayout());
-
-
-        splitPaneCodMod.setLeftComponent(panel2);
-
-        splitPaneCodMod.setRightComponent(panelWithModifications);
-
         panelWithScrollPane.setBackground(Variables.getColorOfPanelWithSequnece());
         panelLeftCenter.add(panelWithScrollPane, BorderLayout.NORTH);
-        panelLeftCenter.add(splitPaneCodMod, BorderLayout.CENTER);
+        innerPane.setLayout(new BoxLayout(innerPane, BoxLayout.Y_AXIS));
+        scrollPaneWithAminoAcids = new JScrollPaneWithAminoAcids(innerPane);
+        panelLeftCenter.add(scrollPaneWithAminoAcids, BorderLayout.CENTER);
 
         panelLeftCenter.setBackground(Variables.getColorOfPanelWithCodonsModifications());
 
 
     }
 
-    private void setNavigationPanel() {
-        panelWithNavigationButton.setLayout(new BoxLayout(panelWithNavigationButton, BoxLayout.Y_AXIS));
-        panelWithNavigationButton.add(Box.createVerticalStrut(10));
-        next.setPreferredSize(new Dimension(80, 40));
-        next.setText("NEXT");
-        JPanel panel1 = new JPanel();
-        panel1.setBackground(Variables.getColorOfPanelWithCodonsModifications());
-        panel1.setLayout(new BoxLayout(panel1, BoxLayout.X_AXIS));
-        panel1.add(Box.createHorizontalGlue());
-        panel1.add(Box.createHorizontalStrut(250));
-        next.setVisible(false);
-        next.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Variables.setCurrentCandidate(Variables.getCurrentCandidate() + 1);
-                Variables.setA2(Variables.getCandidates().get(Variables.getCurrentAmino()).get(Variables.getCurrentCandidate()));
-                panelWithCodons.getComponent(0).repaint();
 
-            }
-        });
-        panel1.add(next);
-        panel1.add(Box.createHorizontalStrut(250));
-        panel1.add(Box.createHorizontalGlue());
-        panelWithNavigationButton.add(panel1);
-        panelWithNavigationButton.add(Box.createVerticalStrut(80));
-        panelWithNavigationButton.setBackground(Variables.getColorOfPanelWithCodonsModifications());
-    }
 
 
     private void setPanelRight() {
@@ -336,13 +286,15 @@ public class GUI extends JPanel {
                     int count = 0;
                     for (int i = 0; i < ac1.getAminoAcid().getCodons().length; i++) {
                         for (int j = 0; j < ac2.getAminoAcid().getCodons().length; j++) {
-                            if (CreatingCodons.isSMP(ac1.getAminoAcid().getCodons()[i], ac2.getAminoAcid().getCodons()[j])) {
+                            if (AminoAcidClicked.isSMP(ac1.getAminoAcid().getCodons()[i], ac2.getAminoAcid().getCodons()[j])) {
                                 g2d.setColor(colors[count]);
                                 count = (count + 1) % colors.length;
                                 g2d.drawLine(x + 24, 10 + 20 * (i - 1) + 15, this.getWidth() - x - 24, 10 + 20 * (j - 1) + 15);
                             }
                         }
                     }
+                    g2d.setColor(Color.BLACK);
+                    g2d.drawString("Mass Difference: " + UsefullFunctions.round(ac1.getAminoAcid().getMass() - ac2.getAminoAcid().getMass()), x, Math.max(ac1.getAminoAcid().getCodons().length, ac2.getAminoAcid().getCodons().length)*20 + 30);
 
                 }
             }
@@ -413,7 +365,7 @@ public class GUI extends JPanel {
             button.setText(tmp.getTitle());
             button.setName(Integer.toString(i));
             button.setPreferredSize(new Dimension(Variables.getButtonWidth(), 20));
-            button.addActionListener(new CreatingCodons());
+            button.addActionListener(new AminoAcidClicked());
             panelWithAminoButtons.add(button);
 
         }
@@ -486,47 +438,6 @@ public class GUI extends JPanel {
 
     public void setScrollPane(JScrollPane scrollPane) {
         this.scrollPane = scrollPane;
-    }
-
-    public JSplitPane getSplitPaneCodMod() {
-        return splitPaneCodMod;
-    }
-
-    public void setSplitPaneCodMod(JSplitPane splitPaneCodMod) {
-        this.splitPaneCodMod = splitPaneCodMod;
-    }
-
-    public JPanel getPanelWithCodons() {
-        return panelWithCodons;
-
-    }
-
-    public void setPanelWithCodons(JPanel panelWithCodons) {
-        this.panelWithCodons = panelWithCodons;
-    }
-
-    public JPanel getPanelWithModifications() {
-        return panelWithModifications;
-    }
-
-    public void setPanelWithModifications(JPanel panelWithModifications) {
-        this.panelWithModifications = panelWithModifications;
-    }
-
-    public JPanel getPanelWithNavigationButton() {
-        return panelWithNavigationButton;
-    }
-
-    public void setPanelWithNavigationButton(JPanel panelWithNavigationButton) {
-        this.panelWithNavigationButton = panelWithNavigationButton;
-    }
-
-    public JButton getNext() {
-        return next;
-    }
-
-    public void setNext(JButton next) {
-        this.next = next;
     }
 
     public JPanel getPanelRight() {
@@ -610,5 +521,9 @@ public class GUI extends JPanel {
         for (JComponent comp : comps) {
             setNormalSize(comp, d);
         }
+    }
+
+    public JScrollPaneWithAminoAcids getScrollPaneWithAminoAcids() {
+        return scrollPaneWithAminoAcids;
     }
 }
