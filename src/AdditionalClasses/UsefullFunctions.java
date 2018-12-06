@@ -150,4 +150,36 @@ public class UsefullFunctions {
 
         }
     }
+
+    public static void drawInCenterOfRect(Graphics2D g2d, String s, int y, int startX, int endX) {
+        g2d.drawString(s, XCenter(s, g2d.getFont(), startX, endX), y);
+    }
+
+    public static void drawInCenter(JComponent comp, Graphics2D g2d, String s, int y) {
+        g2d.drawString(s, XCenter(0, comp.getWidth(), s, g2d.getFont()), y);
+    }
+
+    public static int XCenter(String s, Font font, int startX, int endX) {
+        return ((endX - startX - s.length() * font.getSize() / 2) / 2);
+    }
+
+    public static int XCenter(int startX, int endX, String s, Font font) {
+        return XCenter(startX, endX, s.length() * font.getSize() / 2);
+    }
+
+    private static int XCenter(int startX, int endX, int len) {
+        return (endX - startX - len) / 2;
+    }
+
+    public static void setNormalSize(JComponent component, Dimension d) {
+        component.setMaximumSize(d);
+        component.setMinimumSize(d);
+        component.setPreferredSize(d);
+    }
+
+    public static void setNormalSize(JComponent[] comps, Dimension d) {
+        for (JComponent comp : comps) {
+            setNormalSize(comp, d);
+        }
+    }
 }

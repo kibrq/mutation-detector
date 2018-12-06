@@ -8,7 +8,6 @@ import Model.Mode;
 import Model.Modification;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -25,7 +24,7 @@ public class AminoAcidClicked implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         dm = Variables.getDm();
         ppm = Variables.getPpm();
-        Variables.getGui().getScrollPaneWithAminoAcids().removeAndRepaint();
+        Variables.getGui().removeAllAminoAcids();
         String s = ((JButton) e.getSource()).getText();
         i = Integer.parseInt(((JButton) e.getSource()).getName());
         System.out.println(i);
@@ -52,32 +51,34 @@ public class AminoAcidClicked implements ActionListener {
                     break;
 
             }
-            StringBuilder sb = new StringBuilder(Integer.toString(i));
+            ArrayList<ArrayList<Integer>> sb = new ArrayList<>();
+            int cur = 0;
             if (Variables.getMode() == Mode.MASS_DIFFERENCE) {
-                sb = new StringBuilder();
                 int previous = 0;
                 while (!Variables.getSeq()[previous].getTitle().equals(Variables.getSeq()[i].getTitle())) {
                     previous++;
                 }
                 System.out.println(previous);
-                sb = new StringBuilder(Integer.toString(previous));
-                sb.append(" ");
+                sb.add(new ArrayList<>());
+                sb.get(cur).add(previous);
                 for (int j = previous + 1; j < Variables.getSeq().length; j++) {
                     if (Variables.getCandidates().get(j) != null && Variables.getSeq()[j].getTitle().equals(Variables.getSeq()[previous].getTitle())) {
                         if (Variables.aminoAcidsEquals(previous, j)) {
-                            sb.append(j);
-                            sb.append(" ");
+                            sb.get(cur).add(j);
                             System.out.println(sb);
                         } else {
-                            Variables.getGui().getScrollPaneWithAminoAcids().addAminoAcid(sb.toString());
-                            sb = new StringBuilder(Integer.toString(j));
-                            sb.append(" ");
+                            sb.add(new ArrayList<>());
+                            cur++;
+                            sb.get(cur).add(j);
                             previous = j;
                         }
                     }
                 }
+            }else{
+                sb.add(new ArrayList<>());
+                sb.get(0).add(i);
             }
-            Variables.getGui().getScrollPaneWithAminoAcids().addAminoAcid(sb.toString());
+            Variables.getGui().addAminoAcid(sb);
 
         }
     }
@@ -190,7 +191,7 @@ public class AminoAcidClicked implements ActionListener {
     }
 
     private boolean isFitByMass(AminoAcid a, AminoAcid a1, int num) {
-        double dm1 = a.getMass() - a1.getMass();
+        double dm1 = a.getDifferenceMass(a1);
         double mistake = countTMPMistake(num);
         return (dm1 <= dm + mistake && dm1 >= dm - mistake);
     }

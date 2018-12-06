@@ -44,7 +44,7 @@ public class Start {
             public void actionPerformed(ActionEvent e) {
                 GUI gui = Variables.getGui();
                 if (gui != null) {
-                    Variables.clearPanelsWithModCod();
+                    UsefullFunctions.clearAminoSequence();
                     Variables.setMode(Mode.MASS_DIFFERENCE);
                     Variables.getGui().getSuffix().setVisible(Variables.getMode() == Mode.MASS_DIFFERENCE);
                     Variables.getGui().getPrefix().setVisible(Variables.getMode() == Mode.MASS_DIFFERENCE);
@@ -54,13 +54,15 @@ public class Start {
         panel.getActionMap().put(action3, new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                UsefullFunctions.prefixAction();
+                if(Variables.getMode() == Mode.MASS_DIFFERENCE)
+                    UsefullFunctions.prefixAction();
             }
         });
         panel.getActionMap().put(action4, new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                UsefullFunctions.suffixAction();
+                if(Variables.getMode() == Mode.MASS_DIFFERENCE)
+                    UsefullFunctions.suffixAction();
             }
         });
 

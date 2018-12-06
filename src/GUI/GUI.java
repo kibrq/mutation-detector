@@ -7,12 +7,13 @@ import Listeners.ActionListners.AminoButton.AminoAcidClicked;
 import Listeners.KeyListeners.ChangePPM;
 import Listeners.KeyListeners.Scrolling;
 import Model.AminoAcid;
-import MyComponents.JAminoAcidChooser;
-import MyComponents.JScrollPaneWithAminoAcids;
+import Model.Mode;
+import MyComponents.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 
 public class GUI extends JPanel {
@@ -30,12 +31,12 @@ public class GUI extends JPanel {
     private JPanel panelWithScrollPane = new JPanel();
     private JPanel panelWithAminoButtons = new JPanel();
     private JScrollPane scrollPane = new JScrollPane(panelWithAminoButtons);
-    private JButton suffix = new JButton("Highlight suffix");
-    private JButton prefix = new JButton("Highlight prefix");
+    private JButton suffix = new JButton("Spot suffix");
+    private JButton prefix = new JButton("Spot prefix");
 
 
     private JPanel innerPane = new JPanel();
-    private JScrollPaneWithAminoAcids scrollPaneWithAminoAcids;
+    private JScrollPane scrollPaneWithAminoAcids;
 
     private JPanel panelRight = new JPanel();
 
@@ -146,7 +147,10 @@ public class GUI extends JPanel {
         panelWithScrollPane.setBackground(Variables.getColorOfPanelWithSequnece());
         panelLeftCenter.add(panelWithScrollPane, BorderLayout.NORTH);
         innerPane.setLayout(new BoxLayout(innerPane, BoxLayout.Y_AXIS));
-        scrollPaneWithAminoAcids = new JScrollPaneWithAminoAcids(innerPane);
+
+        scrollPaneWithAminoAcids = new JScrollPane(innerPane);
+        scrollPaneWithAminoAcids.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPaneWithAminoAcids.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         panelLeftCenter.add(scrollPaneWithAminoAcids, BorderLayout.CENTER);
 
         panelLeftCenter.setBackground(Variables.getColorOfPanelWithCodonsModifications());
@@ -154,12 +158,52 @@ public class GUI extends JPanel {
 
     }
 
+    public void addAminoAcid(ArrayList<ArrayList<Integer>> a) {
+        for (int i = 0; i < a.size(); i++) {
+            JPanel panel = new JPanel();
+            UsefullFunctions.setNormalSize(panel, new Dimension(innerPane.getWidth(), 600));
+            JLabel label = new JLabel();
+            label.setFont(Variables.getFontForTitles());
+            StringBuilder sb = new StringBuilder();
+            sb.append(Variables.getSeq()[a.get(i).get(0)].getFullName().toUpperCase());
+            if(Variables.getMode() == Mode.MASS_DIFFERENCE) {
+            sb.append("(");
+            for (int j = 0; j < a.get(i).size() - 1; j++) {
+                sb.append(a.get(i).get(j));
+                sb.append(",");
+            }
+            sb.append(a.get(i).get(a.get(i).size() - 1));
+            sb.append(") ");
 
+                sb.append("Maximum mistake is ");
+                sb.append(Variables.countMistakeByNum(a.get(i).get(a.get(i).size() - 1)));
+                sb.append("Da");
+            }
+            label.setText(sb.toString());
+            JSplitPane sp = new JSplitPane();
+            JPanel panelLeft = new JSubstitutionsPanel(a.get(i).get(0));
+            JPanel panelRight = new JModificationPanel(a.get(i).get(0));
+            UsefullFunctions.setNormalSize(panelLeft, new Dimension(innerPane.getWidth() / 2, 500));
+            UsefullFunctions.setNormalSize(panelRight, new Dimension(innerPane.getWidth() / 2, 500));
+            sp.setLeftComponent(panelLeft);
+            sp.setRightComponent(panelRight);
+            panel.add(label, BorderLayout.NORTH);
+            panel.add(sp, BorderLayout.CENTER);
+            innerPane.add(Box.createVerticalStrut(20));
+            innerPane.add(panel);
+        }
+        scrollPaneWithAminoAcids.repaint();
+        scrollPaneWithAminoAcids.revalidate();
+    }
 
+    public void removeAllAminoAcids() {
+        innerPane.removeAll();
+        scrollPaneWithAminoAcids.revalidate();
+    }
 
     private void setPanelRight() {
         panelRight.setLayout(new BoxLayout(panelRight, BoxLayout.Y_AXIS));
-        setNormalSize(panelRight, new Dimension(400, this.getHeight()));
+        UsefullFunctions.setNormalSize(panelRight, new Dimension(400, this.getHeight()));
 
         setPanelRightTop();
         setPanelRightBottom();
@@ -175,7 +219,7 @@ public class GUI extends JPanel {
         Font leftLabel = new Font(Font.SANS_SERIF, Font.PLAIN, 15);
         Font rightLabel = new Font(Font.SANS_SERIF, Font.BOLD, 15);
         panelRightTop.setLayout(new BoxLayout(panelRightTop, BoxLayout.Y_AXIS));
-        setNormalSize(panelRightTop, new Dimension(rightPanelWidth, 200));
+        UsefullFunctions.setNormalSize(panelRightTop, new Dimension(rightPanelWidth, 200));
         panelRightTop.setBackground(Variables.getColorOfRightPanel());
 
         JPanel panel1 = new MyTmpPanel();
@@ -183,7 +227,7 @@ public class GUI extends JPanel {
         JPanel panel4 = new MyTmpPanel();
         JPanel panel3 = new MyTmpPanel();
         JPanel[] panels = {panel1, panel2, panel3, panel4};
-        setNormalSize(panels, new Dimension(rightPanelWidth, 50));
+        UsefullFunctions.setNormalSize(panels, new Dimension(rightPanelWidth, 50));
 
         panel1.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 0));
         JLabel label1 = new JLabel("Mass Difference: ");
@@ -259,59 +303,14 @@ public class GUI extends JPanel {
     }
 
     private void setPanelRightBottom() {
-        JPanel panel1 = new JPanel();
         int hGap = 100;
-        panel1.setLayout(new FlowLayout(FlowLayout.CENTER, hGap, 0));
         int AACWidth = 60;
-        ac1 = new JAminoAcidChooser(new Dimension(AACWidth, 20));
-        ac2 = new JAminoAcidChooser(new Dimension(AACWidth, 20));
-        setNormalSize(panel1, new Dimension(panelRightTop.getWidth(), 50));
-        panel1.setBackground(Variables.getColorOfRightPanel());
-        panel1.add(ac1.getRoot());
-        panel1.add(ac2.getRoot());
-        class CodonPanel extends JPanel {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                if (ac1.getAminoAcid() != ac2.getAminoAcid()) {
-                    int x = hGap + AACWidth / 2 - 24;
-                    Color[] colors = {new Color(100, 200, 150), new Color(230, 200, 150), new Color(10, 130, 5), new Color(200, 10, 150), new Color(100, 200, 150)};
-                    Graphics2D g2d = (Graphics2D) g;
-                    for (int i = 0; i < ac1.getAminoAcid().getCodons().length; i++) {
-                        g2d.drawString(ac1.getAminoAcid().getCodons()[i], x, 10 + 20 * (i));
-                    }
-                    for (int i = 0; i < ac2.getAminoAcid().getCodons().length; i++) {
-                        g2d.drawString(ac2.getAminoAcid().getCodons()[i], this.getWidth() - x - 24, 10 + 20 * i);
-                    }
-                    int count = 0;
-                    for (int i = 0; i < ac1.getAminoAcid().getCodons().length; i++) {
-                        for (int j = 0; j < ac2.getAminoAcid().getCodons().length; j++) {
-                            if (AminoAcidClicked.isSMP(ac1.getAminoAcid().getCodons()[i], ac2.getAminoAcid().getCodons()[j])) {
-                                g2d.setColor(colors[count]);
-                                count = (count + 1) % colors.length;
-                                g2d.drawLine(x + 24, 10 + 20 * (i - 1) + 15, this.getWidth() - x - 24, 10 + 20 * (j - 1) + 15);
-                            }
-                        }
-                    }
-                    g2d.setColor(Color.BLACK);
-                    g2d.drawString("Mass Difference: " + UsefullFunctions.round(ac1.getAminoAcid().getMass() - ac2.getAminoAcid().getMass()), x, Math.max(ac1.getAminoAcid().getCodons().length, ac2.getAminoAcid().getCodons().length)*20 + 30);
+        JHintsOnSubs hints = new JHintsOnSubs(hGap, AACWidth);
+        UsefullFunctions.setNormalSize(hints, new Dimension(rightPanelWidth, 300));
+        UsefullFunctions.setNormalSize(panelRightBottom, new Dimension(rightPanelWidth, 400));
 
-                }
-            }
-
-        }
-        CodonPanel cp = new CodonPanel();
-        cp.setBackground(Variables.getColorOfRightPanel());
-        ac1.addValueChangeListener(e ->
-                cp.repaint()
-        );
-        ac2.addValueChangeListener(e ->
-                cp.repaint()
-        );
-        setNormalSize(panelRightBottom, new Dimension(rightPanelWidth, 400));
-        panelRightBottom.setLayout(new BorderLayout());
-        panelRightBottom.add(panel1, BorderLayout.NORTH);
-        panelRightBottom.add(cp, BorderLayout.CENTER);
+        panelRightBottom.add(hints, BorderLayout.CENTER);
+        panelRightBottom.setBackground(Variables.getColorOfRightPanel());
 
     }
 
@@ -511,19 +510,6 @@ public class GUI extends JPanel {
         return prefix;
     }
 
-    public static void setNormalSize(JComponent component, Dimension d) {
-        component.setMaximumSize(d);
-        component.setMinimumSize(d);
-        component.setPreferredSize(d);
-    }
-
-    public static void setNormalSize(JComponent[] comps, Dimension d) {
-        for (JComponent comp : comps) {
-            setNormalSize(comp, d);
-        }
-    }
-
-    public JScrollPaneWithAminoAcids getScrollPaneWithAminoAcids() {
-        return scrollPaneWithAminoAcids;
-    }
+    
+    
 }

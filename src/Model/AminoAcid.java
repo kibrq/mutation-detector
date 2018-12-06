@@ -1,5 +1,7 @@
 package Model;
 
+import AdditionalClasses.UsefullFunctions;
+
 public enum AminoAcid {
     A, C, D, E, F, G, H, I, K, L, M, N, P, Q, R, S, T, V, W, Y;
     private String title;
@@ -67,8 +69,8 @@ public enum AminoAcid {
         return fullName;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public double getDifferenceMass(AminoAcid a1) {
+        return UsefullFunctions.round(this.mass - a1.getMass());
     }
 
     @Override

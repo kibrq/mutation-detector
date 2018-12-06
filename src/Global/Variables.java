@@ -7,7 +7,6 @@ import Model.AminoAcid;
 import Model.Mode;
 import Model.Modification;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,6 +31,8 @@ public class Variables {
 
     private final static Font fontForTitles = new Font(Font.SANS_SERIF, Font.BOLD, 24);
     private final static Font fontForLittleSignings = new Font(Font.SANS_SERIF, Font.PLAIN, 20);
+    private final static Font fontForCodons = new Font(Font.MONOSPACED, Font.PLAIN, 22);
+    private final static Font fontForSubTitles = new Font(Font.SERIF, Font.ITALIC, 23);
 
 
     private static String previousStringInSearchTextField = "";
@@ -59,6 +60,8 @@ public class Variables {
     private static boolean prefixSelecting = false;
     private static boolean suffixSelecting = false;
     private static HashMap<Integer, ArrayList<Modification>> tmpModifications = new HashMap<>();
+
+
 
     public static boolean isPrefixSelected() {
         return prefixSelected;
@@ -122,7 +125,7 @@ public class Variables {
         a2 = null;
         candidates = null;
         tmpModifications = null;
-        gui.getScrollPaneWithAminoAcids().removeAndRepaint();
+        //gui.getScrollPaneWithAminoAcids().removeAndRepaint();
     }
 
     public static AminoAcid getCurrentAmino() {
@@ -363,5 +366,21 @@ public class Variables {
 
     public static Color getColorOfCheckedPrefix_Suffix() {
         return colorOfCheckedPrefix_Suffix;
+    }
+
+    public static double countMistakeByNum(int num) {
+        if (currentMistake > ppm * (Variables.getMassesPrefix()[Variables.getMassesPrefix().length - 1]) / Math.pow(10, 6)) {
+            return UsefullFunctions.round(ppm * (Variables.getMassesPrefix()[Variables.getMassesPrefix().length - 1] + massesPrefix[num]) / Math.pow(10, 6));
+        } else {
+            return UsefullFunctions.round(ppm * (Variables.getMassesPrefix()[num]) / Math.pow(10, 6));
+        }
+    }
+
+    public static Font getFontForCodons() {
+        return fontForCodons;
+    }
+
+    public static Font getFontForSubTitles() {
+        return fontForSubTitles;
     }
 }
