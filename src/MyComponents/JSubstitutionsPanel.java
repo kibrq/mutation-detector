@@ -48,7 +48,6 @@ public class JSubstitutionsPanel extends JPanel {
         int x = midX - s.length() * 4;
         int y = 30;
         if (Variables.getMode() == Mode.MASS_DIFFERENCE) {
-            g2d.setFont(Variables.getFontForTitles());
             g2d.drawString(s, x, y);
             int margin = 100;
             candidates = Variables.getCandidates().get(num);

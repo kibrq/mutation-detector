@@ -166,16 +166,17 @@ public class GUI extends JPanel {
             label.setFont(Variables.getFontForTitles());
             StringBuilder sb = new StringBuilder();
             sb.append(Variables.getSeq()[a.get(i).get(0)].getFullName().toUpperCase());
-            if(Variables.getMode() == Mode.MASS_DIFFERENCE) {
-            sb.append("(");
-            for (int j = 0; j < a.get(i).size() - 1; j++) {
-                sb.append(a.get(i).get(j));
-                sb.append(",");
-            }
-            sb.append(a.get(i).get(a.get(i).size() - 1));
-            sb.append(") ");
+            if (Variables.getMode() == Mode.MASS_DIFFERENCE) {
+                sb.append("\n");
+                sb.append("(");
+                for (int j = 0; j < a.get(i).size() - 1; j++) {
+                    sb.append(a.get(i).get(j));
+                    sb.append(",");
+                }
+                sb.append(a.get(i).get(a.get(i).size() - 1));
+                sb.append(") ");
 
-                sb.append("Maximum mistake is ");
+                sb.append("Maximal mistake is ");
                 sb.append(Variables.countMistakeByNum(a.get(i).get(a.get(i).size() - 1)));
                 sb.append("Da");
             }
@@ -360,7 +361,7 @@ public class GUI extends JPanel {
             aminoSequence.add(label1);
 
 
-            JButton button = new JButton();
+            JButton button = new JAminoButton();
             button.setText(tmp.getTitle());
             button.setName(Integer.toString(i));
             button.setPreferredSize(new Dimension(Variables.getButtonWidth(), 20));
@@ -510,6 +511,5 @@ public class GUI extends JPanel {
         return prefix;
     }
 
-    
-    
+
 }
