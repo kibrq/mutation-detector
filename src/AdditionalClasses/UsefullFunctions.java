@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class UsefullFunctions {
@@ -45,14 +46,24 @@ public class UsefullFunctions {
         component.revalidate();
     }
 
-    public static void clearAminoSequence() {
+    public static void clearBackgrounds() {
         for (Component component : Variables.getGui().getAminoSequence().getComponents()) {
+            component.setBackground(Variables.getColorOfPanelWithSequnece());
+        }
+        resetCur();
+    }
+
+    public static void clearAminoSequence() {
+        clearBackgrounds();
+        for (Component component1 : Variables.getGui().getAminoSequence().getComponents()) {
+            Component component = ((JPanel) component1).getComponent(0);
             if (component.getForeground() != Variables.getColorInViewOfScroll() || component.getForeground() != Variables.getNormalColor()) {
                 component.setForeground(Variables.getNormalColor());
             }
         }
         Variables.getGui().getScrollPane().getHorizontalScrollBar().getAdjustmentListeners()[0].adjustmentValueChanged(new AdjustmentEvent(new MyAdjustable(), 0, 0, Variables.getGui().getScrollPane().getHorizontalScrollBar().getValue()));
         for (Component component : Variables.getGui().getPanelWithAminoButtons().getComponents()) {
+
             if (component.getForeground() != Variables.getNormalColor()) {
                 component.setForeground(Variables.getNormalColor());
             }
@@ -182,4 +193,31 @@ public class UsefullFunctions {
             setNormalSize(comp, d);
         }
     }
+
+    private static Color colors[] = {new Color(180, 40, 240), new Color(130, 170, 80), new Color(50, 150, 80)};
+    private static int cur = 0;
+
+    public static Color spotHiglightedAminoAcids(ArrayList<Integer> numbers) {
+        int i = 0;
+        int k = 0;
+        for (Component comp : Variables.getGui().getAminoSequence().getComponents()) {
+            if (k == numbers.size()) {
+                break;
+            }
+            if (i == numbers.get(k)) {
+                comp.setBackground(colors[cur]);
+                k++;
+            }
+            i++;
+        }
+        Color col = colors[cur];
+        cur++;
+        cur %= colors.length;
+        return col;
+    }
+
+    private static void resetCur() {
+        cur = 0;
+    }
+
 }

@@ -21,12 +21,13 @@ public class Scrolling implements AdjustmentListener {
         if (x > (width + 5) * start + width / 2) {
             start++;
             count--;
-            if(x>(width + 5) * (start-1)+width-5){
+            if (x > (width + 5) * (start - 1) + width - 5) {
                 count++;
             }
         }
         int i = 0;
-        for (Component component : gui.getAminoSequence().getComponents()) {
+        for (Component component1 : gui.getAminoSequence().getComponents()) {
+            Component component = ((JPanel) component1).getComponent(0);
             if (component.getForeground() == Variables.getNormalColor() || component.getForeground() == Variables.getColorInViewOfScroll()) {
                 if (i >= start && i < start + count) {
                     component.setForeground(Variables.getColorInViewOfScroll());

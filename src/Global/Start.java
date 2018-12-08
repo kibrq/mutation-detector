@@ -5,6 +5,7 @@ import GUI.*;
 import Listeners.ActionListners.MenuBarAminosActionListener;
 import Model.AminoAcid;
 import Model.Mode;
+import Model.Modification;
 
 
 import javax.swing.*;
@@ -42,26 +43,20 @@ public class Start {
         panel.getActionMap().put(action1, new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                GUI gui = Variables.getGui();
-                if (gui != null) {
-                    UsefullFunctions.clearAminoSequence();
-                    Variables.setMode(Mode.MASS_DIFFERENCE);
-                    Variables.getGui().getSuffix().setVisible(Variables.getMode() == Mode.MASS_DIFFERENCE);
-                    Variables.getGui().getPrefix().setVisible(Variables.getMode() == Mode.MASS_DIFFERENCE);
-                }
+                Variables.setMode(Mode.MASS_DIFFERENCE);
             }
         });
         panel.getActionMap().put(action3, new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(Variables.getMode() == Mode.MASS_DIFFERENCE)
+                if (Variables.getMode() == Mode.MASS_DIFFERENCE)
                     UsefullFunctions.prefixAction();
             }
         });
         panel.getActionMap().put(action4, new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(Variables.getMode() == Mode.MASS_DIFFERENCE)
+                if (Variables.getMode() == Mode.MASS_DIFFERENCE)
                     UsefullFunctions.suffixAction();
             }
         });

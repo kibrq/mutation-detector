@@ -21,8 +21,8 @@ public class Variables {
     private final static Color normalColor = new Color(0, 0, 0);
     private final static Color colorOfMD = new Color(10, 10, 220);
     private final static Color colorInViewOfScroll = new Color(220, 20, 40);
-    private final static Color colorOfMod = new Color(20, 200, 50);
-    private final static Color colorOfBoth = new Color(200, 200, 50);
+    private final static Color colorOfMod = new Color(239, 101, 30);
+    private final static Color colorOfBoth = new Color(26, 200, 156);
     private final static Color colorOfCheckedPrefix_Suffix = new Color(197, 146, 152);
 
     private final static Color colorOfRightPanel = new Color(245, 223, 209);
@@ -33,6 +33,7 @@ public class Variables {
     private final static Font fontForLittleSignings = new Font(Font.SANS_SERIF, Font.PLAIN, 20);
     private final static Font fontForCodons = new Font(Font.MONOSPACED, Font.PLAIN, 22);
     private final static Font fontForSubTitles = new Font(Font.SERIF, Font.ITALIC, 23);
+    private final static Font fontForAminoTitles = new Font(Font.DIALOG, Font.BOLD, 20);
 
 
     private static String previousStringInSearchTextField = "";
@@ -60,7 +61,6 @@ public class Variables {
     private static boolean prefixSelecting = false;
     private static boolean suffixSelecting = false;
     private static HashMap<Integer, ArrayList<Modification>> tmpModifications = new HashMap<>();
-
 
 
     public static boolean isPrefixSelected() {
@@ -106,12 +106,24 @@ public class Variables {
         } else {
             Variables.mode = mode;
         }
+        UsefullFunctions.clearAminoSequence();
         switch (Variables.mode) {
             case NORMAL:
                 gui.getCurrentMode().setText(NORMAL_MODE);
+                if (gui != null) {
+                    gui.getSuffix().setVisible(false);
+                    gui.getPrefix().setVisible(false);
+                }
                 break;
             case MASS_DIFFERENCE:
-                gui.getCurrentMode().setText(MASS_DIFFERENCE_MODE);
+                if (gui != null) {
+                    gui.getCurrentMode().setText(MASS_DIFFERENCE_MODE);
+                    gui.getSuffix().setVisible(true);
+                    gui.getPrefix().setVisible(true);
+                }
+                break;
+
+
         }
         for (Component component : gui.getPanelWithAminoButtons().getComponents()) {
             component.setEnabled(Variables.mode != Mode.MASS_DIFFERENCE);
@@ -125,7 +137,7 @@ public class Variables {
         a2 = null;
         candidates = null;
         tmpModifications = null;
-        //gui.getScrollPaneWithAminoAcids().removeAndRepaint();
+        gui.removeAllAminoAcids();
     }
 
     public static AminoAcid getCurrentAmino() {
@@ -382,5 +394,9 @@ public class Variables {
 
     public static Font getFontForSubTitles() {
         return fontForSubTitles;
+    }
+
+    public static Font getFontForAminoTitles() {
+        return fontForAminoTitles;
     }
 }

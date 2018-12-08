@@ -119,7 +119,7 @@ public class AminoAcidClicked implements ActionListener {
                 findCandidatesForThisAmino(Variables.getSeq()[i], i);
                 if (!Variables.getCandidates().get(i).isEmpty()) {
                     flah = true;
-                    Variables.getGui().getAminoSequence().getComponent(i).setForeground(Variables.getColorOfMut());
+                    ((JPanel)Variables.getGui().getAminoSequence().getComponent(i)).getComponent(0).setForeground(Variables.getColorOfMut());
                     Variables.getGui().getPanelWithAminoButtons().getComponent(i).setForeground(Variables.getColorOfMut());
                     Variables.getGui().getPanelWithAminoButtons().getComponent(i).setEnabled(true);
                 }
@@ -135,11 +135,11 @@ public class AminoAcidClicked implements ActionListener {
                             return o1.getName().compareTo(o2.getName());
                         }
                     });
-                    if (Variables.getGui().getAminoSequence().getComponent(i).getForeground() == Variables.getColorOfMut()) {
-                        Variables.getGui().getAminoSequence().getComponent(i).setForeground(Variables.getColorOfBoth());
+                    if (((JPanel)Variables.getGui().getAminoSequence().getComponent(i)).getComponent(0).getForeground() == Variables.getColorOfMut()) {
+                        ((JPanel)Variables.getGui().getAminoSequence().getComponent(i)).getComponent(0).setForeground(Variables.getColorOfBoth());
                         Variables.getGui().getPanelWithAminoButtons().getComponent(i).setForeground(Variables.getColorOfBoth());
                     } else {
-                        Variables.getGui().getAminoSequence().getComponent(i).setForeground(Variables.getColorOfMod());
+                        ((JPanel)Variables.getGui().getAminoSequence().getComponent(i)).getComponent(0).setForeground(Variables.getColorOfMod());
                         Variables.getGui().getPanelWithAminoButtons().getComponent(i).setForeground(Variables.getColorOfMod());
                         Variables.getGui().getPanelWithAminoButtons().getComponent(i).setEnabled(true);
 
@@ -147,10 +147,10 @@ public class AminoAcidClicked implements ActionListener {
                 }
             } else {
                 if (pref && i >= end) {
-                    Variables.getGui().getAminoSequence().getComponent(i).setForeground(Variables.getColorOfCheckedPrefix_Suffix());
+                    ((JPanel)Variables.getGui().getAminoSequence().getComponent(i)).getComponent(0).setForeground(Variables.getColorOfCheckedPrefix_Suffix());
                     Variables.getGui().getPanelWithAminoButtons().getComponent(i).setForeground(Variables.getColorOfCheckedPrefix_Suffix());
                 } else if (!pref && i < start) {
-                    Variables.getGui().getAminoSequence().getComponent(i).setForeground(Variables.getColorOfCheckedPrefix_Suffix());
+                    ((JPanel)Variables.getGui().getAminoSequence().getComponent(i)).getComponent(0).setForeground(Variables.getColorOfCheckedPrefix_Suffix());
                     Variables.getGui().getPanelWithAminoButtons().getComponent(i).setForeground(Variables.getColorOfCheckedPrefix_Suffix());
                 }
             }

@@ -45,11 +45,10 @@ public class GUI extends JPanel {
     private JTextField mistakePPM = new JTextField();
     private JButton changePPM = new JButton();
     private JLabel currentMode = new JLabel();
+    private JButton changeMode = new JButton("Set");
     private JLabel currentMistake = new JLabel();
 
     private JPanel panelRightBottom = new JPanel();
-    private JAminoAcidChooser ac1;
-    private JAminoAcidChooser ac2;
 
 
     public GUI() {
@@ -162,25 +161,54 @@ public class GUI extends JPanel {
         for (int i = 0; i < a.size(); i++) {
             JPanel panel = new JPanel();
             UsefullFunctions.setNormalSize(panel, new Dimension(innerPane.getWidth(), 600));
+            JPanel panel1 = new JPanel();
+            JPanel panel2 = new JPanel();
+            JPanel panel3 = new JPanel();
+            FlowLayout flowLayout = new FlowLayout(FlowLayout.CENTER, 10, 0);
+            panel2.setLayout(flowLayout);
+            panel3.setLayout(flowLayout);
+            JPanel panels[] = {panel2, panel3};
+            UsefullFunctions.setNormalSize(panels, new Dimension(500, 35));
+            GridLayout gridLayout = new GridLayout();
+            gridLayout.setColumns(1);
+            gridLayout.setRows(2);
+            panel1.setLayout(gridLayout);
             JLabel label = new JLabel();
-            label.setFont(Variables.getFontForTitles());
+            JLabel label1 = new JLabel();
             StringBuilder sb = new StringBuilder();
-            sb.append(Variables.getSeq()[a.get(i).get(0)].getFullName().toUpperCase());
+            StringBuilder sb1 = new StringBuilder();
+            label.setFont(Variables.getFontForAminoTitles());
+            label.setForeground(UsefullFunctions.spotHiglightedAminoAcids(a.get(i)));
+            sb.append(Variables.getSeq()[a.get(i).get(0)].getTitle());
+            sb.append(" (");
+            sb.append(Variables.getSeq()[a.get(i).get(0)].getFullName());
+            sb.append(") ");
             if (Variables.getMode() == Mode.MASS_DIFFERENCE) {
-                sb.append("\n");
-                sb.append("(");
+                sb.append(a.get(i).size() == 1 ? "at position: " : "at positions: ");
                 for (int j = 0; j < a.get(i).size() - 1; j++) {
-                    sb.append(a.get(i).get(j));
-                    sb.append(",");
+                    sb.append(a.get(i).get(j) + 1);
+                    sb.append(", ");
                 }
-                sb.append(a.get(i).get(a.get(i).size() - 1));
-                sb.append(") ");
+                sb.append(a.get(i).get(a.get(i).size() - 1) + 1);
 
-                sb.append("Maximal mistake is ");
-                sb.append(Variables.countMistakeByNum(a.get(i).get(a.get(i).size() - 1)));
-                sb.append("Da");
+                sb1.append(" Maximum mistake is ");
+                sb1.append(Variables.countMistakeByNum(a.get(i).get(a.get(i).size() - 1)));
+                sb1.append("Da");
+
+                sb1.append("; Minimum mistake is ");
+                sb1.append(Variables.countMistakeByNum(a.get(i).get(0)));
+                sb1.append("Da");
             }
             label.setText(sb.toString());
+            label1.setText(sb1.toString());
+
+            panel2.add(label);
+            panel3.add(label1);
+
+            panel1.add(panel2);
+            panel1.add(panel3);
+
+
             JSplitPane sp = new JSplitPane();
             JPanel panelLeft = new JSubstitutionsPanel(a.get(i).get(0));
             JPanel panelRight = new JModificationPanel(a.get(i).get(0));
@@ -188,7 +216,7 @@ public class GUI extends JPanel {
             UsefullFunctions.setNormalSize(panelRight, new Dimension(innerPane.getWidth() / 2, 500));
             sp.setLeftComponent(panelLeft);
             sp.setRightComponent(panelRight);
-            panel.add(label, BorderLayout.NORTH);
+            panel.add(panel1, BorderLayout.NORTH);
             panel.add(sp, BorderLayout.CENTER);
             innerPane.add(Box.createVerticalStrut(20));
             innerPane.add(panel);
@@ -200,6 +228,7 @@ public class GUI extends JPanel {
     public void removeAllAminoAcids() {
         innerPane.removeAll();
         scrollPaneWithAminoAcids.revalidate();
+        UsefullFunctions.clearBackgrounds();
     }
 
     private void setPanelRight() {
@@ -239,7 +268,7 @@ public class GUI extends JPanel {
         panel1.add(massDifference);
 
         panel2.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 0));
-        JLabel label2 = new JLabel("PPM Mistake: ");
+        JLabel label2 = new JLabel("Error tolerance: ");
         label2.setFont(leftLabel);
         mistakePPM.setColumns(4);
         mistakePPM.setFont(rightLabel);
@@ -251,21 +280,19 @@ public class GUI extends JPanel {
         panel2.add(label2);
         panel2.add(mistakePPM);
         panel2.add(label21);
-        changePPM.setText("Change");
+        changePPM.setText("Set");
         changePPM.setName("Change");
         changePPM.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JButton tmp = (JButton) e.getSource();
-                if (tmp.getName().equals("Change")) {
+                if (tmp.getText().equals("Set")) {
                     mistakePPM.setFocusable(true);
                     mistakePPM.grabFocus();
-                    tmp.setName("Submit");
                     tmp.setText("Submit");
 
                 } else {
-                    tmp.setName("Change");
-                    tmp.setText("Change");
+                    tmp.setText("Set");
                     Variables.setPpm(Double.parseDouble(Variables.getGui().getMistakePPM().getText()));
                     JPopupMenu pm = new JPopupMenu();
                     pm.add(new JLabel("ppm has been changed"));
@@ -278,11 +305,45 @@ public class GUI extends JPanel {
 
         panel4.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 0));
         JLabel label4 = new JLabel("Current mode: ");
+        label4.addMouseListener(new MouseListener() {
+            JPopupMenu popm;
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                popm = new JPopupMenu();
+                popm.add(new JLabel("You can change the mode by hot keys(shift + f's) or by button 'set mode'. "));
+                popm.show(label4, -20, 20);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                popm.setVisible(false);
+            }
+        });
         label4.setFont(leftLabel);
         currentMode.setFont(rightLabel);
         currentMode.setText("Viewing of codons");
         panel4.add(label4);
         panel4.add(currentMode);
+        changeMode.addActionListener(e -> {
+            Mode.next();
+        });
+        panel4.add(changeMode);
 
 
         panel3.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 0));
@@ -327,6 +388,9 @@ public class GUI extends JPanel {
             } else {
                 arr[i] = tmp.getMass() + arr[i - 1] - waterMass;
             }
+            JPanel panel = new JPanel();
+            panel.setBackground(Variables.getColorOfPanelWithSequnece());
+            panel.setLayout(new BorderLayout());
             JLabel label1 = new JLabel();
             label1.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
             label1.setForeground(Variables.getNormalColor());
@@ -358,7 +422,8 @@ public class GUI extends JPanel {
                 }
             });
             label1.setText(tmp.getTitle());
-            aminoSequence.add(label1);
+            panel.add(label1);
+            aminoSequence.add(panel);
 
 
             JButton button = new JAminoButton();

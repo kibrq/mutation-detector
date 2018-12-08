@@ -45,15 +45,16 @@ public class JSubstitutionsPanel extends JPanel {
         int midX = this.getWidth() / 2;
         g2d.setFont(Variables.getFontForSubTitles());
         String s = "Substitutions";
-        int x = midX - s.length() * 4;
+        int x = midX - (int) (s.length() * 3.5);
         int y = 30;
         if (Variables.getMode() == Mode.MASS_DIFFERENCE) {
             g2d.drawString(s, x, y);
             int margin = 100;
             candidates = Variables.getCandidates().get(num);
             if (candidates.isEmpty()) {
+                g2d.setFont(Variables.getFontForTitles());
                 s = "NONE";
-                x = midX - s.length() * 4;
+                x = midX - (int) (s.length() * 5);
                 y += 100;
                 g2d.drawString(s, x, y);
             } else {
@@ -104,7 +105,7 @@ public class JSubstitutionsPanel extends JPanel {
                 g2d.drawString(s, x, y);
             }
         } else {
-            s = "Encoding codons:";
+            s = "Encoding codons";
             x = (int) (midX - s.length() * 4.2);
             g2d.drawString(s, x, y);
             g2d.setFont(Variables.getFontForCodons());
