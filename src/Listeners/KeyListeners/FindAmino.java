@@ -1,6 +1,7 @@
 package Listeners.KeyListeners;
 
 
+import AdditionalClasses.UsefullFunctions;
 import Global.Start;
 import Global.Variables;
 import Listeners.ActionListners.MenuBarAminosActionListener;
@@ -17,11 +18,12 @@ import java.util.ArrayList;
 
 public class FindAmino implements CaretListener {
     private String s = null;
+    public static Dimension sizeOfPanel;
 
     @Override
     public void caretUpdate(CaretEvent e) {
 
-        MenuBarAminosActionListener.removeAll();
+        Variables.getDialog().removeAll();
         JTextField tf = (JTextField) e.getSource();
         String s = tf.getText();
         s = s.toUpperCase();
@@ -36,16 +38,18 @@ public class FindAmino implements CaretListener {
             for (String str :
                     in) {
                 String[] arr = str.split("\\s+");
+                String md = Double.toString(UsefullFunctions.round(Double.parseDouble(arr[1])));
                 int tmp = matches(str, s, hash);
                 if (tmp != -1) {
                     JPanel panel1 = new JPanel();
-                    panel1.setLayout(new FlowLayout(FlowLayout.CENTER, 0,0));
+                    panel1.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
+                    UsefullFunctions.setNormalSize(panel1, sizeOfPanel);
                     int leftEnd = tmp > 4 ? tmp - 4 : 0;
                     int rightEnd = tmp + s.length() < arr[0].length() - 1 - 4 ? tmp + s.length() + 4 : arr[0].length();
                     JLabel label11 = new JLabel(arr[0].substring(leftEnd, tmp));
                     JLabel label12 = new JLabel(arr[0].substring(tmp, tmp + s.length()));
                     label12.setForeground(Color.RED);
-                    JLabel label13 = new JLabel(arr[0].substring(tmp + s.length(), rightEnd) + " " + arr[1]);
+                    JLabel label13 = new JLabel(arr[0].substring(tmp + s.length(), rightEnd) + " " + md);
                     panel1.setName(str.toUpperCase());
                     panel1.addMouseListener(new PeptideInSearchListener());
                     panel1.add(label11);
@@ -55,10 +59,11 @@ public class FindAmino implements CaretListener {
                     if (tmp == 0) {
                         JPanel panel2 = new JPanel();
                         panel2.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
+                        UsefullFunctions.setNormalSize(panel2, sizeOfPanel);
                         JLabel label21 = new JLabel(arr[0].substring(leftEnd, tmp));
-                        JLabel label22 = new JLabel(arr[0].substring(tmp,tmp +  s.length()));
+                        JLabel label22 = new JLabel(arr[0].substring(tmp, tmp + s.length()));
                         label22.setForeground(Color.RED);
-                        JLabel label23 = new JLabel(arr[0].substring(tmp + s.length(), rightEnd) + " " + arr[1]);
+                        JLabel label23 = new JLabel(arr[0].substring(tmp + s.length(), rightEnd) + " " + md);
                         panel2.addMouseListener(new PeptideInSearchListener());
                         panel2.setName(str.toUpperCase());
                         panel2.add(label21);

@@ -15,7 +15,7 @@ import java.awt.event.MouseListener;
 public class PeptideInSearchListener implements MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
-        MenuBarAminosActionListener.dialog.setVisible(false);
+        Variables.getDialog().setVisible(false);
         JPanel label = (JPanel) e.getSource();
         String arr[] = label.getName().split("\\s+");
         GUI gui = new GUI();

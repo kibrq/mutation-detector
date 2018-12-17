@@ -3,10 +3,12 @@ package Global;
 
 import AdditionalClasses.UsefullFunctions;
 import GUI.GUI;
+import Listeners.ActionListners.MenuBarAminosActionListener;
 import Model.AminoAcid;
 import Model.Mode;
 import Model.Modification;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,6 +18,8 @@ public class Variables {
     private final static String NORMAL_MODE = "Viewing of codons";
     private final static String COMPARE_MODE = "Comparing amino acids";
     private final static String MASS_DIFFERENCE_MODE = "Detecting substitutions";
+
+    private final static Image icon = new ImageIcon("pictures/icon.png").getImage();
 
     //Colors
     private final static Color normalColor = new Color(0, 0, 0);
@@ -29,11 +33,16 @@ public class Variables {
     private final static Color colorOfPanelWithSequnece = new Color(216, 194, 180);
     private final static Color colorOfPanelWithCodonsModifications = new Color(232, 210, 196);
 
+    private final static Color colorNonActive = new Color(232, 210, 196);
+    private final static Color colorActive = new Color(255, 200, 207);
+
     private final static Font fontForTitles = new Font(Font.SANS_SERIF, Font.BOLD, 24);
     private final static Font fontForLittleSignings = new Font(Font.SANS_SERIF, Font.PLAIN, 20);
     private final static Font fontForCodons = new Font(Font.MONOSPACED, Font.PLAIN, 22);
     private final static Font fontForSubTitles = new Font(Font.SERIF, Font.ITALIC, 23);
     private final static Font fontForAminoTitles = new Font(Font.DIALOG, Font.BOLD, 20);
+    private final static Font fontForNavigationPanel = new Font(Font.DIALOG, Font.PLAIN, 16);
+    private final static Font fontForDescriptions = new Font(Font.MONOSPACED, Font.PLAIN, 18);
 
 
     private static String previousStringInSearchTextField = "";
@@ -61,6 +70,8 @@ public class Variables {
     private static boolean prefixSelecting = false;
     private static boolean suffixSelecting = false;
     private static HashMap<Integer, ArrayList<Modification>> tmpModifications = new HashMap<>();
+
+    private static MenuBarAminosActionListener.Dialog dialog;
 
 
     public static boolean isPrefixSelected() {
@@ -129,7 +140,14 @@ public class Variables {
             component.setEnabled(Variables.mode != Mode.MASS_DIFFERENCE);
         }
         clearPanelsWithModCod();
+        selectingReset();
+        UsefullFunctions.enableUnenableSuffixPrefix();
 
+    }
+
+    private static void selectingReset() {
+        prefixSelecting = false;
+        suffixSelecting = false;
     }
 
     public static void clearPanelsWithModCod() {
@@ -398,5 +416,33 @@ public class Variables {
 
     public static Font getFontForAminoTitles() {
         return fontForAminoTitles;
+    }
+
+    public static Image getIcon() {
+        return icon;
+    }
+
+    public static Color getColorNonActive() {
+        return colorNonActive;
+    }
+
+    public static Color getColorActive() {
+        return colorActive;
+    }
+
+    public static Font getFontForNavigationPanel() {
+        return fontForNavigationPanel;
+    }
+
+    public static Font getFontForDescriptions() {
+        return fontForDescriptions;
+    }
+
+    public static MenuBarAminosActionListener.Dialog getDialog() {
+        return dialog;
+    }
+
+    public static void setDialog(MenuBarAminosActionListener.Dialog dialog) {
+        Variables.dialog = dialog;
     }
 }

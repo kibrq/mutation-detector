@@ -178,7 +178,9 @@ public class GUI extends JPanel {
             StringBuilder sb = new StringBuilder();
             StringBuilder sb1 = new StringBuilder();
             label.setFont(Variables.getFontForAminoTitles());
-            label.setForeground(UsefullFunctions.spotHiglightedAminoAcids(a.get(i)));
+            if (Variables.getMode() == Mode.MASS_DIFFERENCE) {
+                label.setForeground(UsefullFunctions.spotHiglightedAminoAcids(a.get(i)));
+            }
             sb.append(Variables.getSeq()[a.get(i).get(0)].getTitle());
             sb.append(" (");
             sb.append(Variables.getSeq()[a.get(i).get(0)].getFullName());
@@ -210,10 +212,13 @@ public class GUI extends JPanel {
 
 
             JSplitPane sp = new JSplitPane();
+            sp.setResizeWeight(0.7);
             JPanel panelLeft = new JSubstitutionsPanel(a.get(i).get(0));
             JPanel panelRight = new JModificationPanel(a.get(i).get(0));
-            UsefullFunctions.setNormalSize(panelLeft, new Dimension(innerPane.getWidth() / 2, 500));
-            UsefullFunctions.setNormalSize(panelRight, new Dimension(innerPane.getWidth() / 2, 500));
+            int m = 3;
+            int k = 2;
+            UsefullFunctions.setNormalSize(panelLeft, new Dimension(m*innerPane.getWidth() / (m+k), 500));
+            UsefullFunctions.setNormalSize(panelRight, new Dimension(k*innerPane.getWidth() / (m+k), 500));
             sp.setLeftComponent(panelLeft);
             sp.setRightComponent(panelRight);
             panel.add(panel1, BorderLayout.NORTH);

@@ -74,13 +74,20 @@ public class UsefullFunctions {
     public static void prefixAction() {
         Variables.setPrefixSelecting(!Variables.isPrefixSelecting());
         Variables.getGui().getScrollPane().getHorizontalScrollBar().setValue(Variables.getGui().getScrollPane().getHorizontalScrollBar().getMaximum());
+        enableUnenableSuffixPrefix();
         UsefullFunctions.clearAminoSequence();
     }
 
     public static void suffixAction() {
         Variables.setSuffixSelecting(!Variables.isSuffixSelecting());
         Variables.getGui().getScrollPane().getHorizontalScrollBar().setValue(0);
+        enableUnenableSuffixPrefix();
         UsefullFunctions.clearAminoSequence();
+    }
+
+    public static void enableUnenableSuffixPrefix() {
+        Variables.getGui().getPrefix().setEnabled(!(Variables.isPrefixSelecting() || Variables.isSuffixSelecting()));
+        Variables.getGui().getSuffix().setEnabled(!(Variables.isPrefixSelecting() || Variables.isSuffixSelecting()));
     }
 
 
@@ -194,7 +201,7 @@ public class UsefullFunctions {
         }
     }
 
-    private static Color colors[] = {new Color(180, 40, 240), new Color(130, 170, 80), new Color(50, 150, 80)};
+    private static Color colors[] = {new Color(180, 40, 240), new Color(130, 170, 80), new Color(50, 150, 200)};
     private static int cur = 0;
 
     public static Color spotHiglightedAminoAcids(ArrayList<Integer> numbers) {

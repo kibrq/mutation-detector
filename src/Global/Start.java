@@ -1,11 +1,10 @@
 package Global;
 
 import AdditionalClasses.UsefullFunctions;
-import GUI.*;
+import Listeners.ActionListners.HelpDialog;
 import Listeners.ActionListners.MenuBarAminosActionListener;
 import Model.AminoAcid;
 import Model.Mode;
-import Model.Modification;
 
 
 import javax.swing.*;
@@ -27,8 +26,10 @@ public class Start {
     public static void main(String[] args) throws IOException {
         Scanner sc = new Scanner(new File("input.in"));
         AminoAcid.setData();
-        JFrame mainF = new JFrame(Variables.getFrameName());
-        frame = mainF;
+        frame = new JFrame(Variables.getFrameName());
+
+        frame.setIconImage(Variables.getIcon());
+
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
 
@@ -65,40 +66,20 @@ public class Start {
 
         frame.setContentPane(panel);
 
-        JMenu help = new JMenu("Help");
 
         while (sc.hasNext()) {
             input.add(sc.nextLine().toUpperCase());
         }
 
         aminos.addActionListener(new MenuBarAminosActionListener());
-
-        JMenuItem item = new JMenuItem("Help");
-        item.addActionListener(e -> {
-            JPopupMenu popupMenu = new JPopupMenu();
-            JLabel label1 = new JLabel("You can select peptide by selecting one of them in 'peptide' menu");
-            JLabel label2 = new JLabel("If you want to see all codons of some amino acid, just get into a normal mode");
-            JLabel label3 = new JLabel("If you want to compare codons of two amino acids, get into compare mode(shift+f1)");
-            JLabel label4 = new JLabel("If you want to see possible substitution get into massDifference mode(shift+f2). In this mode you can select prefix(where you think sub might occur) by holding P and click on end of this prefix");
-            JLabel label5 = new JLabel("You can do same thing with suffix but you have to hold S instead of P");
-            JLabel label6 = new JLabel("If you want to get into normal mode, you have to press combination of keys which you have pressed last");
-            popupMenu.add(label1);
-            popupMenu.add(label2);
-            popupMenu.add(label3);
-            popupMenu.add(label4);
-            popupMenu.add(label5);
-            popupMenu.add(label6);
-            popupMenu.show(menuBar, 10, 50);
-
-
-        });
-        help.add(item);
-        mainF.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        mainF.setSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height));
+        JButton helpButton = new JButton("Help");
+        helpButton.addActionListener(new HelpDialog());
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height));
         menuBar.add(aminos);
-        menuBar.add(help);
-        mainF.setJMenuBar(menuBar);
-        mainF.setVisible(true);
+        menuBar.add(helpButton);
+        frame.setJMenuBar(menuBar);
+        frame.setVisible(true);
         UsefullFunctions.parseModification();
 
     }
