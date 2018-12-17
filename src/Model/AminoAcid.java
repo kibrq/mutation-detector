@@ -38,8 +38,8 @@ public enum AminoAcid {
         double[] masses = {71.03711, 103.00919, 115.02694, 129.04259, 147.06841, 57.02146, 137.05891, 113.08406, 128.09496, 113.08406,
                 131.04049, 114.04293, 97.05276, 128.05858, 156.10111, 87.03203, 101.04768, 99.06841, 186.07931, 163.06333};
 
-        String[] fullNames = {"alanine", "cysteine", "aspartic acid", "glutamic acid", "phenylalanine", "glycine", "histidine", "isoleucine",
-                "lysine", "leucine", "methionine", "asparagine", "proline", "glutamine", "arginine", "serine", "threonine", "valine", "tryptophan", "tyrosine"};
+        String[] fullNames = {"Alanine", "Cysteine", "Aspartic acid", "Glutamic acid", "Phenylalanine", "Glycine", "Histidine", "Isoleucine",
+                "Lysine", "Leucine", "Methionine", "Asparagine", "Proline", "Glutamine", "Arginine", "Serine", "Threonine", "Valine", "Tryptophan", "Tyrosine"};
         AminoAcid[] ad = AminoAcid.values();
         for (int i = 0; i < 20; i++) {
             ad[i].title = titles[i];

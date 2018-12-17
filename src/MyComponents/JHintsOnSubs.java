@@ -25,12 +25,25 @@ public class JHintsOnSubs extends JPanel {
                 cp.repaint());
         a2.addValueChangeListener(e ->
                 cp.repaint());
+        JPanel panel = new JPanel();
+        panel.setBackground(Variables.getColorOfRightPanel());
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        JLabel name = new JLabel();
+        JPanel panel2 = new JPanel();
+        name.setFont(Variables.getFontForLittleSignings());
+        name.setText("Hints on substitutions");
+        panel2.setLayout(new BorderLayout());
+        panel2.setBackground(Variables.getColorOfRightPanel());
+        panel2.add(name, BorderLayout.CENTER);
+        panel.add(panel2);
+        panel.add(Box.createVerticalStrut(10));
         JPanel panel1 = new JPanel(new FlowLayout(FlowLayout.CENTER, hGap, 0));
         panel1.setBackground(Variables.getColorOfRightPanel());
         panel1.add(a1.getRoot());
         panel1.add(a2.getRoot());
+        panel.add(panel1);
         this.setLayout(new BorderLayout());
-        this.add(panel1, BorderLayout.NORTH);
+        this.add(panel, BorderLayout.NORTH);
         this.add(cp, BorderLayout.CENTER);
         this.setBackground(Variables.getColorOfRightPanel());
 

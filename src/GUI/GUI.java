@@ -187,6 +187,7 @@ public class GUI extends JPanel {
             sb.append(") ");
             if (Variables.getMode() == Mode.MASS_DIFFERENCE) {
                 sb.append(a.get(i).size() == 1 ? "at position: " : "at positions: ");
+
                 for (int j = 0; j < a.get(i).size() - 1; j++) {
                     sb.append(a.get(i).get(j) + 1);
                     sb.append(", ");
@@ -212,11 +213,10 @@ public class GUI extends JPanel {
 
 
             JSplitPane sp = new JSplitPane();
-            sp.setResizeWeight(0.7);
             JPanel panelLeft = new JSubstitutionsPanel(a.get(i).get(0));
             JPanel panelRight = new JModificationPanel(a.get(i).get(0));
             int m = 3;
-            int k = 2;
+            int k = 3;
             UsefullFunctions.setNormalSize(panelLeft, new Dimension(m*innerPane.getWidth() / (m+k), 500));
             UsefullFunctions.setNormalSize(panelRight, new Dimension(k*innerPane.getWidth() / (m+k), 500));
             sp.setLeftComponent(panelLeft);
@@ -391,7 +391,7 @@ public class GUI extends JPanel {
             if (i == 0) {
                 arr[i] = tmp.getMass();
             } else {
-                arr[i] = tmp.getMass() + arr[i - 1] - waterMass;
+                arr[i] = tmp.getMass() + arr[i - 1];
             }
             JPanel panel = new JPanel();
             panel.setBackground(Variables.getColorOfPanelWithSequnece());

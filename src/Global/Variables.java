@@ -44,6 +44,7 @@ public class Variables {
     private final static Font fontForNavigationPanel = new Font(Font.DIALOG, Font.PLAIN, 16);
     private final static Font fontForDescriptions = new Font(Font.MONOSPACED, Font.PLAIN, 18);
 
+    private final static double waterMass = 18.01057;
 
     private static String previousStringInSearchTextField = "";
 
@@ -400,7 +401,7 @@ public class Variables {
 
     public static double countMistakeByNum(int num) {
         if (currentMistake > ppm * (Variables.getMassesPrefix()[Variables.getMassesPrefix().length - 1]) / Math.pow(10, 6)) {
-            return UsefullFunctions.round(ppm * (Variables.getMassesPrefix()[Variables.getMassesPrefix().length - 1] + massesPrefix[num]) / Math.pow(10, 6));
+            return UsefullFunctions.round(ppm * (Variables.getMassesPrefix()[Variables.getMassesPrefix().length - 1] + massesPrefix[num] + waterMass) / Math.pow(10, 6));
         } else {
             return UsefullFunctions.round(ppm * (Variables.getMassesPrefix()[num]) / Math.pow(10, 6));
         }
@@ -444,5 +445,9 @@ public class Variables {
 
     public static void setDialog(MenuBarAminosActionListener.Dialog dialog) {
         Variables.dialog = dialog;
+    }
+
+    public static double getWaterMass() {
+        return waterMass;
     }
 }

@@ -85,11 +85,11 @@ public class AminoAcidClicked implements ActionListener {
 
     private void countMistake() {
         System.out.println(i);
-        Variables.setCurrentMistake(Variables.isPrefixSelecting() ? ppm * Variables.getMassesPrefix()[i] / Math.pow(10, 6) : ppm * (Variables.getMassesPrefix()[Variables.getMassesPrefix().length - 1] + Variables.getMassesPrefix()[i]) / Math.pow(10, 6));
+        Variables.setCurrentMistake(Variables.isPrefixSelecting() ? ppm * Variables.getMassesPrefix()[i] / Math.pow(10, 6) : ppm * (Variables.getMassesPrefix()[Variables.getMassesPrefix().length - 1] + Variables.getMassesPrefix()[i] + Variables.getWaterMass()) / Math.pow(10, 6));
     }
 
     private double countTMPMistake(int num) {
-        return UsefullFunctions.round(Variables.isPrefixSelected() ? ppm * Variables.getMassesPrefix()[num] / Math.pow(10, 6) : ppm * (Variables.getMassesPrefix()[Variables.getMassesPrefix().length - 1] + Variables.getMassesPrefix()[num]) / Math.pow(10, 6));
+        return UsefullFunctions.round(Variables.isPrefixSelected() ? ppm * Variables.getMassesPrefix()[num] / Math.pow(10, 6) : ppm * (Variables.getMassesPrefix()[Variables.getMassesPrefix().length - 1] + Variables.getMassesPrefix()[num] + Variables.getWaterMass()) / Math.pow(10, 6));
 
     }
 
